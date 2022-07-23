@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/23 23:26:22 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/23 23:46:24 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include <readline/history.h>
 # include "../lib/libft/include/libft.h"
 
-
 typedef enum e_type_token{
 	TOKEN_WORD,
 	TOKEN_SEPARATOR,
@@ -35,23 +34,24 @@ typedef enum e_type_token{
 	TOKEN_HEREDOC,
 	TOKEN_AND,
 	TOKEN_OR,
-} t_type_token;
+}	t_type_token;
 typedef struct s_token
 {
-	t_type_token type_token;
+	t_type_token	type_token;
 	char			*cmd;
 	int				type;
 	int				index;
 	int				len;
 	int				start;
 	struct s_token	*next;
-}		t_token;
+}	t_token;
 //****************************************************************
 
 int		token_and(t_token *token, char *line, int i);
 int		token_paren(t_token *token, char *line, int i);
 int		token_red_in(t_token *token, char *line, int i);
 int		token_red_out(t_token *token, char *line, int i);
+int		token_pipe(t_token *token, char *line, int i);
 void	*ft_any_alloc(size_t size, size_t len);
 
 //****************************************************************

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/23 23:13:09 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/23 23:45:19 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ int	main(void)
 			token->next = NULL;
 			tokenizetion(&token, line);
 			tmp = token;
+			while (tmp != NULL)
+			{
+				printf("[%s]\n", tmp->cmd);
+				tmp = tmp->next;
+			}
 			add_history(line);
 			if (ft_strncmp(line, "exit", 5) == 0)
 				break ;
