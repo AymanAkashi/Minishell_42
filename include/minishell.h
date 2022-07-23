@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/23 23:11:18 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/23 23:26:22 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int		token_and(t_token *token, char *line, int i);
 int		token_paren(t_token *token, char *line, int i);
 int		token_red_in(t_token *token, char *line, int i);
 int		token_red_out(t_token *token, char *line, int i);
+void	*ft_any_alloc(size_t size, size_t len);
 
 //****************************************************************
 void	sigint_handler(int sig);
