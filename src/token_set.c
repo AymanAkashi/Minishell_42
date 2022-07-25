@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 23:10:16 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/24 23:48:22 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/25 13:21:53 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,22 @@ int	token_and(t_token *token, char *line, int i)
 	return (i);
 }
 
-int	token_paren(t_token *token, char *line, int i)
+int	token_paren(t_token *token, char *line, int i, t_data *data)
 {
 	int	k;
 
 	k = 0;
 	token->cmd = ft_any_alloc(sizeof(char), 2);
 	if (line[i] == '(')
+	{
 		token->cmd[k++] = line[i++];
+		data->parenthes++;
+	}
 	else
+	{
 		token->cmd[k++] = line[i++];
+		data->parenthes++;
+	}
 	token->cmd[k] = '\0';
 	return (i);
 }

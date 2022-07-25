@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 08:04:09 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/24 23:53:47 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/25 13:23:29 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,16 @@ void	type_token(t_token **token)
 	}
 }
 
-void	tokenizetion(t_token **token, char *line)
+void	tokenizetion(t_token **token, char *line, t_data *data)
 {
 	t_token	*head;
 	int		i;
 
 	i = 0;
 	head = *token;
+	data->parenthes = 0;
+	data->quothe = 0;
+	data->operator = 0;
 	while (line[i])
 	{
 		if ((line[i] == ' ' || line[i] == '\t'))
@@ -60,10 +63,11 @@ void	tokenizetion(t_token **token, char *line)
 		}
 		(*token)->state = check_state(line[i]);
 		if ((*token)->state == DEFAULT)
-			i = ft_str_cpyn(line, token, i);
+			i = ft_str_cpyn(line, token, i, data);
 		else if ((*token)->state == QUOTHE)
-			i = ft_quote(line, *token, i);
+			i = ft_quote(line, *token, i, data);
 	}
 	*token = head;
 	type_token(&head);
+	check_line(*token, data, line);
 }
