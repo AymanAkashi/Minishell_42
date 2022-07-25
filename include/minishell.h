@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/24 23:57:11 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/25 13:22:27 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,19 @@ typedef struct s_scanner{
 	t_token				*curr_token;
 	t_token				*next_token;
 }					t_scanner;
+
+typedef struct t_data{
+	char				*line;
+	t_token				*token;
+	t_scanner			*scanner;
+	int					quothe;
+	int					parenthes;
+	int					operator;
+} t_data;
 //****************************************************************
 
 int			token_and(t_token *token, char *line, int i);
-int			token_paren(t_token *token, char *line, int i);
+int			token_paren(t_token *token, char *line, int i, t_data *data);
 int			token_red_in(t_token *token, char *line, int i);
 int			token_red_out(t_token *token, char *line, int i);
 int			token_pipe(t_token *token, char *line, int i);
@@ -69,20 +78,22 @@ void		*ft_any_alloc(size_t size, size_t len);
 void		alloc_token(t_token **token);
 void		append_char(char **line, char c);
 
-t_scanner	*scanner_token(t_token *token, t_scanner *curr_scan);
+void		scanner_token(t_token *token, t_scanner **curr_scan);
 
 //****************************************************************
 void		sigint_handler(int sig);
 void		_ctrl_handler(void);
 void		ctrl_d_handler(void);
-void		tokenizetion(t_token **token, char *line);
+void		tokenizetion(t_token **token, char *line, t_data *data);
 
 int			is_token(char c);
 t_state		check_state(char c);
 
-int			ft_quote(char *line, t_token *token, int i);
-int			add_token(char *line, t_token **token, int i);
+int			ft_quote(char *line, t_token *token, int i, t_data *data);
+int			add_token(char *line, t_token **token, int i, t_data *data);
 void		append_char(char **line, char c);
-int			ft_str_cpyn(char *line, t_token **token, int i);
+int			ft_str_cpyn(char *line, t_token **token, int i, t_data *data);
+
+void		check_line(t_token *token, t_data *data, char *line);
 
 #endif /* MINISHELL_H */
