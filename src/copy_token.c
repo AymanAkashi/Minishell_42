@@ -6,19 +6,18 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:49:21 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/24 23:52:15 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/25 13:28:06 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_quote(char *line, t_token *token, int i)
+int	ft_quote(char *line, t_token *token, int i, t_data *data)
 {
-	char	c;
-	int		k;
+	int	k;
 
 	k = 0;
-	c = line[i];
+	data->quothe++;
 	if (token->cmd)
 		k = ft_strlen(token->cmd);
 	if (k == 0)
@@ -27,7 +26,10 @@ int	ft_quote(char *line, t_token *token, int i)
 	while (line[i] && line[i] != '\'' && line[i] != '\"')
 		append_char(&(token)->cmd, line[i++]);
 	if (line[i])
+	{
+		data->quothe++;
 		append_char(&(token)->cmd, line[i++]);
+	}
 	if (line[i] && line[i] != ' ' && line[i] != '\t' && !is_token(line[i]))
 		while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '\''
 			&& line[i] != '\"')
@@ -35,14 +37,14 @@ int	ft_quote(char *line, t_token *token, int i)
 	return (i);
 }
 
-int	add_token(char *line, t_token **token, int i)
+int	add_token(char *line, t_token **token, int i, t_data *data)
 {
 	if (line[i] == '|')
 		i = token_pipe(*token, line, i);
 	else if (line[i] == '&')
 		i = token_and(*token, line, i);
 	else if (line[i] == '(' || line[i] == ')')
-		i = token_paren(*token, line, i);
+		i = token_paren(*token, line, i, data);
 	else if (line[i] == '<')
 		i = token_red_in(*token, line, i);
 	else if (line[i] == '>')
@@ -70,7 +72,7 @@ void	append_char(char **line, char c)
 	*line = dest;
 }
 
-int	ft_str_cpyn(char *line, t_token **token, int i)
+int	ft_str_cpyn(char *line, t_token **token, int i, t_data *data)
 {
 	int	j;
 	int	k;
@@ -89,7 +91,7 @@ int	ft_str_cpyn(char *line, t_token **token, int i)
 			(*token)->next = ft_any_alloc(sizeof(t_token), 1);
 			(*token) = (*token)->next;
 		}
-		i = add_token(line, token, i);
+		i = add_token(line, token, i, data);
 		if (line[i] != ' ' && line[i] != '\t' && line[i] != '\0')
 		{
 			(*token)->next = ft_any_alloc(sizeof(t_token), 1);
