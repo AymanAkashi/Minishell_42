@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:49:21 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/25 13:28:06 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/26 10:18:03 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	add_token(char *line, t_token **token, int i, t_data *data)
 {
 	if (line[i] == '|')
 		i = token_pipe(*token, line, i);
-	else if (line[i] == '&')
+	else if (line[i] == '&' && line[i + 1] == '&')
 		i = token_and(*token, line, i);
 	else if (line[i] == '(' || line[i] == ')')
 		i = token_paren(*token, line, i, data);
@@ -49,6 +49,11 @@ int	add_token(char *line, t_token **token, int i, t_data *data)
 		i = token_red_in(*token, line, i);
 	else if (line[i] == '>')
 		i = token_red_out(*token, line, i);
+	else
+	{
+		append_char(&(*token)->cmd, line[i]);
+		i++;
+	}
 	return (i);
 }
 
@@ -75,9 +80,7 @@ void	append_char(char **line, char c)
 int	ft_str_cpyn(char *line, t_token **token, int i, t_data *data)
 {
 	int	j;
-	int	k;
 
-	k = 0;
 	j = i;
 	if (line[i] && line[i] != ' ' && line[i] != '\t' && !is_token(line[i]))
 	{
@@ -86,7 +89,9 @@ int	ft_str_cpyn(char *line, t_token **token, int i, t_data *data)
 	}
 	else if (is_token(line[i]))
 	{
-		if ((*token)->cmd != NULL)
+		if(line[i] == '&' && line[i + 1] != '&')
+			return (add_token(line, token, i, data));
+		else if ((*token)->cmd != NULL)
 		{
 			(*token)->next = ft_any_alloc(sizeof(t_token), 1);
 			(*token) = (*token)->next;
