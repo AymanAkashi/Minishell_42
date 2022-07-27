@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 18:39:29 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/24 23:55:53 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/26 07:41:11 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*ft_any_alloc(size_t size, size_t len)
 	ptr = malloc(size * len);
 	if (!ptr)
 		return (NULL);
-	memset(ptr, 0, size * len);
+	ft_memset(ptr, 0, size * len);
 	return (ptr);
 }
 

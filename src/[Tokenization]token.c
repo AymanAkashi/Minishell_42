@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenization.c                                     :+:      :+:    :+:   */
+/*   [Tokenization]token.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 08:04:09 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/25 13:23:29 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/26 15:37:11 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,41 @@ void	type_token(t_token **token)
 	while (*token)
 	{
 		if (!ft_strncmp((*token)->cmd, "|", 2))
-			(*token)->type_token = TOKEN_PIPE;
+			(*token)->type = TOKEN_PIPE;
 		else if (!ft_strncmp((*token)->cmd, ">", 2))
-			(*token)->type_token = TOKEN_RED_OUT;
+			(*token)->type = TOKEN_RED_OUT;
 		else if (!ft_strncmp((*token)->cmd, "<", 2))
-			(*token)->type_token = TOKEN_RED_IN;
+			(*token)->type = TOKEN_RED_IN;
 		else if (!ft_strncmp((*token)->cmd, ">>", 3))
-			(*token)->type_token = TOKEN_RED2_OUT;
+			(*token)->type = TOKEN_RED2_OUT;
 		else if (!ft_strncmp((*token)->cmd, "<<", 3))
-			(*token)->type_token = TOKEN_HEREDOC;
+			(*token)->type = TOKEN_HEREDOC;
 		else if (!ft_strncmp((*token)->cmd, "&&", 3))
-			(*token)->type_token = TOKEN_AND;
+			(*token)->type = TOKEN_AND;
 		else if (!ft_strncmp((*token)->cmd, "||", 3))
-			(*token)->type_token = TOKEN_OR;
+			(*token)->type = TOKEN_OR;
 		else if (!ft_strncmp((*token)->cmd, "(", 2))
-			(*token)->type_token = TOKEN_PAREN_IN;
+			(*token)->type = TOKEN_PAREN_IN;
 		else if (!ft_strncmp((*token)->cmd, ")", 2))
-			(*token)->type_token = TOKEN_PAREN_OUT;
+			(*token)->type = TOKEN_PAREN_OUT;
 		else
-			(*token)->type_token = TOKEN_WORD;
+			(*token)->type = TOKEN_WORD;
 		*token = (*token)->next;
+	}
+}
+
+void	index_token(t_token **token)
+{
+	int		i;
+	t_token	*tmp;
+
+	i = 0;
+	tmp = *token;
+	while (tmp)
+	{
+		tmp->index = i;
+		tmp = tmp->next;
+		i++;
 	}
 }
 
@@ -50,6 +65,8 @@ void	tokenizetion(t_token **token, char *line, t_data *data)
 	data->parenthes = 0;
 	data->quothe = 0;
 	data->operator = 0;
+	while(line[i] == ' ' || line[i] == '\t')
+		i++;
 	while (line[i])
 	{
 		if ((line[i] == ' ' || line[i] == '\t'))
@@ -70,4 +87,5 @@ void	tokenizetion(t_token **token, char *line, t_data *data)
 	*token = head;
 	type_token(&head);
 	check_line(*token, data, line);
+	index_token(token);
 }
