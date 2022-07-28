@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/27 16:21:03 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/28 10:41:05 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int			add_token(char *line, t_token **token, int i, t_data *data);
 void		append_char(char **line, char c);
 int			ft_str_cpyn(char *line, t_token **token, int i, t_data *data);
 
-void		check_line(t_token *token, t_data *data, char *line);
+int			check_line(t_token *token, t_data *data, char *line);
 void		parcing(t_data *data);
 
 #endif /* MINISHELL_H */
