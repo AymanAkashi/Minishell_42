@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/27 21:15:52 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/28 17:16:07 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,11 @@ t_ast*	test_parcing(t_data *data, t_ast *root, int len)
 
 void disp(t_ast *tree, int ident, char *str) {
 	if (!tree) return ;
-	for (int i = 0; i < ident; i++) {
-		printf("%s", ft_str_len_char('|', ident));
-		// printf("\n");
-		printf("___ ");
-	}
-	
+	// for (int i = 0; i < ident; i++){
+	// 	printf("%s", ft_str_len_char('|', ident));
+	// }
+	for (int i = 0; i < ident; i++)
+		printf("---- ");
 	if (tree->type == TOKEN_WORD) {
 		printf("[%s]%s",str, tree->cmd);
 	}
@@ -192,15 +191,17 @@ int	main(void)
 	{
 		_ctrl_handler();
 		line = readline("\001\x1B[1;1;33m\002Minishell $> \001\e[00m\002");
-		if (line != NULL && line[0] != '\0')
+		if(line != NULL && line[0] != '\0')
 		{
-			// data.line = ft_strdup(line);
+			data.line = ft_strdup(line);
 			data.token = (t_token *)malloc(sizeof(t_token));
 			data.scanner = (t_scanner *)malloc(sizeof(t_scanner));
 			data.scanner = NULL;
 			data.token->cmd = NULL;
 			data.token->next = NULL;
 			tokenizetion(&data.token, line, &data);
+			if (!check_line(data.token, &data, line))
+				continue ;
 			// test_tokenization(data.token);
 			parcing(&data);
 			data.len = ft_strlen(data.line) * size_ast(data.root);
@@ -210,8 +211,6 @@ int	main(void)
 			if (ft_strncmp(line, "exit", 5) == 0)
 				break ;
 			free(line);
-			// data.scanner->curr_token = NULL;
-			// data.scanner->next_token = NULL;
 			free_token(&data.token);
 		}
 		else if (line == NULL)
