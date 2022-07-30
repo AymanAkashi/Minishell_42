@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/28 17:16:07 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/30 16:17:27 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,28 +125,28 @@ void disp(t_ast *tree, int ident, char *str) {
 	// }
 	for (int i = 0; i < ident; i++)
 		printf("---- ");
-	if (tree->type == TOKEN_WORD) {
+	if (tree->type == TOKEN_WORD && tree->cmd) {
 		printf("[%s]%s",str, tree->cmd);
 	}
-	else if (tree->type == TOKEN_PIPE) {
+	else if (tree->type == TOKEN_PIPE && tree->cmd) {
 		printf("PIPE");
 	}
-	else if (tree->type == TOKEN_AND)
+	else if (tree->type == TOKEN_AND && tree->cmd)
 		printf("AND");
-	else if (tree->type == TOKEN_OR)
+	else if (tree->type == TOKEN_OR && tree->cmd)
 		printf("OR");
-	else if (tree->type == TOKEN_RED_OUT)
+	else if (tree->type == TOKEN_RED_OUT && tree->cmd)
 		printf("REDIR_OUT");
-	else if (tree->type == TOKEN_RED_IN)
+	else if (tree->type == TOKEN_RED_IN && tree->cmd)
 		printf("REDIR_IN");
-	else if (tree->type == TOKEN_RED2_OUT)
+	else if (tree->type == TOKEN_RED2_OUT && tree->cmd)
 		printf("REDIR2_OUT");
-	else if (tree->type == TOKEN_HEREDOC)
+	else if (tree->type == TOKEN_HEREDOC && tree->cmd)
 		printf("HEREDOC");
 	else if (tree->type == TOKEN_PAREN_IN)
-		printf("PAREN_IN");
+		printf("(");
 	else if (tree->type == TOKEN_PAREN_OUT)
-		printf("PAREN_OUT");
+		printf(")");
 	printf("\n");
 	disp(tree->left, ident + 1, "left");
 	disp(tree->right, ident + 1, "Right");
@@ -180,6 +180,24 @@ int size_ast(t_ast *ast)
 		return (i);
 }
 
+void	free_ast(t_ast *root)
+{
+	if(!root)
+		return ;
+	if (root->right)
+		free_ast(root->right);
+	if (root->left)
+		free_ast(root->left);
+	{
+		if(root->cmd[0] != '\0')
+			free(root->cmd);
+		root->cmd = NULL;
+		free_table(root->args);
+		root->args = NULL;
+	}
+	free(root);
+}
+
 int	main(void)
 {
 	char	*line;
@@ -199,19 +217,21 @@ int	main(void)
 			data.scanner = NULL;
 			data.token->cmd = NULL;
 			data.token->next = NULL;
+			data.root = NULL;
 			tokenizetion(&data.token, line, &data);
+			add_history(line);
 			if (!check_line(data.token, &data, line))
 				continue ;
 			// test_tokenization(data.token);
-			parcing(&data);
-			data.len = ft_strlen(data.line) * size_ast(data.root);
+			data.root = parcing(&data, data.root, data.scanner);
 			disp(data.root,0, "ROOT");
 			// test_scanner(&data);
-			add_history(line);
 			if (ft_strncmp(line, "exit", 5) == 0)
 				break ;
 			free(line);
 			free_token(&data.token);
+			// free_ast(data.root);
+			free(data.scanner);
 		}
 		else if (line == NULL)
 			ctrl_d_handler();

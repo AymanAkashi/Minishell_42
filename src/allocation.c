@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 18:39:29 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/26 07:41:11 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/30 15:18:12 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,47 @@ void	*ft_any_alloc(size_t size, size_t len)
 		return (NULL);
 	ft_memset(ptr, 0, size * len);
 	return (ptr);
+}
+
+char	*ft_alloc_cmd(char *str, char *str2)
+{
+	int		len;
+	char	*dest;
+	int		i;
+	int		j;
+
+	i = -1;
+	if (!str)
+		return (NULL);
+	len = ft_strlen(str) + ft_strlen(str2) + 2;
+	dest = ft_any_alloc(sizeof(char), len);
+	while (str[++i])
+		dest[i] = str[i];
+	j = -1;
+	dest[i++] = ' ';
+	if (str2)
+	while (str2[++j])
+		dest[j + 1] = str2[j];
+	dest[j + i] = '\0';
+	return (dest);
+}
+
+char	**alloc_tab(t_data *data, t_type_token type)
+{
+	int i;
+	char **tab;
+	t_token *tmp;
+
+	i = 0;
+	tmp = data->token;
+	while (data->token && data->token->type == type)
+	{
+		data->token = data->token->next;
+		i++;
+	}
+	tab = ft_any_alloc(sizeof(char *), i + 1);
+	data->token = tmp;
+	return (tab);
 }
 
 void	alloc_token(t_token **token)

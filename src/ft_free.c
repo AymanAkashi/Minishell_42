@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 07:39:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/26 15:48:52 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/29 11:47:57 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,20 @@ void	free_token(t_token **token)
 		free(tmp);
 	}
 	*token = NULL;
+}
+
+void	free_table(char **table)
+{
+	int	i;
+
+	i = 0;
+	if (table)
+	while (table[i])
+	{
+		free(table[i]);
+		i++;
+	}
+	free(table);
 }
 
 // void	free_ast(t_data *data)

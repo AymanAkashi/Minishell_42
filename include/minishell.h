@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/28 10:41:05 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/30 23:26:34 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ typedef enum e_type_token{
 
 typedef enum e_state{
 	DEFAULT,
-	QUOTHE,
+	DOU_QUOTHE,
+	SIN_QUOTHE,
 }		t_state;
 
 typedef struct s_token
@@ -74,7 +75,8 @@ typedef struct t_data{
 	t_ast				*ast;
 	t_ast				*root;
 	int					len;
-	int					quothe;
+	int					dou_quothe;
+	int					sin_quothe;
 	int					parenthes;
 	int					operator;
 }		t_data;
@@ -89,6 +91,8 @@ int			token_red_out(t_token *token, char *line, int i);
 int			token_pipe(t_token *token, char *line, int i);
 void		*ft_any_alloc(size_t size, size_t len);
 void		alloc_token(t_token **token);
+char		*ft_alloc_cmd(char *str, char *str2);
+char		**alloc_tab(t_data *data, t_type_token type);
 void		append_char(char **line, char c);
 void		free_token(t_token **token);
 void		scanner_token(t_token *token, t_scanner **curr_scan);
@@ -98,16 +102,25 @@ void		sigint_handler(int sig);
 void		_ctrl_handler(void);
 void		ctrl_d_handler(void);
 void		tokenizetion(t_token **token, char *line, t_data *data);
-
+int			ft_exit_ps(char *str, char *str2);
 int			is_token(char c);
 t_state		check_state(char c);
 
-int			ft_quote(char *line, t_token *token, int i, t_data *data);
+int			ft_dou_quote(char *line, t_token *token, int i, t_data *data);
+int			ft_sin_quote(char *line, t_token *token, int i, t_data *data);
 int			add_token(char *line, t_token **token, int i, t_data *data);
 void		append_char(char **line, char c);
 int			ft_str_cpyn(char *line, t_token **token, int i, t_data *data);
 
 int			check_line(t_token *token, t_data *data, char *line);
-void		parcing(t_data *data);
+t_ast		*ft_create_ast(void);
+t_ast*		parcing(t_data *data, t_ast *ast, t_scanner *scan);
+t_ast		*parc_opera(t_scanner *scan, t_ast *ast, t_data *data);
+t_ast		*parc_paren(t_scanner *scan, t_ast *ast, t_data *data);
+t_ast		*parc_pipe(t_scanner *scan, t_data *data, t_ast *ast);
+t_ast		*parc_word(t_scanner *scan, t_data *data, t_ast *root);
+
+void		free_table(char **table);
+t_ast		*parc_word2(t_scanner *scan, t_data *data, t_ast *root);
 
 #endif /* MINISHELL_H */

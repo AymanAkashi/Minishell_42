@@ -1,38 +1,61 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   copy_token.c                                       :+:      :+:    :+:   */
+/*   [Tokenization]copy_token.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:49:21 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/26 10:18:03 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/29 14:42:55 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_quote(char *line, t_token *token, int i, t_data *data)
+int	ft_dou_quote(char *line, t_token *token, int i, t_data *data)
 {
 	int	k;
 
 	k = 0;
-	data->quothe++;
+	data->dou_quothe++;
 	if (token->cmd)
 		k = ft_strlen(token->cmd);
 	if (k == 0)
 		token->cmd = ft_any_alloc(sizeof(char), 2);
 	append_char(&(token)->cmd, line[i++]);
-	while (line[i] && line[i] != '\'' && line[i] != '\"')
+	while (line[i] && line[i] != '\"')
 		append_char(&(token)->cmd, line[i++]);
 	if (line[i])
 	{
-		data->quothe++;
+		data->dou_quothe++;
 		append_char(&(token)->cmd, line[i++]);
 	}
 	if (line[i] && line[i] != ' ' && line[i] != '\t' && !is_token(line[i]))
-		while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '\''
-			&& line[i] != '\"')
+		while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '\"')
+			append_char(&(token)->cmd, line[i++]);
+	return (i);
+}
+
+int	ft_sin_quote(char *line, t_token *token, int i, t_data *data)
+{
+	int	k;
+
+	k = 0;
+	data->sin_quothe++;
+	if (token->cmd)
+		k = ft_strlen(token->cmd);
+	if (k == 0)
+		token->cmd = ft_any_alloc(sizeof(char), 2);
+	append_char(&(token)->cmd, line[i++]);
+	while (line[i] && line[i] != '\'')
+		append_char(&(token)->cmd, line[i++]);
+	if (line[i])
+	{
+		data->sin_quothe++;
+		append_char(&(token)->cmd, line[i++]);
+	}
+	if (line[i] && line[i] != ' ' && line[i] != '\t' && !is_token(line[i]))
+		while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '\'')
 			append_char(&(token)->cmd, line[i++]);
 	return (i);
 }
