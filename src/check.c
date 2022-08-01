@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:45:28 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/30 16:24:40 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/07/31 11:33:04 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_exit_ps(char *str, char *str2)
 	if(str2[0]!= '\0')
 	{
 		ft_putstr_fd(str2, 1);
-		ft_putstr_fd("\"\n", 1);
+		ft_putstr_fd("\'\n", 1);
 	}
 	return(0);
 }
@@ -60,7 +60,11 @@ int	check_double(t_token *token)
 		if (is_type_token(tmp->type) && tmp->next
 		&& (tmp->next->type != TOKEN_WORD && tmp->next->type != TOKEN_PAREN_IN
 			&& tmp->next->type != TOKEN_PAREN_OUT))
-			return (ft_exit_ps("minishell: syntax error near unexpected token \"", tmp->cmd));
+			return (ft_exit_ps("minishell: syntax error near unexpected token `", tmp->next->cmd));
+		if (tmp->type == TOKEN_PAREN_IN && tmp->next->type == TOKEN_PAREN_OUT)
+			return (ft_exit_ps("minishell: syntax error near unexpected token `", tmp->next->cmd));
+		if (tmp->type == TOKEN_PAREN_IN && (tmp->next->cmd[0] == '|' || tmp->next->cmd[0] == '&' || tmp->next->cmd[0] == '<' || tmp->next->cmd[0] == '>'))
+			return (ft_exit_ps("minishell: syntax error near unexpected token `", tmp->next->cmd));
 		tmp = tmp->next;
 	}
 	return (1);
