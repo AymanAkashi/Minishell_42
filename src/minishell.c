@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/30 16:17:27 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/01 16:26:20 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,22 +180,13 @@ int size_ast(t_ast *ast)
 		return (i);
 }
 
-void	free_ast(t_ast *root)
+void	init_data(t_data *data)
 {
-	if(!root)
-		return ;
-	if (root->right)
-		free_ast(root->right);
-	if (root->left)
-		free_ast(root->left);
-	{
-		if(root->cmd[0] != '\0')
-			free(root->cmd);
-		root->cmd = NULL;
-		free_table(root->args);
-		root->args = NULL;
-	}
-	free(root);
+	data->token = (t_token *)malloc(sizeof(t_token));
+	data->scanner = NULL;
+	data->token->cmd = NULL;
+	data->token->next = NULL;
+	data->root = NULL;
 }
 
 int	main(void)
@@ -203,38 +194,40 @@ int	main(void)
 	char	*line;
 	t_data	data;
 
-	data.scanner = ft_any_alloc(sizeof(t_scanner), 1);
-	data.scanner->curr_token = NULL;
 	while (1)
 	{
 		_ctrl_handler();
 		line = readline("\001\x1B[1;1;33m\002Minishell $> \001\e[00m\002");
 		if(line != NULL && line[0] != '\0')
 		{
-			data.line = ft_strdup(line);
-			data.token = (t_token *)malloc(sizeof(t_token));
-			data.scanner = (t_scanner *)malloc(sizeof(t_scanner));
-			data.scanner = NULL;
-			data.token->cmd = NULL;
-			data.token->next = NULL;
-			data.root = NULL;
+			init_data(&data);
 			tokenizetion(&data.token, line, &data);
 			add_history(line);
 			if (!check_line(data.token, &data, line))
+			{
+				free(line);
+				free_token(&data.token);
+				free(data.token);
 				continue ;
+			}
 			// test_tokenization(data.token);
 			data.root = parcing(&data, data.root, data.scanner);
 			disp(data.root,0, "ROOT");
 			// test_scanner(&data);
 			if (ft_strncmp(line, "exit", 5) == 0)
 				break ;
-			free(line);
 			free_token(&data.token);
-			// free_ast(data.root);
+			free_ast(data.root);
 			free(data.scanner);
 		}
 		else if (line == NULL)
-			ctrl_d_handler();
+			ctrl_d_handler(&data);
+		free(line);
 	}
+	free_token(&data.token);
+	free(data.token);
+	free_ast(data.root);
+	free(data.scanner);
+	free(line);
 	return (0);
 }
