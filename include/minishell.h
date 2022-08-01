@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/30 23:26:34 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/01 16:24:50 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef enum e_state{
 	DEFAULT,
 	DOU_QUOTHE,
 	SIN_QUOTHE,
+	PARENT,
 }		t_state;
 
 typedef struct s_token
@@ -69,11 +70,11 @@ typedef struct s_scanner{
 }					t_scanner;
 
 typedef struct t_data{
-	char				*line;
 	t_token				*token;
 	t_scanner			*scanner;
 	t_ast				*ast;
 	t_ast				*root;
+	t_state				state;
 	int					len;
 	int					dou_quothe;
 	int					sin_quothe;
@@ -100,7 +101,7 @@ void		scanner_token(t_token *token, t_scanner **curr_scan);
 //****************************************************************
 void		sigint_handler(int sig);
 void		_ctrl_handler(void);
-void		ctrl_d_handler(void);
+void		ctrl_d_handler(t_data *data);
 void		tokenizetion(t_token **token, char *line, t_data *data);
 int			ft_exit_ps(char *str, char *str2);
 int			is_token(char c);
@@ -117,9 +118,9 @@ t_ast		*ft_create_ast(void);
 t_ast*		parcing(t_data *data, t_ast *ast, t_scanner *scan);
 t_ast		*parc_opera(t_scanner *scan, t_ast *ast, t_data *data);
 t_ast		*parc_paren(t_scanner *scan, t_ast *ast, t_data *data);
-t_ast		*parc_pipe(t_scanner *scan, t_data *data, t_ast *ast);
+t_ast		*parc_pipe(t_scanner *scan, t_data *data, t_ast *root, t_ast *ast);
 t_ast		*parc_word(t_scanner *scan, t_data *data, t_ast *root);
-
+void		free_ast(t_ast *root);
 void		free_table(char **table);
 t_ast		*parc_word2(t_scanner *scan, t_data *data, t_ast *root);
 
