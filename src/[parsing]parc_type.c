@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 15:19:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/30 23:25:47 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/01 17:20:11 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,37 +37,46 @@ t_ast	*parc_paren(t_scanner *scan, t_ast *ast, t_data *data)
 	t_ast *new;
 
 	// scanner_token(data->token, &scan);
+	data->state = PARENT;
 	new = ft_create_ast();
 	new->in = 1;
-	new = parcing(data, new, scan);
-	if (scan->curr_token && scan->curr_token->type == TOKEN_PAREN_IN)
-		{
-			scanner_token(data->token, &scan);
-			new = parcing(data, new, scan);
-		}
+	new = parcing(data, ast, scan);
+	// while (scan->curr_token && scan->curr_token->type == TOKEN_PAREN_IN)
+	// 	{
+	// 		scanner_token(data->token, &scan);
+	// 		new = parcing(data, new, scan);
+	// 	}
 	if (scan->curr_token && scan->curr_token->type == TOKEN_PAREN_OUT)
+	{
+		data->state = DEFAULT;
 		return (new);
+	}
 	if (ast)
 		ast->left = new;
 	else
 		ast = new;
+	data->state = DEFAULT;
 	return (ast);
 }
 
-t_ast	*parc_pipe(t_scanner *scan, t_data *data, t_ast *ast)
+t_ast	*parc_pipe(t_scanner *scan, t_data *data, t_ast *root, t_ast *ast)
 {
 	t_ast *new;
 
 	new = ft_create_ast();
 	new->cmd = ft_strdup(scan->curr_token->cmd);
-	if (ast)
+	new->type = scan->curr_token->type;
+	if (ast && ast->cmd)
 		new->left = ast;
-	// else
-	// 	new = ast;
-	if (scan->curr_token)
-		new->type = scan->curr_token->type;
+	// else if (data->state == PARENT && ast && ast->cmd)
+	// 	new->left = ast;
+	else if (data->state == DEFAULT && root)
+		new->left = root;
 	scanner_token(scan->curr_token, &scan);
-	new->right = parc_word(scan, data, NULL);
+	if (scan->curr_token && scan->curr_token->type == TOKEN_WORD)
+		new->right = parc_word(scan, data, NULL);
+	if (scan->curr_token && scan->curr_token->type == TOKEN_PAREN_IN)
+		new->right = parc_paren(scan, NULL, data);
 	return (new);
 }
 
@@ -97,7 +106,6 @@ t_ast *parc_word(t_scanner *scan, t_data *data, t_ast *root)
 	int	i;
 	t_ast *ast;
 
-	(void)root;
 	ast = ft_create_ast();
 	i = 0;
 	while (scan->curr_token)
@@ -105,28 +113,7 @@ t_ast *parc_word(t_scanner *scan, t_data *data, t_ast *root)
 		if (scan->curr_token->type == TOKEN_WORD)
 			ast = parc_cmd(scan, data);
 		else if (scan->curr_token->type == TOKEN_PIPE)
-			return (parc_pipe(scan, data, ast));
-		else
-			return (ast);
-	}
-	// scanner_token(scan->curr_token, &scan);
-	return(ast);
-}
-
-t_ast *parc_word2(t_scanner *scan, t_data *data, t_ast *root)
-{
-	int	i;
-	t_ast *ast;
-
-	(void)root;
-	ast = ft_create_ast();
-	i = 0;
-	while (scan->curr_token)
-	{
-		if (scan->curr_token->type == TOKEN_WORD)
-			ast = parc_cmd(scan, data);
-		else if (scan->curr_token->type == TOKEN_PIPE)
-			return (parc_pipe(scan, data, root));
+			return (parc_pipe(scan, data, root, ast));
 		else
 			return (ast);
 	}
