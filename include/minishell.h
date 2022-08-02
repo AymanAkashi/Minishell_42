@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/01 16:24:50 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/02 20:10:10 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int			token_pipe(t_token *token, char *line, int i);
 void		*ft_any_alloc(size_t size, size_t len);
 void		alloc_token(t_token **token);
 char		*ft_alloc_cmd(char *str, char *str2);
-char		**alloc_tab(t_data *data, t_type_token type);
+char		**alloc_tab(t_data *data, t_type_token type, t_scanner *scan);
 void		append_char(char **line, char c);
 void		free_token(t_token **token);
 void		scanner_token(t_token *token, t_scanner **curr_scan);
@@ -105,6 +105,7 @@ void		ctrl_d_handler(t_data *data);
 void		tokenizetion(t_token **token, char *line, t_data *data);
 int			ft_exit_ps(char *str, char *str2);
 int			is_token(char c);
+int			is_redirection(t_type_token type);
 t_state		check_state(char c);
 
 int			ft_dou_quote(char *line, t_token *token, int i, t_data *data);
@@ -120,6 +121,7 @@ t_ast		*parc_opera(t_scanner *scan, t_ast *ast, t_data *data);
 t_ast		*parc_paren(t_scanner *scan, t_ast *ast, t_data *data);
 t_ast		*parc_pipe(t_scanner *scan, t_data *data, t_ast *root, t_ast *ast);
 t_ast		*parc_word(t_scanner *scan, t_data *data, t_ast *root);
+t_ast		*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data);
 void		free_ast(t_ast *root);
 void		free_table(char **table);
 t_ast		*parc_word2(t_scanner *scan, t_data *data, t_ast *root);
