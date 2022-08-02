@@ -6,16 +6,15 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:23:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/01 21:24:11 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/02 18:52:09 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-t_ast *parc_word(t_scanner *scan, t_data *data, t_ast *root);
 
-t_ast *ft_create_ast(void)
+t_ast	*ft_create_ast(void)
 {
-	t_ast *new;
+	t_ast	*new;
 
 	new = malloc(sizeof(t_ast));
 	new->cmd = NULL;
@@ -26,10 +25,10 @@ t_ast *ft_create_ast(void)
 	return (new);
 }
 
-t_ast *parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
+t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
 {
-	t_ast *new;
-	t_ast *tmp;
+	t_ast	*new;
+	t_ast	*tmp;
 
 	new = ft_create_ast();
 	new->cmd = ft_strdup(scan->curr_token->cmd);
@@ -41,54 +40,59 @@ t_ast *parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
 	new->args[2] = NULL;
 	scanner_token(data->token, &scan);
 	tmp = root;
-	while(tmp && tmp->left && tmp->left->left)
+	while (tmp && tmp->left)
 		tmp = tmp->left;
 	if (root)
 	{
-		tmp->left = new;
+		if (!tmp->cmd)
+			tmp = new;
+		else if (!root->right)
+			root->right = new;
+		else
+			tmp->left = new;
 		return (root);
 	}
 	else
 	{
 		root = parc_word(scan, data, new);
-			tmp = root;
-		if (new->type == TOKEN_RED_IN || new->type == TOKEN_HEREDOC)
-		{
-			while(tmp && tmp->left && tmp->left)
+		if (scan->curr_token == NULL)
+			return (root);
+		tmp = root;
+		while (tmp && tmp->left)
 			tmp = tmp->left;
+		if (!tmp->cmd)
+			tmp = new;
+		else if (!root->right)
+			root->right = new;
+		else
 			tmp->left = new;
-		}
-		else if (new->type == TOKEN_RED_OUT || new->type == TOKEN_RED2_OUT)
-		{
-		while(tmp && tmp->left && tmp->right)
-		tmp = tmp->right;
-		tmp->right = new;
-		}
-	}
 		return (root);
+	}
+	return (root);
 }
 
-t_ast *parc_word(t_scanner *scan, t_data *data, t_ast *root);
-
-t_ast*	parcing(t_data *data, t_ast *ast, t_scanner *scan)
+t_ast	*parcing(t_data *data, t_ast *ast, t_scanner *scan)
 {
 	scanner_token(data->token, &scan);
-	if(!scan && scan->curr_token->cmd == NULL)
-		return NULL ;
-   	while (scan->curr_token)
+	if (!scan && scan->curr_token->cmd == NULL)
+		return (NULL);
+	while (scan->curr_token)
 	{
 		if (scan->curr_token->type == TOKEN_WORD
 			|| scan->curr_token->type == TOKEN_PIPE)
-			{
-				if(ast && ast->cmd != NULL)
-					ast = parc_word(scan, data, ast);
-				else
-					ast = parc_word(scan, data, NULL);
-			}
+		{
+			if (ast && ast->cmd != NULL)
+				ast = parc_word(scan, data, ast);
+			else
+				ast = parc_word(scan, data, NULL);
+		}
 		else if (scan->curr_token->type == TOKEN_AND
 			|| scan->curr_token->type == TOKEN_OR)
 			ast = parc_opera(scan, ast, data);
-		else if (scan->curr_token->type == TOKEN_HEREDOC || scan->curr_token->type == TOKEN_RED_IN || scan->curr_token->type == TOKEN_RED_OUT || scan->curr_token->type == TOKEN_RED2_OUT)
+		else if (scan->curr_token->type == TOKEN_HEREDOC
+			|| scan->curr_token->type == TOKEN_RED_IN
+			|| scan->curr_token->type == TOKEN_RED_OUT
+			|| scan->curr_token->type == TOKEN_RED2_OUT)
 			ast = parc_heredoc(scan, ast, data);
 		else if (scan->curr_token->type == TOKEN_PAREN_IN)
 		{
@@ -105,7 +109,3 @@ t_ast*	parcing(t_data *data, t_ast *ast, t_scanner *scan)
 	}
 	return (ast);
 }
-
-
-
-
