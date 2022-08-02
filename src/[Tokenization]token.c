@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 08:04:09 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/29 14:45:49 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/02 18:55:40 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	tokenizetion(t_token **token, char *line, t_data *data)
 	data->sin_quothe = 0;
 	data->dou_quothe = 0;
 	data->operator = 0;
-	while(line[i] == ' ' || line[i] == '\t')
+	while (line[i] == ' ' || line[i] == '\t')
 		i++;
 	while (line[i])
 	{
@@ -89,6 +89,6 @@ void	tokenizetion(t_token **token, char *line, t_data *data)
 	}
 	*token = head;
 	type_token(&head);
-	// check_line(*token, data, line);
 	index_token(token);
 }
+

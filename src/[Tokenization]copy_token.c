@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:49:21 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/29 14:42:55 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/02 18:55:29 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	ft_str_cpyn(char *line, t_token **token, int i, t_data *data)
 	}
 	else if (is_token(line[i]))
 	{
-		if(line[i] == '&' && line[i + 1] != '&')
+		if (line[i] == '&' && line[i + 1] != '&')
 			return (add_token(line, token, i, data));
 		else if ((*token)->cmd != NULL)
 		{
