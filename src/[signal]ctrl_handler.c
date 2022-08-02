@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 20:12:24 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/01 16:25:09 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/02 18:55:17 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,5 @@ void	ctrl_d_handler(t_data *data)
 	(void)data;
 	printf("\x1B[1;A\x1B[13;Cexit\n");
 	rl_clear_history();
-	// free_token(&data->token);
-	// free_ast(data->root);
-	// if (data->ast)
-	// free(data->scanner);
-	// free(*line);
-	// free(data->token);
 	exit(EXIT_SUCCESS);
 }
