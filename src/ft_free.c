@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 07:39:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/01 12:51:16 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/02 20:14:21 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ void	free_table(char **table)
 	int	i;
 
 	i = 0;
-	if (table)
-	while (table[i])
+	while (table && table[i])
 	{
 		free(table[i]);
 		i++;
@@ -43,16 +42,17 @@ void	free_table(char **table)
 
 void	free_ast(t_ast *root)
 {
-	if(!root)
+	if (!root)
 		return ;
 	if (root && root->left)
 		free_ast(root->left);
 	if (root && root->right)
 		free_ast(root->right);
-	if(root && root->cmd)
+	if (root && root->cmd)
 		free(root->cmd);
+	if (root && root->args)
+		free_table(root->args);
 	root->cmd = NULL;
-	// free_table(root->args);
 	root->args = NULL;
 	free(root);
 }
