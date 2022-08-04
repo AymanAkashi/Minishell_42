@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 18:39:29 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/02 20:09:07 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/04 21:03:55 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_alloc_cmd(char *str, char *str2)
 	return (dest);
 }
 
-char	**alloc_tab(t_data *data, t_type_token type, t_scanner *scan)
+char	**alloc_tab(t_data *data, t_type_token type, t_token *token)
 {
 	int		i;
 	char	**tab;
@@ -54,15 +54,15 @@ char	**alloc_tab(t_data *data, t_type_token type, t_scanner *scan)
 
 	i = 0;
 	tmp = data->token;
-	while (scan && scan->curr_token != tmp)
+	while (token && token != tmp)
 		tmp = tmp->next;
-	while (data->token && data->token->type == type)
+	while (tmp && tmp->type == type)
 	{
-		data->token = data->token->next;
+		tmp = tmp->next;
 		i++;
 	}
+	printf("%d\n", i);
 	tab = ft_any_alloc(sizeof(char *), i + 1);
-	data->token = tmp;
 	return (tab);
 }
 

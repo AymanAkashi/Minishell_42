@@ -6,11 +6,69 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 08:04:09 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/02 18:55:40 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/04 17:15:22 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*ft_strjoin_nl(char *str, char *dest, char c)
+{
+	char	*src;
+	int		i;
+	int		j;
+
+	i = -1;
+	if (!dest)
+		return (NULL);
+	if (!str)
+	{
+		str = ft_any_alloc(sizeof(char), 2);
+		str[0] = '\0';
+	}
+	src = ft_any_alloc(sizeof(char), ft_strlen(str) + ft_strlen(dest) + 2);
+	if (!src)
+		return (NULL);
+	while (str[++i])
+		src[i] = str[i];
+	if (str[0] != '\0')
+		src[i++] = c;
+	j = -1;
+	while (dest[++j])
+		src[i++] = dest[j];
+	src[i] = '\0';
+	free(str);
+	return (src);
+}
+
+void	type_heredoc(t_token **token)
+{
+	char *line;
+
+	(*token)->type = TOKEN_HEREDOC;
+	if (!(*token)->next)
+		{
+			printf("minishell: syntax error near unexpected token `newline'\n");
+			exit(1);
+		}
+	while(1)
+	{
+		line = readline("heredoc> ");
+		if (ft_strncmp((*token)->next->cmd, line, ft_strlen(line)) == 0)
+		{
+			free (line);
+			break;
+		}
+		if (!line)
+			continue ;
+		else if (line)
+		{
+
+			(*token)->here_doc = ft_strjoin_nl((*token)->here_doc, line, '\n');
+			free (line);
+		}
+	}
+}
 
 void	type_token(t_token **token)
 {
@@ -25,7 +83,7 @@ void	type_token(t_token **token)
 		else if (!ft_strncmp((*token)->cmd, ">>", 3))
 			(*token)->type = TOKEN_RED2_OUT;
 		else if (!ft_strncmp((*token)->cmd, "<<", 3))
-			(*token)->type = TOKEN_HEREDOC;
+			type_heredoc(token);
 		else if (!ft_strncmp((*token)->cmd, "&&", 3))
 			(*token)->type = TOKEN_AND;
 		else if (!ft_strncmp((*token)->cmd, "||", 3))
