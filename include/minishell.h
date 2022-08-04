@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/02 20:10:10 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/04 11:18:29 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_token
 {
 	t_type_token	type;
 	t_state			state;
+	char			*here_doc;
 	char			*cmd;
 	int				index;
 	int				len;
@@ -60,6 +61,7 @@ typedef struct s_ast{
 	int				in;
 	int				out;
 	t_type_token	type;
+	char			*here_doc;
 	struct s_ast	*left;
 	struct s_ast	*right;
 }	t_ast;
@@ -93,7 +95,7 @@ int			token_pipe(t_token *token, char *line, int i);
 void		*ft_any_alloc(size_t size, size_t len);
 void		alloc_token(t_token **token);
 char		*ft_alloc_cmd(char *str, char *str2);
-char		**alloc_tab(t_data *data, t_type_token type, t_scanner *scan);
+char		**alloc_tab(t_data *data, t_type_token type, t_token *token);
 void		append_char(char **line, char c);
 void		free_token(t_token **token);
 void		scanner_token(t_token *token, t_scanner **curr_scan);
@@ -116,7 +118,7 @@ int			ft_str_cpyn(char *line, t_token **token, int i, t_data *data);
 
 int			check_line(t_token *token, t_data *data, char *line);
 t_ast		*ft_create_ast(void);
-t_ast*		parcing(t_data *data, t_ast *ast, t_scanner *scan);
+t_ast		*parcing(t_data *data, t_ast *ast, t_scanner **scan);
 t_ast		*parc_opera(t_scanner *scan, t_ast *ast, t_data *data);
 t_ast		*parc_paren(t_scanner *scan, t_ast *ast, t_data *data);
 t_ast		*parc_pipe(t_scanner *scan, t_data *data, t_ast *root, t_ast *ast);
