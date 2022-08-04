@@ -13,8 +13,7 @@ SLIB	=	-L$(shell brew --prefix readline)/lib -lreadline -lncurses
 INC_DIR			:= include
 SRC_DIR			:= src
 OBJ_DIR			:= obj
-LIB_DIR			:= lib
-LIBFT_DIR		:= $(LIB_DIR)/libft
+LIBFT_DIR		:= libft
 
 # *********************************** Files ************************************
 NAME			:= minishell

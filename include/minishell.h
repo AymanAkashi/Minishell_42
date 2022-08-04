@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/04 11:18:29 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/04 21:30:40 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "../lib/libft/include/libft.h"
+# include "../libft/include/libft.h"
 
 typedef enum e_type_token{
 	TOKEN_WORD,

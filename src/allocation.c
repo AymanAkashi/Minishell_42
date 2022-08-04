@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 18:39:29 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/04 21:03:55 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/04 21:30:59 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ char	**alloc_tab(t_data *data, t_type_token type, t_token *token)
 		tmp = tmp->next;
 		i++;
 	}
-	printf("%d\n", i);
 	tab = ft_any_alloc(sizeof(char *), i + 1);
 	return (tab);
 }
