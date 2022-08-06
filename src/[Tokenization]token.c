@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 08:04:09 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/04 17:15:22 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/06 21:30:29 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,29 +44,50 @@ char	*ft_strjoin_nl(char *str, char *dest, char c)
 void	type_heredoc(t_token **token)
 {
 	char *line;
-
+	char *tmp;
+	int pid;
+	int p[2];
+	
+	tmp = NULL;
 	(*token)->type = TOKEN_HEREDOC;
 	if (!(*token)->next)
 		{
 			printf("minishell: syntax error near unexpected token `newline'\n");
 			exit(1);
 		}
+	if (pipe(p) == -1)
+		return ;
+	pid = fork();
+	if (pid == 0)
+	{
+	_reset_ctrl_handler();
 	while(1)
 	{
 		line = readline("heredoc> ");
 		if (ft_strncmp((*token)->next->cmd, line, ft_strlen(line)) == 0)
 		{
 			free (line);
-			break;
+			exit(1);
 		}
 		if (!line)
 			continue ;
 		else if (line)
 		{
-
-			(*token)->here_doc = ft_strjoin_nl((*token)->here_doc, line, '\n');
+			write (p[1], line, sizeof(char *));
 			free (line);
 		}
+	}
+	}
+	else
+	{
+		_ctrl_handler();
+		read (p[0], tmp, sizeof(char *));
+		while(tmp != NULL)
+		{
+			(*token)->here_doc = ft_strjoin_nl((*token)->here_doc, tmp, '\n');
+			read (p[0], tmp, sizeof(char *));
+		}
+		waitpid(pid, NULL, 0);
 	}
 }
 

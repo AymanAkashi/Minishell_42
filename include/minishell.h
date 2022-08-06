@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/04 21:30:40 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/06 21:24:42 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <signal.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/include/libft.h"
@@ -74,8 +75,8 @@ typedef struct s_scanner{
 typedef struct t_data{
 	t_token				*token;
 	t_scanner			*scanner;
-	t_ast				*ast;
 	t_ast				*root;
+	char **				env;
 	t_state				state;
 	int					len;
 	int					dou_quothe;
@@ -103,6 +104,7 @@ void		scanner_token(t_token *token, t_scanner **curr_scan);
 //****************************************************************
 void		sigint_handler(int sig);
 void		_ctrl_handler(void);
+void		_reset_ctrl_handler(void);
 void		ctrl_d_handler(t_data *data);
 void		tokenizetion(t_token **token, char *line, t_data *data);
 int			ft_exit_ps(char *str, char *str2);

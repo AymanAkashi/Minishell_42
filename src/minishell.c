@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/04 17:16:40 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/06 20:24:54 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	disp(t_ast *tree, int ident, char *str) {
 	else if (tree->type == TOKEN_RED2_OUT && tree->cmd)
 		printf("[%s] REDIR2_OUT", str);
 	else if (tree->type == TOKEN_HEREDOC && tree->cmd)
-		printf("[%s] HEREDOC [%s]", tree->cmd, tree->here_doc);
+		printf("[%s] HEREDOC", str);
 	else if (tree->type == TOKEN_PAREN_IN)
 		printf("(");
 	else if (tree->type == TOKEN_PAREN_OUT)
@@ -117,7 +117,7 @@ int	size_ast(t_ast *ast)
 		return (i);
 }
 
-void	init_data(t_data *data)
+void	init_data(t_data *data, char *envp[])
 {
 	data->token = (t_token *)malloc(sizeof(t_token));
 	data->scanner = NULL;
@@ -125,13 +125,15 @@ void	init_data(t_data *data)
 	data->token->here_doc = NULL;
 	data->token->next = NULL;
 	data->root = NULL;
+	data->env = envp;
 }
 
-int	main(void)
+int	main(int ac, char **av, char *envp[])
 {
 	char	*line;
 	t_data	data;
 
+	(void)ac, (void)av;
 	while (1)
 	{
 		_ctrl_handler();
@@ -140,7 +142,7 @@ int	main(void)
 		{
 			if (ft_strncmp(line, "exit", 5) == 0)
 				exit(0) ;
-			init_data(&data);
+			init_data(&data, envp);
 			tokenizetion(&data.token, line, &data);
 			// test_tokenization(data.token);
 			add_history(line);
