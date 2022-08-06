@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 18:39:29 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/04 21:30:59 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/06 12:07:00 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@ void	*ft_any_alloc(size_t size, size_t len)
 {
 	void	*ptr;
 
-	ptr = malloc(size * len);
+	ptr = ft_calloc(len, size);
 	if (!ptr)
 		return (NULL);
-	ft_memset(ptr, 0, size * len);
 	return (ptr);
 }
 
@@ -46,6 +45,15 @@ char	*ft_alloc_cmd(char *str, char *str2)
 	return (dest);
 }
 
+void	move_to_next_n(t_token **token, int n)
+{
+	while (n > 0)
+	{
+		(*token) = (*token)->next;
+		n--;
+	}
+}
+
 char	**alloc_tab(t_data *data, t_type_token type, t_token *token)
 {
 	int		i;
@@ -54,10 +62,16 @@ char	**alloc_tab(t_data *data, t_type_token type, t_token *token)
 
 	i = 0;
 	tmp = data->token;
-	while (token && token != tmp)
+	while (tmp && tmp != token)
 		tmp = tmp->next;
-	while (tmp && tmp->type == type)
+	if (!tmp)
+		return (NULL);
+	while (tmp && (tmp->type == type || is_redirection(tmp->type)))
 	{
+		while (tmp && is_redirection(tmp->type))
+			move_to_next_n(&tmp, 2);
+		if (!tmp)
+			break ;
 		tmp = tmp->next;
 		i++;
 	}
