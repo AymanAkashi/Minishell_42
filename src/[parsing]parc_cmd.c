@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:23:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/04 20:46:56 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/06 20:18:55 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
 		new->args = ft_any_alloc(sizeof(char *), 3);
 		new->args[0] = ft_strdup(scan->curr_token->cmd);
 		new->type = scan->curr_token->type;
-		scanner_token(data->token, &scan);
 		new->args[1] = ft_strdup(scan->curr_token->cmd);
+		scanner_token(data->token, &scan);
 		new->args[2] = NULL;
 	}
 	scanner_token(data->token, &scan);
@@ -77,8 +77,6 @@ t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
 		root = parc_word(scan, data, new);
 		if (!root->cmd)
 			return (new);
-		// if (scan->curr_token == NULL)
-		// 	return (root);
 		tmp = root;
 		while (tmp && tmp->left)
 			tmp = tmp->left;
