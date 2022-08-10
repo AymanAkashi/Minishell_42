@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:45:28 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/04 20:43:54 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/09 11:12:55 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,53 @@ int	check_double(t_token *token)
 	return (1);
 }
 
+int	close_quote(char *str, char c, int index)
+{
+	int i;
+
+	i = 0;
+	while (str[index])
+	{
+		if (str[index] == c)
+			return (index);
+		index++;
+	}
+	return (0);
+}
+
+int	check_quote(t_token *token)
+{
+	t_token *tmp;
+	int		i;
+
+	tmp = token;
+	while (tmp)
+	{
+		if (tmp->type == TOKEN_WORD)
+		{
+			i = 0;
+			while (tmp->cmd[i])
+			{
+				if (tmp->cmd[i] == '\"')
+				{
+					i = close_quote(tmp->cmd, '\"', ++i);
+					if (!i)
+						return (0);
+				}
+				else if (tmp->cmd[i] == '\'')
+				{
+					i = close_quote(tmp->cmd, '\'', ++i);
+					if (!i)
+						return (0);
+				}
+				i++;
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
 int	check_line(t_token *token, t_data *data, char *line)
 {
 	size_t	i;
@@ -111,9 +158,9 @@ int	check_line(t_token *token, t_data *data, char *line)
 	i = 1;
 	(void)token;
 	if (data->dou_quothe % 2 != 0)
-		return(ft_exit_ps("minishell: syntax error! unexpected close quotes\n", "\0"));
+		return(ft_exit_ps("minishell: syntax error! unexpected close dou_quotes\n", "\0"));
 	if (data->sin_quothe % 2 != 0)
-		return(ft_exit_ps("minishell: syntax error! unexpected close quotes\n", "\0"));
+		return(ft_exit_ps("minishell: syntax error! unexpected close sin_quotes\n", "\0"));
 	if (data->parenthes % 2 != 0)
 		return (ft_exit_ps("minishell: syntax error! unexpected close parentheses\n", "\0"));
 	if (line[0] == '|' || line[0] == '&')
@@ -125,5 +172,7 @@ int	check_line(t_token *token, t_data *data, char *line)
 		return (ft_exit_ps("minishell: syntax error! \n", "\0"));
 	if (check_double(token) == 0)
 		return (0);
+	if (check_quote(token) == 0)
+		return (ft_exit_ps("minishell: syntax error! \n", "\0"));
 	return (1);
 }

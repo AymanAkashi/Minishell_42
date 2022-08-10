@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:23:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/06 20:18:55 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/07 15:35:59 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,19 @@ t_ast	*ft_create_ast(void)
 	return (new);
 }
 
-t_ast	*ast_here_doc(t_ast *ast, t_scanner *scan, t_data *data)
-{	ast->here_doc = ft_strdup(scan->curr_token->here_doc);
-	ast->type = scan->curr_token->type;
-	ast->cmd = ft_strdup(scan->curr_token->cmd);
-	ast->args = ft_any_alloc(sizeof(char *), 3);
-	ast->args[0] = ft_strdup(scan->curr_token->cmd);
-	ast->type = scan->curr_token->type;
+void	ast_here_doc(t_ast **ast, t_scanner *scan, t_data *data)
+{	(*ast)->here_doc = ft_strdup(scan->curr_token->here_doc);
+	free(scan->curr_token->here_doc);
+	scan->curr_token->here_doc = NULL;
+	(*ast)->type = scan->curr_token->type;
+	(*ast)->cmd = ft_strdup(scan->curr_token->cmd);
+	(*ast)->args = ft_any_alloc(sizeof(char *), 3);
+	(*ast)->args[0] = ft_strdup(scan->curr_token->cmd);
+	(*ast)->type = scan->curr_token->type;
 	scanner_token(data->token, &scan);
 	
-	ast->args[1] = ft_strdup(scan->curr_token->cmd);
-	ast->args[2] = NULL;
-	return (ast);
+	(*ast)->args[1] = ft_strdup(scan->curr_token->cmd);
+	(*ast)->args[2] = NULL;
 }
 
 t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
@@ -47,7 +48,7 @@ t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
 
 	new = ft_create_ast();
 	if (scan->curr_token && scan->curr_token->type == TOKEN_HEREDOC)
-		new = ast_here_doc(new, scan, data);
+		ast_here_doc(&new, scan, data);
 	else
 	{
 		new->cmd = ft_strdup(scan->curr_token->cmd);
@@ -74,6 +75,8 @@ t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
 	}
 	else
 	{
+		if (root)
+			free_ast(root);
 		root = parc_word(scan, data, new);
 		if (!root->cmd)
 			return (new);

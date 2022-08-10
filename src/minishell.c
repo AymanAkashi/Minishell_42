@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/06 20:24:54 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/10 19:00:32 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,9 @@ void	disp(t_ast *tree, int ident, char *str) {
 	else if (tree->type == TOKEN_RED2_OUT && tree->cmd)
 		printf("[%s] REDIR2_OUT", str);
 	else if (tree->type == TOKEN_HEREDOC && tree->cmd)
-		printf("[%s] HEREDOC", str);
+	{
+		printf("[%s] HEREDOC -- [%s] = %s", str, tree->args[1], tree->here_doc);
+	}
 	else if (tree->type == TOKEN_PAREN_IN)
 		printf("(");
 	else if (tree->type == TOKEN_PAREN_OUT)
@@ -117,15 +119,56 @@ int	size_ast(t_ast *ast)
 		return (i);
 }
 
-void	init_data(t_data *data, char *envp[])
+
+// void	alloc_envp(t_data *data, char *envp[])
+// {
+// 	int i;
+// 	t_list *head;
+
+// 	i = 1;
+// 	data->envp = ft_lstnew(envp[0]);
+// 	head = data->envp;
+// 	while (envp[i])
+// 	{
+// 		ft_lstadd_back(&head, ft_lstnew(envp[i]));
+// 		i++;
+// 	}
+// 	ft_lstadd_back(&head, NULL);
+// 	data->envp = head;
+// }
+
+void	init_data(t_data *data)
 {
+
 	data->token = (t_token *)malloc(sizeof(t_token));
 	data->scanner = NULL;
 	data->token->cmd = NULL;
 	data->token->here_doc = NULL;
 	data->token->next = NULL;
 	data->root = NULL;
-	data->env = envp;
+	data->here_doc = 0;
+	//***********************envp**************************//
+	// t_env *e;
+	// t_list *lst;
+	// lst = data->envp;
+	// for (int i = 0;data->envp; i++)
+	// {
+	// 	e = data->envp->content;
+	// 	printf("[name]%s === [value]%s\n", e->name, e->value);
+	// 	data->envp = data->envp->next;
+	// }
+	// data->envp = lst  ;
+	//************************ *****************************//
+}
+
+void	add_here_doc(t_token **token)
+{
+	t_token *tmp;
+
+	tmp = *token;
+	while(tmp && tmp->type != TOKEN_HEREDOC)
+		tmp = tmp->next;
+	type_heredoc(&tmp);
 }
 
 int	main(int ac, char **av, char *envp[])
@@ -134,15 +177,17 @@ int	main(int ac, char **av, char *envp[])
 	t_data	data;
 
 	(void)ac, (void)av;
+	alloc_envp(&data, envp);
+	ft_export_new(&data);
 	while (1)
 	{
 		_ctrl_handler();
 		line = readline("\001\x1B[1;1;33m\002Minishell $> \001\e[00m\002");
 		if (line != NULL && line[0] != '\0')
 		{
+			init_data(&data);
 			if (ft_strncmp(line, "exit", 5) == 0)
 				exit(0) ;
-			init_data(&data, envp);
 			tokenizetion(&data.token, line, &data);
 			// test_tokenization(data.token);
 			add_history(line);
@@ -153,6 +198,8 @@ int	main(int ac, char **av, char *envp[])
 				free(data.token);
 				continue ;
 			}
+			if (data.here_doc == 1)
+				add_here_doc(&data.token);
 			data.root = parcing(&data, data.root, &data.scanner);
 			disp(data.root, 0, "ROOT");
 			free_token(&data.token);
