@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 17:24:23 by aaggoujj          #+#    #+#             */
-/*   Updated: 2021/12/03 14:09:56 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/10 18:53:03 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,7 @@ size_t			ft_strlen(char const *str);
 int				ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
 int				ft_strncmp(char const *s1, char const *s2, unsigned int n);
+
+int				ft_strcmp(char const *s1, char const *s2);
 
 #endif

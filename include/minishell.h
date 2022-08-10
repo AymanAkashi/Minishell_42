@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/06 21:24:42 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/10 18:58:14 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_token
 	int				len;
 	int				start;
 	struct s_token	*next;
+	int				exp;
 }	t_token;
 typedef struct s_ast{
 	char			*cmd;
@@ -77,7 +78,10 @@ typedef struct t_data{
 	t_scanner			*scanner;
 	t_ast				*root;
 	char **				env;
+	t_list				*envp;
+	t_list				*export;
 	t_state				state;
+	int					here_doc;
 	int					len;
 	int					dou_quothe;
 	int					sin_quothe;
@@ -85,6 +89,15 @@ typedef struct t_data{
 	int					operator;
 }		t_data;
 
+typedef struct s_env
+{
+	char	*name;
+	char	*value;
+}				t_env;
+
+t_env	*ft_env_new(char *name, char *value);
+void	ft_env_del(t_env *env);
+void	alloc_envp(t_data *data, char *envp[]);
 
 //****************************************************************
 
@@ -100,6 +113,8 @@ char		**alloc_tab(t_data *data, t_type_token type, t_token *token);
 void		append_char(char **line, char c);
 void		free_token(t_token **token);
 void		scanner_token(t_token *token, t_scanner **curr_scan);
+void		type_token(t_token **token, t_data *data);
+void		type_heredoc(t_token **token);
 
 //****************************************************************
 void		sigint_handler(int sig);
@@ -129,5 +144,7 @@ t_ast		*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data);
 void		free_ast(t_ast *root);
 void		free_table(char **table);
 t_ast		*parc_word2(t_scanner *scan, t_data *data, t_ast *root);
+
+void		ft_export_new(t_data *data);
 
 #endif /* MINISHELL_H */
