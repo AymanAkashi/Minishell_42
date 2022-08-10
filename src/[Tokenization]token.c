@@ -6,92 +6,20 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 08:04:09 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/06 21:30:29 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/07 16:38:33 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_strjoin_nl(char *str, char *dest, char c)
+void	set_here_doc(t_token **token, t_data *data)
 {
-	char	*src;
-	int		i;
-	int		j;
-
-	i = -1;
-	if (!dest)
-		return (NULL);
-	if (!str)
-	{
-		str = ft_any_alloc(sizeof(char), 2);
-		str[0] = '\0';
-	}
-	src = ft_any_alloc(sizeof(char), ft_strlen(str) + ft_strlen(dest) + 2);
-	if (!src)
-		return (NULL);
-	while (str[++i])
-		src[i] = str[i];
-	if (str[0] != '\0')
-		src[i++] = c;
-	j = -1;
-	while (dest[++j])
-		src[i++] = dest[j];
-	src[i] = '\0';
-	free(str);
-	return (src);
-}
-
-void	type_heredoc(t_token **token)
-{
-	char *line;
-	char *tmp;
-	int pid;
-	int p[2];
-	
-	tmp = NULL;
 	(*token)->type = TOKEN_HEREDOC;
-	if (!(*token)->next)
-		{
-			printf("minishell: syntax error near unexpected token `newline'\n");
-			exit(1);
-		}
-	if (pipe(p) == -1)
-		return ;
-	pid = fork();
-	if (pid == 0)
-	{
-	_reset_ctrl_handler();
-	while(1)
-	{
-		line = readline("heredoc> ");
-		if (ft_strncmp((*token)->next->cmd, line, ft_strlen(line)) == 0)
-		{
-			free (line);
-			exit(1);
-		}
-		if (!line)
-			continue ;
-		else if (line)
-		{
-			write (p[1], line, sizeof(char *));
-			free (line);
-		}
-	}
-	}
-	else
-	{
-		_ctrl_handler();
-		read (p[0], tmp, sizeof(char *));
-		while(tmp != NULL)
-		{
-			(*token)->here_doc = ft_strjoin_nl((*token)->here_doc, tmp, '\n');
-			read (p[0], tmp, sizeof(char *));
-		}
-		waitpid(pid, NULL, 0);
-	}
+	data->here_doc = 1;
 }
 
-void	type_token(t_token **token)
+
+void	type_token(t_token **token, t_data *data)
 {
 	while (*token)
 	{
@@ -104,7 +32,7 @@ void	type_token(t_token **token)
 		else if (!ft_strncmp((*token)->cmd, ">>", 3))
 			(*token)->type = TOKEN_RED2_OUT;
 		else if (!ft_strncmp((*token)->cmd, "<<", 3))
-			type_heredoc(token);
+			set_here_doc(token, data);
 		else if (!ft_strncmp((*token)->cmd, "&&", 3))
 			(*token)->type = TOKEN_AND;
 		else if (!ft_strncmp((*token)->cmd, "||", 3))
@@ -129,6 +57,7 @@ void	index_token(t_token **token)
 	while (tmp)
 	{
 		tmp->index = i;
+		tmp->exp = 0;
 		tmp = tmp->next;
 		i++;
 	}
@@ -167,7 +96,7 @@ void	tokenizetion(t_token **token, char *line, t_data *data)
 			i = ft_dou_quote(line, *token, i, data);
 	}
 	*token = head;
-	type_token(&head);
+	type_token(&head, data);
 	index_token(token);
 }
 

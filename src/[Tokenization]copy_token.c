@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:49:21 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/02 18:55:29 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/08 18:55:53 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,19 @@ int	ft_dou_quote(char *line, t_token *token, int i, t_data *data)
 	append_char(&(token)->cmd, line[i++]);
 	while (line[i] && line[i] != '\"')
 		append_char(&(token)->cmd, line[i++]);
-	if (line[i])
+	if (line[i] == '\"')
 	{
 		data->dou_quothe++;
 		append_char(&(token)->cmd, line[i++]);
 	}
 	if (line[i] && line[i] != ' ' && line[i] != '\t' && !is_token(line[i]))
-		while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '\"')
+		while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '\"' && line[i] != '\'')
 			append_char(&(token)->cmd, line[i++]);
+		if (line[i] == '\"')
+		{
+			data->dou_quothe++;
+			append_char(&(token)->cmd, line[i++]);
+		}
 	return (i);
 }
 
@@ -49,14 +54,19 @@ int	ft_sin_quote(char *line, t_token *token, int i, t_data *data)
 	append_char(&(token)->cmd, line[i++]);
 	while (line[i] && line[i] != '\'')
 		append_char(&(token)->cmd, line[i++]);
-	if (line[i])
+	if (line[i] == '\'')
 	{
 		data->sin_quothe++;
 		append_char(&(token)->cmd, line[i++]);
 	}
 	if (line[i] && line[i] != ' ' && line[i] != '\t' && !is_token(line[i]))
-		while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '\'')
+		while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '\'' && line[i] != '\"')
 			append_char(&(token)->cmd, line[i++]);
+		if (line[i] == '\'')
+		{
+			data->sin_quothe++;
+			append_char(&(token)->cmd, line[i++]);
+		}
 	return (i);
 }
 
