@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:49:21 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/08 18:55:53 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/12 21:04:25 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,59 +14,61 @@
 
 int	ft_dou_quote(char *line, t_token *token, int i, t_data *data)
 {
-	int	k;
+	char	type;
 
-	k = 0;
-	data->dou_quothe++;
-	if (token->cmd)
-		k = ft_strlen(token->cmd);
-	if (k == 0)
-		token->cmd = ft_any_alloc(sizeof(char), 2);
+	(void)data;
+	type = line[i];
+	set_num(&data->dou_quothe);
 	append_char(&(token)->cmd, line[i++]);
-	while (line[i] && line[i] != '\"')
-		append_char(&(token)->cmd, line[i++]);
-	if (line[i] == '\"')
+	while (line[i])
 	{
-		data->dou_quothe++;
-		append_char(&(token)->cmd, line[i++]);
-	}
-	if (line[i] && line[i] != ' ' && line[i] != '\t' && !is_token(line[i]))
-		while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '\"' && line[i] != '\'')
-			append_char(&(token)->cmd, line[i++]);
 		if (line[i] == '\"')
 		{
-			data->dou_quothe++;
-			append_char(&(token)->cmd, line[i++]);
+			set_num(&data->dou_quothe);
+			type = '0';
 		}
+		else if (type == '0')
+		{
+			if (line[i] == '\"')
+			{
+				type = line[i];
+				set_num(&data->dou_quothe);
+			}
+			else if (line[i] == ' ' || line[i] == '\t' || is_token(line[i]))
+				break;
+		}
+		append_char(&(token)->cmd, line[i++]);
+	}
 	return (i);
 }
 
 int	ft_sin_quote(char *line, t_token *token, int i, t_data *data)
 {
-	int	k;
+	char	type;
 
-	k = 0;
-	data->sin_quothe++;
-	if (token->cmd)
-		k = ft_strlen(token->cmd);
-	if (k == 0)
-		token->cmd = ft_any_alloc(sizeof(char), 2);
+	(void)data;
+	type = line[i];
+	set_num(&data->sin_quothe);
 	append_char(&(token)->cmd, line[i++]);
-	while (line[i] && line[i] != '\'')
-		append_char(&(token)->cmd, line[i++]);
-	if (line[i] == '\'')
+	while (line[i])
 	{
-		data->sin_quothe++;
-		append_char(&(token)->cmd, line[i++]);
-	}
-	if (line[i] && line[i] != ' ' && line[i] != '\t' && !is_token(line[i]))
-		while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '\'' && line[i] != '\"')
-			append_char(&(token)->cmd, line[i++]);
 		if (line[i] == '\'')
 		{
-			data->sin_quothe++;
-			append_char(&(token)->cmd, line[i++]);
+			type = '0';
+			set_num(&data->sin_quothe);
 		}
+		else if (type == '0')
+		{
+			if (line[i] == '\'')
+			{
+				type = line[i];
+				set_num(&data->sin_quothe);
+			}
+			else if (line[i] == ' ' || line[i] == '\t' || is_token(line[i]))
+				break;
+		}
+		append_char(&(token)->cmd, line[i++]);
+	}
 	return (i);
 }
 
@@ -122,7 +124,7 @@ int	ft_str_cpyn(char *line, t_token **token, int i, t_data *data)
 	}
 	else if (is_token(line[i]))
 	{
-		if (line[i] == '&' && line[i + 1] != '&')
+		if (line[i] == '&')
 			return (add_token(line, token, i, data));
 		else if ((*token)->cmd != NULL)
 		{

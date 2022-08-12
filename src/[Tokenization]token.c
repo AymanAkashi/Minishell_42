@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 08:04:09 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/07 16:38:33 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/12 20:41:57 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,14 @@ void	index_token(t_token **token)
 	}
 }
 
+void	set_num(int *n)
+{
+	if (n == 0)
+		*n = 1;
+	else
+		*n = 0;
+}
+
 void	tokenizetion(t_token **token, char *line, t_data *data)
 {
 	t_token	*head;
@@ -97,6 +105,5 @@ void	tokenizetion(t_token **token, char *line, t_data *data)
 	}
 	*token = head;
 	type_token(&head, data);
-	index_token(token);
 }
 
