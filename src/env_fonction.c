@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 18:07:51 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/10 19:58:45 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/11 10:52:35 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	alloc_envp(t_data *data, char *envp[])
 		head = data->envp;
 		while (envp[i])
 		{
+			if (ft_strncmp(envp[i], "OLDPWD",6) == 0)
+				i++;
 			tmp = ft_strchr(envp[i], '=') + 1;
 			*ft_strchr(envp[i], '=') = '\0';
 			ft_lstadd_back(&head, ft_lstnew(ft_env_new(ft_strdup(envp[i]), tmp)));
@@ -75,6 +77,26 @@ void	sort_list(t_list *lst, t_list **lst2)
 	}
 }
 
+t_list	*ft_lstcopy(t_list *lst)
+{
+	t_list *new;
+
+	new = ft_lstnew(lst->content);
+	lst = lst->next;
+	new->next = malloc(sizeof(t_list) * 1);
+	new = new->next;
+	while(lst)
+	{
+		new->content = lst->content;
+		lst = lst->next;
+		if (lst)
+		{
+			new->next = malloc(sizeof(t_list) * 1);
+			new = new->next;
+		}
+	}
+	return (new);
+}
 
 void	ft_export_new(t_data *data)
 {
@@ -84,16 +106,16 @@ void	ft_export_new(t_data *data)
 	data->export = ft_any_alloc(sizeof(t_list), 1);
 	sort_list(data->envp, &data->export);
 	//***********************export**************************//
-	t_env *e;
-	t_list *lst;
-	lst = data->export;
-	for (int i = 0;data->export; i++)
-	{
-		e = data->export->content;
-		printf("[name]%s === [value]%s\n", e->name, e->value);
-		data->export = data->export->next;
-	}
-	data->export = lst  ;
+	// t_env *e;
+	// t_list *lst;
+	// lst = data->export;
+	// for (int i = 0;data->export; i++)
+	// {
+	// 	e = data->export->content;
+	// 	printf("[name]%s === [value]%s\n", e->name, e->value);
+	// 	data->export = data->export->next;
+	// }
+	// data->export = lst  ;
 	//************************ *****************************//
 }
 

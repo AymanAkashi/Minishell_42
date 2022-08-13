@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/10 18:58:14 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/13 11:37:21 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,22 @@ typedef enum e_state{
 	PARENT,
 }		t_state;
 
+typedef struct  s_reddirection{
+	char *name;
+	char *red;
+	struct s_reddirection *next;
+}				t_reddirection;
+
+
+typedef struct s_subshell{
+	char *cmd;
+	int fdin;
+	int fdout;
+	t_reddirection *red;
+	struct s_subshell *next;
+}			t_subshell;
+
+
 typedef struct s_token
 {
 	t_type_token	type;
@@ -66,6 +82,7 @@ typedef struct s_ast{
 	char			*here_doc;
 	struct s_ast	*left;
 	struct s_ast	*right;
+	t_subshell		*subshell;
 }	t_ast;
 
 typedef struct s_scanner{
@@ -135,7 +152,7 @@ int			ft_str_cpyn(char *line, t_token **token, int i, t_data *data);
 
 int			check_line(t_token *token, t_data *data, char *line);
 t_ast		*ft_create_ast(void);
-t_ast		*parcing(t_data *data, t_ast *ast, t_scanner **scan);
+t_ast		*parcing(t_data *data, t_ast *ast, t_scanner *scan);
 t_ast		*parc_opera(t_scanner *scan, t_ast *ast, t_data *data);
 t_ast		*parc_paren(t_scanner *scan, t_ast *ast, t_data *data);
 t_ast		*parc_pipe(t_scanner *scan, t_data *data, t_ast *root, t_ast *ast);
@@ -144,6 +161,7 @@ t_ast		*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data);
 void		free_ast(t_ast *root);
 void		free_table(char **table);
 t_ast		*parc_word2(t_scanner *scan, t_data *data, t_ast *root);
+void			set_num(int *n);
 
 void		ft_export_new(t_data *data);
 

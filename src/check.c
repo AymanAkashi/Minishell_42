@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:45:28 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/09 11:12:55 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/13 18:17:20 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,9 +157,9 @@ int	check_line(t_token *token, t_data *data, char *line)
 
 	i = 1;
 	(void)token;
-	if (data->dou_quothe % 2 != 0)
+	if (data->dou_quothe == 1)
 		return(ft_exit_ps("minishell: syntax error! unexpected close dou_quotes\n", "\0"));
-	if (data->sin_quothe % 2 != 0)
+	if (data->sin_quothe == 1)
 		return(ft_exit_ps("minishell: syntax error! unexpected close sin_quotes\n", "\0"));
 	if (data->parenthes % 2 != 0)
 		return (ft_exit_ps("minishell: syntax error! unexpected close parentheses\n", "\0"));

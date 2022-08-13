@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 15:19:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/04 21:18:17 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/13 18:25:12 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,13 @@ t_ast	*parc_opera(t_scanner *scan, t_ast *ast, t_data *data)
 	new->type = scan->curr_token->type;
 	new->left = ast;
 	scanner_token(data->token, &scan);
-	if (scan->curr_token && (scan->curr_token->type == TOKEN_WORD
-			|| scan->curr_token->type == TOKEN_PIPE))
-		new->right = parc_word(scan, data, NULL);
-	else if (scan->curr_token && scan->curr_token->type == TOKEN_PAREN_IN)
-		new->right = parc_paren(scan, NULL, data);
+	if (scan->curr_token)
+		new->right = parcing(data, ast, scan);
+	// if (scan->curr_token && (scan->curr_token->type == TOKEN_WORD
+	// 		|| scan->curr_token->type == TOKEN_PIPE))
+	// 	new->right = parc_word(scan, data, NULL);
+	// else if (scan->curr_token && scan->curr_token->type == TOKEN_PAREN_IN)
+	// 	new->right = parc_paren(scan, new, data);
 	return (new);
 }
 
@@ -34,7 +36,10 @@ t_ast	*parc_paren(t_scanner *scan, t_ast *ast, t_data *data)
 	t_ast	*new;
 
 	data->state = PARENT;
-	new = parcing(data, ast, &scan);
+	new = ft_create_ast();
+	new->in = 1;
+	scanner_token(data->token, &scan);
+	new = parcing(data, ast, scan);
 	if (scan->curr_token && scan->curr_token->type == TOKEN_PAREN_OUT)
 	{
 		data->state = DEFAULT;
@@ -43,7 +48,13 @@ t_ast	*parc_paren(t_scanner *scan, t_ast *ast, t_data *data)
 	if (ast)
 		ast->left = new;
 	else
-		ast = new;
+	{
+		ast = parcing(data, NULL, scan);
+		if(ast)
+		ast->left = new;
+		else
+		 	ast = new;
+	}
 	data->state = DEFAULT;
 	return (ast);
 }
@@ -57,7 +68,6 @@ t_ast	*parc_pipe(t_scanner *scan, t_data *data, t_ast *root, t_ast *ast)
 	new->type = scan->curr_token->type;
 	if (ast && ast->cmd)
 		new->left = ast;
-
 	else if (root && root->cmd
 		&& (root->type == TOKEN_OR || root->type == TOKEN_AND))
 		new->left = root->right;
@@ -79,7 +89,7 @@ t_ast	*parc_cmd(t_scanner *scan, t_data *data)
 	i = 0;
 	new = ft_create_ast();
 	new->cmd = ft_strdup(scan->curr_token->cmd);
-	new->args = alloc_tab(data, scan->curr_token->type, scan->curr_token);
+	new->args = alloc_tab(data, TOKEN_WORD, scan->curr_token);
 	new->args[i++] = ft_strdup(scan->curr_token->cmd);
 	new->type = TOKEN_WORD;
 	scanner_token(scan->curr_token, &scan);
@@ -107,10 +117,7 @@ t_ast	*parc_word(t_scanner *scan, t_data *data, t_ast *root)
 	while (scan->curr_token)
 	{
 		if (scan->curr_token->type == TOKEN_WORD)
-		{
-			free_ast(ast);
 			ast = parc_cmd(scan, data);
-		}
 		else if (scan->curr_token->type == TOKEN_PIPE)
 		{
 			if (root && (root->type == TOKEN_OR || root->type == TOKEN_AND))
