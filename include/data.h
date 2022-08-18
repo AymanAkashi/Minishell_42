@@ -6,13 +6,14 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 16:11:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/18 16:16:05 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/18 20:46:16 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DATA_H
 # define DATA_H
 
+#include "../lib/libft/include/libft.h"
 #include "tokenization.h"
 #include "parsing.h"
 #include "minishell.h"
@@ -20,6 +21,8 @@
 typedef struct t_data{
 	t_token				*token;
 	t_scanner			*scanner;
+	t_list				*envp;
+	t_list				*export;
 	t_state				state;
 	t_ast				*ast;
 	t_ast				*root;

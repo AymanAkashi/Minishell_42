@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 15:42:24 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/18 18:08:28 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/18 20:46:56 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,14 @@ typedef enum e_state{
 typedef struct s_token
 {
 	t_type_token	type;
+	char			*here_doc;
 	t_state			state;
 	char			*cmd;
 	int				index;
 	int				len;
 	int				start;
 	struct s_token	*next;
+	int				exp;
 }	t_token;
 
 typedef struct s_scanner{

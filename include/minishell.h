@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/18 16:21:59 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/18 20:45:11 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,18 @@
 # include "parsing.h"
 # include "signal.h"
 //****************************************************************
+
+typedef struct s_env
+{
+	char	*name;
+	char	*value;
+}				t_env;
+
+t_env	*ft_env_new(char *name, char *value);
+void	ft_env_del(t_env *env);
+void	alloc_envp(t_data *data, char *envp[]);
+void		ft_export_new(t_data *data);
+
 
 //****************************************************************
 char		*ft_alloc_cmd(char *str, char *str2);
