@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 07:39:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/13 18:39:03 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/17 15:40:03 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,31 @@ void	free_ast(t_ast *root)
 {
 	if (!root)
 		return ;
-	free_ast(root->left);
-	free_ast(root->right);
-	free(root->cmd);
-	if (root->args)
-		free(root->args);
+	if (root && root->left)
+		free_ast(root->left);
+	if (root && root->right)
+		free_ast(root->right);
+	// if (root && root->args)
+	// 	free_table(root->args);
+	if (root && root->cmd)
+		free(root->cmd);
 	root->cmd = NULL;
 	root->args = NULL;
 	free(root);
 }
+// void	free_ast(t_data *data)
+// {
+// 	t_ast	*tmp;
+// 	t_ast	*tmp2;
+
+// 	tmp = data->ast;
+// 	tmp = data->ast;
+// 	while (data->ast != NULL)
+// 	{
+// 		tmp = data->ast;
+// 		data->ast = data->ast->left;
+// 		free();
+// 		free(tmp);
+// 	}
+// 	data->ast = NULL;
+// }

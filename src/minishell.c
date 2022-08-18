@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/13 18:20:25 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/13 11:29:18 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int	main(void)
 			init_data(&data);
 			tokenizetion(&data.token, line, &data);
 			add_history(line);
-			if (data.token->cmd && !check_line(data.token, &data, line))
+			if (!check_line(data.token, &data, line))
 			{
 				free(line);
 				free_token(&data.token);

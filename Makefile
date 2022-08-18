@@ -13,7 +13,8 @@ SLIB	=	-L$(shell brew --prefix readline)/lib -lreadline -lncurses
 INC_DIR			:= include
 SRC_DIR			:= src
 OBJ_DIR			:= obj
-LIBFT_DIR		:= libft
+LIB_DIR			:= lib
+LIBFT_DIR		:= $(LIB_DIR)/libft
 
 # *********************************** Files ************************************
 NAME			:= minishell
@@ -26,7 +27,7 @@ LIBFT_INC		:= libft.h
 
 # ****************************** Compiler Options ******************************
 CC				:= cc
-CFLAGS			:= -Wall -Wextra -Werror -g
+CFLAGS			:= -Wall -Wextra -Werror -g -fsanitize=address
 INCFLAGS		:= -I $(INC_DIR) -I $(LIBFT_DIR)/$(INC_DIR)
 LIBFLAGS		:= -L $(LIBFT_DIR) -lft
 
@@ -46,29 +47,11 @@ all: $(NAME)
 
 $(NAME): $(OBJ_DEP) $(INC_DEP) $(LIBFT_DEP)
 	@echo "$(BLUE)Building	$(PURPLE)$(NAME)$(NC)"
-	@echo "$(YELLOW)⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣝⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
-	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡹⣟⣛⡢⠭⣭⣿⣿⣿"
-	@echo "⣿⣿⣿⣿⠛⣼⣿⣿⣿⣿⡿⠻⠍⢛⠻⣿⣿⣿⣿⣿⣿⣷⢲⣾⣿⣿⣿⣿⣿⣿"
-	@echo "⣭⣽⣶⡖⣴⣿⣿⣿⣿⣯⡶⠖⠻⠿⣦⣄⠙⢻⢿⣿⣿⣿⡇⣿⣿⣿⣿⣿⣿⣿"
-	@echo "⣿⠟⠻⠗⣿⣿⣿⣿⣿⡋⠀⢔⠚⠓⠆⠀⠑⢈⡆⠘⠿⠿⡇⣿⣿⣿⣿⣿⣿⣿"
-	@echo "⣿⢈⣷⣮⣻⣿⣿⣿⣿⣧⣶⣇⡀⠰⠀⢀⣰⣿⡇⠀⠀⠀⠀⣹⣿⣿⣿⣿⣿⣿"
-	@echo "⣿⠈⠁⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣣⣾⣿⣿⣿⣿⢄⠀⢀⠠⠿⠛⠛⠛⠛⠛⠛"
-	@echo "⠉⠹⣷⡾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀"
-	@echo "⠲⡀⠙⣵⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡹⠟⢉⣻⡿⠀⠙⠉⠁⠀⠀⠀⠀⠀⠀⠀"
-	@echo "⢠⠃⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣶⡇⠀⢠⣦⠁⠀⠀⠀⠀⠀⠀⠀⠀"
-	@echo "⠈⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠹⠿⠛⠋⠁⠀⠚⠉⠀          "
-	@echo "⣢⠤⢻⣿⣿⣿⡿⣿⣿⣿⡟⡀⣺⣿⣾⡿⠖⠒⠂⠀⡀$(BLUE)ʍɨռɨֆɦɛʟʟ$(YELLOW) "
-	@echo "⢇⣵⣿⣿⣿⣿⡱⣝⣿⣿⣧⣵⣿⣿⣿⣧⣤⣤⣤⢀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀"
-	@echo "⣾⣿⣿⣿⣿⣿⣿⣮⣽⣿⣯⣿⣿⣿⣿⡿⠛⠛⠛⠰⡁⡠⣀⠀⠀⠀⠀⠀⠀⠀"
-	@echo "⣿⣿⣿⣿⣿⣿⣿⣿⠿⣿⣿⠁⠀⠉⠉⠀⠀⠀⢠⡷⣿⢠⢻⢻⣦⣀⠀⠀⠀⠀$(NC)"
-
-
 	@$(CC) $(CFLAGS) $(SLIB) $(LIBFLAGS) $(OBJ_DEP) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INC_DEP)
 	@$(MKDIR) $(OBJ_DIR)
 	@echo "$(GREEN)Compiling	$(YELLOW)$(shell basename $<)$(NC)"
-
 	@$(CC) $(CFLAGS) $(ILIB) $(INCFLAGS) -c -o $@ $<
 
 $(LIBFT_DEP): $(LIBFT_SRC_DEP) $(LIBFT_INC_DEP)

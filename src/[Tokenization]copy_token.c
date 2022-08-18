@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:49:21 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/12 21:04:25 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/18 19:20:51 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int	ft_dou_quote(char *line, t_token *token, int i, t_data *data)
 				type = line[i];
 				set_num(&data->dou_quothe);
 			}
-			else if (line[i] == ' ' || line[i] == '\t' || is_token(line[i]))
+			else if (line[i] == ' ' || line[i] == '\t' || is_token(line[i]) ||
+				line[i] == '\'')
 				break;
 		}
 		append_char(&(token)->cmd, line[i++]);
@@ -64,7 +65,7 @@ int	ft_sin_quote(char *line, t_token *token, int i, t_data *data)
 				type = line[i];
 				set_num(&data->sin_quothe);
 			}
-			else if (line[i] == ' ' || line[i] == '\t' || is_token(line[i]))
+			else if (line[i] == ' ' || line[i] == '\t' || is_token(line[i]) || line[i] == '\"')
 				break;
 		}
 		append_char(&(token)->cmd, line[i++]);
@@ -124,7 +125,7 @@ int	ft_str_cpyn(char *line, t_token **token, int i, t_data *data)
 	}
 	else if (is_token(line[i]))
 	{
-		if (line[i] == '&')
+		if (line[i] == '&' && line[i + 1] != '&')
 			return (add_token(line, token, i, data));
 		else if ((*token)->cmd != NULL)
 		{

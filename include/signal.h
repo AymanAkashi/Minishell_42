@@ -1,37 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   [signal]ctrl_handler.c                             :+:      :+:    :+:   */
+/*   signal.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/22 20:12:24 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/02 18:55:17 by aaggoujj         ###   ########.fr       */
+/*   Created: 2022/08/18 16:17:43 by aaggoujj          #+#    #+#             */
+/*   Updated: 2022/08/18 16:20:40 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef SIGNAL_H
+#define SIGNAL_H
+
 #include "minishell.h"
+#include "data.h"
 
-void	sigint_handler(int sig)
-{
-	(void)sig;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
+void		sigint_handler(int sig);
+void		_ctrl_handler(void);
+void		ctrl_d_handler(t_data *data);
 
-void	_ctrl_handler(void)
-{
-	rl_catch_signals = 0;
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	ctrl_d_handler(t_data *data)
-{
-	(void)data;
-	printf("\x1B[1;A\x1B[13;Cexit\n");
-	rl_clear_history();
-	exit(EXIT_SUCCESS);
-}
+#endif

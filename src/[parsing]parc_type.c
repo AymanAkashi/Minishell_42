@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 15:19:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/13 18:25:12 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/18 16:26:05 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,11 @@ t_ast	*parc_opera(t_scanner *scan, t_ast *ast, t_data *data)
 	new->type = scan->curr_token->type;
 	new->left = ast;
 	scanner_token(data->token, &scan);
-	if (scan->curr_token)
-		new->right = parcing(data, ast, scan);
-	// if (scan->curr_token && (scan->curr_token->type == TOKEN_WORD
-	// 		|| scan->curr_token->type == TOKEN_PIPE))
-	// 	new->right = parc_word(scan, data, NULL);
-	// else if (scan->curr_token && scan->curr_token->type == TOKEN_PAREN_IN)
-	// 	new->right = parc_paren(scan, new, data);
+	if (scan->curr_token && (scan->curr_token->type == TOKEN_WORD
+			|| scan->curr_token->type == TOKEN_PIPE))
+		new->right = parc_word(scan, data, NULL);
+	else if (scan->curr_token && scan->curr_token->type == TOKEN_PAREN_IN)
+		new->right = parc_paren(scan, NULL, data);
 	return (new);
 }
 
@@ -49,11 +47,11 @@ t_ast	*parc_paren(t_scanner *scan, t_ast *ast, t_data *data)
 		ast->left = new;
 	else
 	{
-		ast = parcing(data, NULL, scan);
-		if(ast)
-		ast->left = new;
+		ast = parcing(data, ast, scan);
+		if(!ast)
+			ast = new;
 		else
-		 	ast = new;
+			ast_add_left(&ast, new);
 	}
 	data->state = DEFAULT;
 	return (ast);
@@ -89,7 +87,7 @@ t_ast	*parc_cmd(t_scanner *scan, t_data *data)
 	i = 0;
 	new = ft_create_ast();
 	new->cmd = ft_strdup(scan->curr_token->cmd);
-	new->args = alloc_tab(data, TOKEN_WORD, scan->curr_token);
+	new->args = alloc_tab(data, TOKEN_WORD, scan);
 	new->args[i++] = ft_strdup(scan->curr_token->cmd);
 	new->type = TOKEN_WORD;
 	scanner_token(scan->curr_token, &scan);

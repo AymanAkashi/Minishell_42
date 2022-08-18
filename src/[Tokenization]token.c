@@ -6,20 +6,13 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 08:04:09 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/12 20:41:57 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/18 19:17:25 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	set_here_doc(t_token **token, t_data *data)
-{
-	(*token)->type = TOKEN_HEREDOC;
-	data->here_doc = 1;
-}
-
-
-void	type_token(t_token **token, t_data *data)
+void	type_token(t_token **token)
 {
 	while (*token)
 	{
@@ -32,7 +25,7 @@ void	type_token(t_token **token, t_data *data)
 		else if (!ft_strncmp((*token)->cmd, ">>", 3))
 			(*token)->type = TOKEN_RED2_OUT;
 		else if (!ft_strncmp((*token)->cmd, "<<", 3))
-			set_here_doc(token, data);
+			(*token)->type = TOKEN_HEREDOC;
 		else if (!ft_strncmp((*token)->cmd, "&&", 3))
 			(*token)->type = TOKEN_AND;
 		else if (!ft_strncmp((*token)->cmd, "||", 3))
@@ -57,7 +50,6 @@ void	index_token(t_token **token)
 	while (tmp)
 	{
 		tmp->index = i;
-		tmp->exp = 0;
 		tmp = tmp->next;
 		i++;
 	}
@@ -79,8 +71,6 @@ void	tokenizetion(t_token **token, char *line, t_data *data)
 	i = 0;
 	head = *token;
 	data->parenthes = 0;
-	data->sin_quothe = 0;
-	data->dou_quothe = 0;
 	data->operator = 0;
 	while (line[i] == ' ' || line[i] == '\t')
 		i++;
@@ -104,6 +94,7 @@ void	tokenizetion(t_token **token, char *line, t_data *data)
 			i = ft_dou_quote(line, *token, i, data);
 	}
 	*token = head;
-	type_token(&head, data);
+	type_token(&head);
+	index_token(token);
 }
 

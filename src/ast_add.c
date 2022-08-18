@@ -1,37 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   [signal]ctrl_handler.c                             :+:      :+:    :+:   */
+/*   ast_add.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/22 20:12:24 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/02 18:55:17 by aaggoujj         ###   ########.fr       */
+/*   Created: 2022/08/18 16:23:07 by aaggoujj          #+#    #+#             */
+/*   Updated: 2022/08/18 16:27:06 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	sigint_handler(int sig)
+void	ast_add_left(t_ast **ast, t_ast *new)
 {
-	(void)sig;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	t_ast *left;
+	left = *ast;
+	while(left->left)
+		left = left->left;
+	left->left = new;
 }
 
-void	_ctrl_handler(void)
+void	ast_add_right(t_ast **ast, t_ast *new)
 {
-	rl_catch_signals = 0;
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	ctrl_d_handler(t_data *data)
-{
-	(void)data;
-	printf("\x1B[1;A\x1B[13;Cexit\n");
-	rl_clear_history();
-	exit(EXIT_SUCCESS);
+	t_ast *right;
+	right = *ast;
+	while(right->right)
+		right = right->right;
+	right->right = new;
 }
