@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/13 11:29:18 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/19 12:49:13 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,27 +115,42 @@ int	size_ast(t_ast *ast)
 		return (i);
 }
 
-void	init_data(t_data *data)
+void	init_data(t_data *data, char *envp[])
 {
 	data->token = (t_token *)malloc(sizeof(t_token));
 	data->scanner = NULL;
 	data->token->cmd = NULL;
+	data->token->here_doc = NULL;
 	data->token->next = NULL;
 	data->root = NULL;
+	data->env = envp;
 }
 
-int	main(void)
+void	add_here_doc(t_token **token)
+{
+	t_token *tmp;
+
+	tmp = *token;
+	while(tmp && tmp->type != TOKEN_HEREDOC)
+		tmp = tmp->next;
+	type_heredoc(&tmp);
+}
+
+int	main(int ac, char **av, char *envp[])
 {
 	char	*line;
 	t_data	data;
 
+	(void)ac, (void)av;
 	while (1)
 	{
 		_ctrl_handler();
 		line = readline("\001\x1B[1;1;33m\002Minishell $> \001\e[00m\002");
 		if (line != NULL && line[0] != '\0')
 		{
-			init_data(&data);
+			if (ft_strncmp(line, "exit", 5) == 0)
+				break ;
+			init_data(&data, envp);
 			tokenizetion(&data.token, line, &data);
 			add_history(line);
 			if (!check_line(data.token, &data, line))
@@ -145,11 +160,11 @@ int	main(void)
 				free(data.token);
 				continue ;
 			}
+			if (data.here_doc == 1)
+				add_here_doc(&data.token);
 			scanner_token(data.token, &data.scanner);
 			data.root = parcing(&data, data.root, data.scanner);
 			disp(data.root, 0, "ROOT");
-			if (ft_strncmp(line, "exit", 5) == 0)
-				break ;
 			free_token(&data.token);
 			free_ast(data.root);
 			free(data.scanner);

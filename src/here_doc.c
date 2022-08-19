@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 16:10:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/10 13:33:25 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/19 12:59:45 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_strjoin_nl(char *str, char *dest, char c)
 		str = ft_any_alloc(sizeof(char), 2);
 		str[0] = '\0';
 	}
-	src = ft_any_alloc(sizeof(char), ft_strlen(str) + ft_strlen(dest) + 2);
+		src = ft_any_alloc(sizeof(char), (ft_strlen(str) + ft_strlen(dest)) + 2);
 	if (!src)
 		return (NULL);
 	while (str[++i])
@@ -38,6 +38,7 @@ char	*ft_strjoin_nl(char *str, char *dest, char c)
 		src[i++] = dest[j];
 	src[i] = '\0';
 	free(str);
+	free(dest);
 	return (src);
 }
 
@@ -86,20 +87,20 @@ void	parent_here_doc(int p[2], t_token **token, int pid)
 		_ctrl_handler();
 		byte = read (p[0], &len, sizeof(int));
 		tmp = ft_any_alloc(sizeof(char), len + 1);
+		if(!tmp)
+			printf("Error\n");
 		byte = read (p[0], tmp, len);
 		while (byte > 0)
 		{
 			(*token)->here_doc = ft_strjoin_nl((*token)->here_doc, tmp, '\n');
 			ft_bzero(tmp, len);
-			free(tmp);
+			// free(tmp);
 			byte = read (p[0], &len, sizeof(int));
 			tmp = ft_any_alloc(sizeof(char), len + 1);
 			byte = read (p[0], tmp, len);
 		}
 		free(tmp);
-		waitpid(pid, &len, 0);
-		len = WEXITSTATUS(len);
-		printf("%d\n", len);
+		waitpid(pid, NULL, 0);	
 		close(p[0]);
 }
 

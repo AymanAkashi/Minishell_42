@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:45:28 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/18 19:23:04 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/19 15:01:24 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,9 @@ int check_redirection(t_token *tmp, t_type_token type)
 {
 		if ((is_redirection(type) && tmp->next == NULL) || (is_redirection(type) && tmp->next->type != TOKEN_WORD))
 			return (ft_exit_ps("minishell: syntax error near unexpected token `",	"newline"));
-		if ((tmp->type == TOKEN_PAREN_OUT) && tmp->next && is_redirection(tmp->next->type))
-			return (ft_exit_ps("minishell: syntax error near unexpected token `", tmp->cmd));
+		// if ((tmp->type == TOKEN_PAREN_OUT) && tmp->next && is_redirection(tmp->next->type))
+		// 	return (ft_exit_ps("minishell: syntax error near unexpected token `", tmp->cmd));
 		if (is_redirection(tmp->type) && tmp->next && tmp->next->next && tmp->next->next->type == TOKEN_PAREN_IN)
-			return (ft_exit_ps("minishell: syntax error near unexpected token `", tmp->cmd));
-		if ((tmp->type == TOKEN_PAREN_OUT) && tmp->next && is_redirection(tmp->next->type))
 			return (ft_exit_ps("minishell: syntax error near unexpected token `", tmp->cmd));
 		if (is_type_token(tmp->type) && tmp->next
 		&& (tmp->next->type != TOKEN_WORD && tmp->next->type != TOKEN_PAREN_IN

@@ -6,13 +6,19 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 08:04:09 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/18 19:17:25 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/19 12:03:07 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	type_token(t_token **token)
+void	set_here_doc(t_token **token, t_data *data)
+{
+	(*token)->type = TOKEN_HEREDOC;
+	data->here_doc = 1;
+}
+
+void	type_token(t_token **token, t_data *data)
 {
 	while (*token)
 	{
@@ -25,7 +31,7 @@ void	type_token(t_token **token)
 		else if (!ft_strncmp((*token)->cmd, ">>", 3))
 			(*token)->type = TOKEN_RED2_OUT;
 		else if (!ft_strncmp((*token)->cmd, "<<", 3))
-			(*token)->type = TOKEN_HEREDOC;
+			set_here_doc(token, data);
 		else if (!ft_strncmp((*token)->cmd, "&&", 3))
 			(*token)->type = TOKEN_AND;
 		else if (!ft_strncmp((*token)->cmd, "||", 3))
@@ -94,7 +100,7 @@ void	tokenizetion(t_token **token, char *line, t_data *data)
 			i = ft_dou_quote(line, *token, i, data);
 	}
 	*token = head;
-	type_token(&head);
+	type_token(&head, data);
 	index_token(token);
 }
 
