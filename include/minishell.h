@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/18 20:45:11 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/19 18:34:16 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_env
 	char	*value;
 }				t_env;
 
+void	type_heredoc(t_token **token);
 t_env	*ft_env_new(char *name, char *value);
 void	ft_env_del(t_env *env);
 void	alloc_envp(t_data *data, char *envp[]);

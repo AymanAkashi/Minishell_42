@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 15:44:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/18 16:26:37 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/19 18:33:17 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ typedef struct s_ast{
 	t_type_token	type;
 	struct s_ast	*left;
 	struct s_ast	*right;
+	char			*here_doc;
 }	t_ast;
+
 
 t_ast		*ft_create_ast(void);
 void		free_ast(t_ast *root);
