@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:23:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/17 13:24:09 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/19 18:39:21 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,41 @@ t_ast	*ft_create_ast(void)
 	return (new);
 }
 
+t_ast	*ast_here_doc(t_ast *ast, t_scanner *scan, t_data *data)
+{
+	ast->here_doc = ft_strdup(scan->curr_token->here_doc);
+	ast->type = scan->curr_token->type;
+	ast->cmd = ft_strdup(scan->curr_token->cmd);
+	ast->args = ft_any_alloc(sizeof(char *), 3);
+	ast->args[0] = ft_strdup(scan->curr_token->cmd);
+	ast->type = scan->curr_token->type;
+	scanner_token(data->token, &scan);
+	ast->args[1] = ft_strdup(scan->curr_token->cmd);
+	ast->args[2] = NULL;
+	return (ast);
+}
+
 t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
 {
 	t_ast	*new;
 	t_ast	*tmp;
 
 	new = ft_create_ast();
-	new->cmd = ft_strdup(scan->curr_token->cmd);
-	new->args = ft_any_alloc(3, sizeof(char *));
-	new->args[0] = ft_strdup(scan->curr_token->cmd);
-	new->type = scan->curr_token->type;
+	if (scan->curr_token && scan->curr_token->type == TOKEN_HEREDOC)
+		new = ast_here_doc(new, scan, data);
+	else
+	{
+		new->cmd = ft_strdup(scan->curr_token->cmd);
+		new->args = ft_any_alloc(sizeof(char *), 3);
+		new->args[0] = ft_strdup(scan->curr_token->cmd);
+		new->type = scan->curr_token->type;
+		scanner_token(data->token, &scan);
+		new->args[1] = ft_strdup(scan->curr_token->cmd);
+		new->args[2] = NULL;
+	}
 	scanner_token(data->token, &scan);
-	new->args[1] = ft_strdup(scan->curr_token->cmd);
-	new->args[2] = NULL;
-	scanner_token(data->token, &scan);
+	if(!scan->curr_token && !root)
+		return (new);
 	tmp = root;
 	while (tmp && tmp->left)
 		tmp = tmp->left;
@@ -55,8 +76,6 @@ t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
 	else
 	{
 		root = parc_word(scan, data, new);
-		if (scan->curr_token == NULL)
-			return (root);
 		tmp = root;
 		while (tmp && tmp->left)
 			tmp = tmp->left;

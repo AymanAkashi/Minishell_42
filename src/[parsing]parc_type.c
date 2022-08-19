@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 15:19:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/18 16:26:05 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/19 18:50:06 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,45 @@ t_ast	*parc_opera(t_scanner *scan, t_ast *ast, t_data *data)
 	return (new);
 }
 
+void	add_ast(t_ast *ast, t_ast *new)
+{
+	if (ast && ast->type == TOKEN_WORD && (ast->left == NULL || ast->right == NULL))
+	{
+		if (ast->left == NULL)
+			ast->left = new;
+		else if (ast->right == NULL)
+			ast->right = new;
+	}
+	else
+	{
+	if (ast && ast->left)
+		add_ast(ast->left, new);
+	if(ast && ast->right)
+		add_ast(ast->right, new);
+	}
+}
+
+void	add_redirection(t_ast *ast, t_scanner *scan, t_data *data)
+{
+	t_ast *new;
+
+	new = ft_create_ast();
+	if (scan->curr_token && scan->curr_token->type == TOKEN_HEREDOC)
+		new = ast_here_doc(new, scan, data);
+	else
+	{
+		new->cmd = ft_strdup(scan->curr_token->cmd);
+		new->args = ft_any_alloc(sizeof(char *), 3);
+		new->args[0] = ft_strdup(scan->curr_token->cmd);
+		new->type = scan->curr_token->type;
+		scanner_token(data->token, &scan);
+		new->args[1] = ft_strdup(scan->curr_token->cmd);
+		new->args[2] = NULL;
+	}
+	scanner_token(data->token, &scan);
+	add_ast(ast, new);
+}
+
 t_ast	*parc_paren(t_scanner *scan, t_ast *ast, t_data *data)
 {
 	t_ast	*new;
@@ -38,6 +77,8 @@ t_ast	*parc_paren(t_scanner *scan, t_ast *ast, t_data *data)
 	new->in = 1;
 	scanner_token(data->token, &scan);
 	new = parcing(data, ast, scan);
+	if(is_redirection(scan->curr_token->type))
+		add_redirection(new, scan, data);
 	if (scan->curr_token && scan->curr_token->type == TOKEN_PAREN_OUT)
 	{
 		data->state = DEFAULT;
