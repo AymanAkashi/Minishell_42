@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 15:19:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/20 15:13:18 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/20 23:00:51 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ t_ast	*parc_cmd(t_scanner *scan, t_data *data)
 			scanner_token(scan->curr_token, &scan);
 		}
 	}
+	check_expender(new->args);
 	return (new);
 }
 

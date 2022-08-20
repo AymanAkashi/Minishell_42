@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_fonction.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akashi <akashi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 18:07:51 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/19 20:51:43 by akashi           ###   ########.fr       */
+/*   Updated: 2022/08/20 21:41:18 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ void	alloc_envp(t_data *data, char *envp[])
 		head = data->envp;
 		while (envp[i])
 		{
-			if (ft_strncmp(envp[i], "OLDPWD",6) == 0)
-				i++;
 			tmp = ft_strchr(envp[i], '=') + 1;
 			*ft_strchr(envp[i], '=') = '\0';
 			ft_lstadd_back(&head, ft_lstnew(ft_env_new(ft_strdup(envp[i]), tmp)));

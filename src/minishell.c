@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/20 14:13:31 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/20 21:38:10 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,18 @@ void	init_data(t_data *data, char *envp[])
 	data->dou_quothe = 0;
 	data->sin_quothe = 0;
 	data->here_doc = 0;
+		//***********************envp**************************//
+	t_env *e;
+	t_list *lst;
+	lst = data->envp;
+	for (int i = 0;data->envp; i++)
+	{
+		e = data->envp->content;
+		printf("[name]%s === [value]%s\n", e->name, e->value);
+		data->envp = data->envp->next;
+	}
+	data->envp = lst  ;
+	//************************ *****************************//
 }
 
 void	add_here_doc(t_token **token)
@@ -145,6 +157,7 @@ int	main(int ac, char **av, char *envp[])
 	t_data	data;
 
 	(void)ac, (void)av;
+	alloc_envp(&data, envp);
 	while (1)
 	{
 		_ctrl_handler();
