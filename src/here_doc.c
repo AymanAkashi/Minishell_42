@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akashi <akashi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 16:10:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/19 12:59:45 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/19 22:18:11 by akashi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"minishell.h"
+#include "minishell.h"
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 char	*ft_strjoin_nl(char *str, char *dest, char c)
 {
@@ -134,8 +137,9 @@ void	type_heredoc(t_token **token)
 	int	pid;
 	int	p[2];
 
-	if ((*token)->next->cmd[0] == '\"' || (*token)->next->cmd[0] == '\'')
-		(*token)->exp = 1;
+	if((*token)->next->cmd)
+		if ((*token)->next->cmd[0] == '\"' || (*token)->next->cmd[0] == '\'')
+			(*token)->exp = 0;
 	if (((*token)->next->cmd[0] == '\"' && (*token)->next->cmd[1] == '\"')
 		|| ((*token)->next->cmd[0] == '\'' && (*token)->next->cmd[1] == '\''))
 	{

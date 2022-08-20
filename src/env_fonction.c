@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_fonction.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akashi <akashi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 18:07:51 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/11 10:52:35 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/19 20:51:43 by akashi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,6 @@ t_list	*ft_lstcopy(t_list *lst)
 
 void	ft_export_new(t_data *data)
 {
-	t_list		*tmp;
-
-	tmp = data->envp;
 	data->export = ft_any_alloc(sizeof(t_list), 1);
 	sort_list(data->envp, &data->export);
 	//***********************export**************************//

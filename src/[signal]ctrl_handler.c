@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   [signal]ctrl_handler.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 20:12:24 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/18 20:48:24 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/20 15:31:38 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,13 @@ void	_reset_ctrl_handler(void)
 
 void	ctrl_d_handler(t_data *data)
 {
-	(void)data;
 	printf("\x1B[1;A\x1B[13;Cexit\n");
+	if(data->token)
+		free_token(&data->token);
+	if(data->root)
+		free_ast(data->root);
+	if(data->scanner)
+		free(data->scanner);
 	rl_clear_history();
 	exit(EXIT_SUCCESS);
 }

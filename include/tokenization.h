@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akashi <akashi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 15:42:24 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/18 20:46:56 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/19 20:56:51 by akashi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define TOKENIZATION_H
 
 # include "minishell.h"
-# include "data.h"
 
 typedef enum e_type_token{
 	TOKEN_WORD,

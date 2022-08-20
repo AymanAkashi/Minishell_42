@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/19 12:49:13 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/20 14:13:31 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,9 @@ void	init_data(t_data *data, char *envp[])
 	data->token->next = NULL;
 	data->root = NULL;
 	data->env = envp;
+	data->dou_quothe = 0;
+	data->sin_quothe = 0;
+	data->here_doc = 0;
 }
 
 void	add_here_doc(t_token **token)
@@ -148,9 +151,9 @@ int	main(int ac, char **av, char *envp[])
 		line = readline("\001\x1B[1;1;33m\002Minishell $> \001\e[00m\002");
 		if (line != NULL && line[0] != '\0')
 		{
+			init_data(&data, envp);
 			if (ft_strncmp(line, "exit", 5) == 0)
 				break ;
-			init_data(&data, envp);
 			tokenizetion(&data.token, line, &data);
 			add_history(line);
 			if (!check_line(data.token, &data, line))
@@ -174,7 +177,6 @@ int	main(int ac, char **av, char *envp[])
 		free(line);
 	}
 	free_token(&data.token);
-	free(data.token);
 	free_ast(data.root);
 	free(data.scanner);
 	free(line);

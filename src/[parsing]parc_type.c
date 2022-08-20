@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   [parsing]parc_type.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 15:19:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/19 18:50:06 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/20 15:13:18 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,11 +148,9 @@ t_ast	*parc_cmd(t_scanner *scan, t_data *data)
 
 t_ast	*parc_word(t_scanner *scan, t_data *data, t_ast *root)
 {
-	int		i;
 	t_ast	*ast;
 
-	ast = ft_create_ast();
-	i = 0;
+	// ast = ft_create_ast();
 	while (scan->curr_token)
 	{
 		if (scan->curr_token->type == TOKEN_WORD)

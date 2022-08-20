@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   [parsing]parc_cmd.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:23:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/19 18:39:21 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/20 15:27:32 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_ast	*ft_create_ast(void)
 	new->right = NULL;
 	new->in = 0;
 	new->out = 0;
+	new->exp = 1;
 	return (new);
 }
 
@@ -29,6 +30,7 @@ t_ast	*ast_here_doc(t_ast *ast, t_scanner *scan, t_data *data)
 {
 	ast->here_doc = ft_strdup(scan->curr_token->here_doc);
 	ast->type = scan->curr_token->type;
+	ast->exp = scan->curr_token->exp;
 	ast->cmd = ft_strdup(scan->curr_token->cmd);
 	ast->args = ft_any_alloc(sizeof(char *), 3);
 	ast->args[0] = ft_strdup(scan->curr_token->cmd);
@@ -93,6 +95,7 @@ t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
 t_ast	*parcing(t_data *data, t_ast *ast, t_scanner *scan)
 {
 	// scanner_token(data->token, &scan);
+	ast = NULL;
 	if (!scan && scan->curr_token->cmd == NULL)
 		return (NULL);
 	while (scan->curr_token)

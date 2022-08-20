@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   [Tokenization]copy_token.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akashi <akashi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:49:21 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/18 19:20:51 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/19 21:13:42 by akashi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,6 @@ void	append_char(char **line, char c)
 
 int	ft_str_cpyn(char *line, t_token **token, int i, t_data *data)
 {
-	int	j;
-
-	j = i;
 	if (line[i] && line[i] != ' ' && line[i] != '\t' && !is_token(line[i]))
 	{
 		append_char(&(*token)->cmd, line[i]);
