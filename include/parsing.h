@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akashi <akashi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 15:44:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/19 18:33:17 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/19 22:15:51 by akashi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define PARSING_H
 
 # include "minishell.h"
-# include "tokenization.h"
-#include "data.h"
 
 
 typedef struct s_ast{
@@ -23,6 +21,7 @@ typedef struct s_ast{
 	char			**args;
 	int				in;
 	int				out;
+	int				exp;
 	t_type_token	type;
 	struct s_ast	*left;
 	struct s_ast	*right;

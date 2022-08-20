@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akashi <akashi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/19 18:34:16 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/19 20:54:33 by akashi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # include "tokenization.h"
 #include "data.h"
 # include "parsing.h"
-# include "signal.h"
+# include "mini_signal.h"
 //****************************************************************
 
 typedef struct s_env
