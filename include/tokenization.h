@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenization.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akashi <akashi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 15:42:24 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/19 20:56:51 by akashi           ###   ########.fr       */
+/*   Updated: 2022/08/21 13:15:12 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_token
 typedef struct s_scanner{
 	t_token				*curr_token;
 	t_token				*next_token;
-}					t_scanner;
+}				t_scanner;
 
 t_state		check_state(char c);
 void		alloc_token(t_token **token);

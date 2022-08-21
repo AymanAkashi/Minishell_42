@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   [Tokenization]copy_token.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akashi <akashi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:49:21 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/19 21:13:42 by akashi           ###   ########.fr       */
+/*   Updated: 2022/08/21 13:14:34 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ int	ft_sin_quote(char *line, t_token *token, int i, t_data *data)
 				type = line[i];
 				set_num(&data->sin_quothe);
 			}
-			else if (line[i] == ' ' || line[i] == '\t' || is_token(line[i]) || line[i] == '\"')
+			else if (line[i] == ' ' || line[i] == '\t' || is_token(line[i])
+				|| line[i] == '\"')
 				break;
 		}
 		append_char(&(token)->cmd, line[i++]);

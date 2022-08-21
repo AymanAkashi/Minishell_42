@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   [parsing]parc_type.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 15:19:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/20 23:00:51 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/21 12:22:06 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ t_ast	*parc_cmd(t_scanner *scan, t_data *data)
 			scanner_token(scan->curr_token, &scan);
 		}
 	}
-	check_expender(new->args);
+	// check_expender(new->args, data);
 	return (new);
 }
 

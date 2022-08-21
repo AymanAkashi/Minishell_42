@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/20 21:38:10 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/21 13:48:04 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	init_data(t_data *data, char *envp[])
 	data->dou_quothe = 0;
 	data->sin_quothe = 0;
 	data->here_doc = 0;
-		//***********************envp**************************//
+	//***********************envp**************************//
 	t_env *e;
 	t_list *lst;
 	lst = data->envp;
@@ -160,8 +160,8 @@ int	main(int ac, char **av, char *envp[])
 	alloc_envp(&data, envp);
 	while (1)
 	{
-		_ctrl_handler();
 		line = readline("\001\x1B[1;1;33m\002Minishell $> \001\e[00m\002");
+		_ctrl_handler();
 		if (line != NULL && line[0] != '\0')
 		{
 			init_data(&data, envp);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 16:11:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/20 21:37:51 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/21 13:06:08 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct t_data{
 	int					operator;
 }		t_data;
 
-
+char		*check_expender(char *args, t_data *data);
 t_ast		*ast_here_doc(t_ast *ast, t_scanner *scan, t_data *data);
 void		tokenizetion(t_token **token, char *line, t_data *data);
 int			token_paren(t_token *token, char *line, int i, t_data *data);

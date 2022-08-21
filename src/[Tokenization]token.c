@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   [Tokenization]token.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 08:04:09 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/20 22:59:47 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/21 10:54:51 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	index_token(t_token **token)
 	while (tmp)
 	{
 		tmp->index = i;
-		tmp->exp = check_exp(tmp->cmd);
 		tmp = tmp->next;
 		i++;
 	}
