@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/21 13:48:04 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/22 19:04:07 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 // 	tmp = token;
 // 	while (tmp != NULL)
 // 	{
-// 		printf("[%s]-->[%s]\n", tmp->cmd,str[tmp->type_token]);
+// 		printf("[%s]-->[%s]\n", tmp->cmd,str[tmp->type]);
 // 		tmp = tmp->next;
 // 	}
 // }
@@ -128,16 +128,16 @@ void	init_data(t_data *data, char *envp[])
 	data->sin_quothe = 0;
 	data->here_doc = 0;
 	//***********************envp**************************//
-	t_env *e;
-	t_list *lst;
-	lst = data->envp;
-	for (int i = 0;data->envp; i++)
-	{
-		e = data->envp->content;
-		printf("[name]%s === [value]%s\n", e->name, e->value);
-		data->envp = data->envp->next;
-	}
-	data->envp = lst  ;
+	// t_env *e;
+	// t_list *lst;
+	// lst = data->envp;
+	// for (int i = 0;data->envp; i++)
+	// {
+	// 	e = data->envp->content;
+	// 	printf("[name]%s === [value]%s\n", e->name, e->value);
+	// 	data->envp = data->envp->next;
+	// }
+	// data->envp = lst  ;
 	//************************ *****************************//
 }
 
@@ -157,11 +157,11 @@ int	main(int ac, char **av, char *envp[])
 	t_data	data;
 
 	(void)ac, (void)av;
+	_ctrl_handler();
 	alloc_envp(&data, envp);
 	while (1)
 	{
 		line = readline("\001\x1B[1;1;33m\002Minishell $> \001\e[00m\002");
-		_ctrl_handler();
 		if (line != NULL && line[0] != '\0')
 		{
 			init_data(&data, envp);
