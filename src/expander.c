@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 21:52:49 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/21 13:57:16 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/22 19:00:15 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,39 +33,19 @@ char	*ft_strjoin2(char *str, char *buff)
 	if (str)
 		while (str[++i] != '\0')
 			dest[i] = str[i];
-	if(buff)
 	while (buff[++j] != '\0')
 		dest[i + j] = buff[j];
-	else
-		j++;
 	dest[i + j] = '\0';
 	free(str);
 	return (dest);
 }
 
-int check_exp(char *line)
+char	*search_env(char *key, t_data *data)
 {
-	size_t	i;
-
-	i = 0;
-	if(line[i] == '\"')
-		return (1);
-	while(line[i] == '\'')
-		i++;
-	if(i % 2 == 0)
-		return (0);
-	else
-		return (1);
-}
-
-char *search_env(char *key, t_data *data)
-{
-	size_t	i;
-	t_env *e;
-	t_list *lst;
+	t_env	*e;
+	t_list	*lst;
 
 	lst = data->envp;
-	i = 0;
 	while (lst)
 	{
 		e = lst->content;
@@ -83,65 +63,80 @@ int	exporting(char **result, char *line, int pos, t_data *data)
 	int		i;
 
 	i = pos;
-	while(line[i] == '$')
+	key = NULL;
+	while (line[i] == '$')
 		i++;
-	while(line[i] && line[i] != ' '&& line[i] != '\t' && line[i] != '\n'
-		&& line[i] != '\"' && line[i] != '\'')
-		{
-			append_char(&key, line[i]);
-			i++;
-		}
+	while (line[i] && line[i] != ' '&& line[i] != '\t' && line[i] != '\n'
+		&& line[i] != '\"' && line[i] != '\'' && line[i] != '$')
+			append_char(&key, line[i++]);
 		value = search_env(key, data);
 		*result = ft_strjoin2(*result, value);
+		if(value && value[0] != '\0')
+		free(value);
+		free(key);
 		return (i);
+}
+
+int	expand_dou_quote(char *line, int i, t_state *state,
+	char ** result, t_data *data)
+{
+	while (line[i] && *state == DOU_QUOTHE)
+	{
+		if(line[i] == '\"')
+		{
+			*state = check_state(line[i+1]);
+			i++;
+			break;
+		}
+		if (line[i] == '$')
+			i = exporting(result, line, i, data);
+		else
+			append_char(result, line[i++]);
+	}
+	return (i);
+}
+
+int	expand_sin_quote(char *line, int i, t_state *state, char **result)
+{
+	while (line[i] && *state == SIN_QUOTHE)
+	{
+		if (line[i] == '\'')
+		{
+			*state = check_state(line[i+1]);
+			i++;
+			break;
+		}
+		append_char(result, line[i]);
+		i++;
+	}
+	return (i);
 }
 
 char	*expander(char *line, t_data *data)
 {
-	char    *result;
+	char	*result;
 	int		i;
-	t_state state;
+	t_state	state;
 
 	i = 0;
 	state = DEFAULT;
-	while(line[i])
+	result = NULL;
+	while (line[i])
 	{
-		if(line[i] == '\'')
-		{
-			state = SIN_QUOTHE;
-			i++;
-		}
-		else if (line[i] == '\"')
-		{
-			state = DOU_QUOTHE;
-			i++;
-		}
-		while (line[i] && state == DOU_QUOTHE)
-		{
-			if(line[i] == '\"')
-			{
-				state = DEFAULT;
-				break;
-			}
-			if (line[i] == '$')
-				i = exporting(&result, line, i, data);
-			else
-				append_char(&result, line[i]);
-		}
-		while(line[i] && state == SIN_QUOTHE)
-		{
-			append_char(&result, line[i]);
-			if(line[i] == '\'')
-				state = DEFAULT;
-			i++;
-		}
+		if (line[i] == '\'' || line[i] == '\"')
+			state = check_state(line[i++]);
+		if (line[i] && state == DOU_QUOTHE)
+			i = expand_dou_quote(line, i, &state, &result, data);
+		else if(line[i] && state == SIN_QUOTHE)
+			i = expand_sin_quote(line, i, &state, &result);
 		if (state == DEFAULT && line[i] == '$')
 			i = exporting(&result, line, i, data);
-		i++;
+		else if (line[i] && state == DEFAULT)
+			append_char(&result, line[i++]);
 	}
-
 	return (result);
 }
+
 
 char	*check_expender(char *args, t_data *data)
 {
@@ -152,9 +147,10 @@ char	*check_expender(char *args, t_data *data)
 	{
 		if(args[i] == '$')
 		{
-			args[i] = expander(args[i], data);
+			args = expander(args, data);
 			break;
 		}
 		i++;
 	}
+	return (args);
 }
