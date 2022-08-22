@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/21 13:15:22 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/22 18:59:29 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct s_env
 	char	*value;
 }				t_env;
 
+void	ft_env_del(t_env *env);
 void	type_heredoc(t_token **token);
 t_env	*ft_env_new(char *name, char *value);
 void	ft_env_del(t_env *env);
