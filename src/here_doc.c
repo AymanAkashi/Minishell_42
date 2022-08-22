@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 16:10:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/21 13:18:12 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/22 18:54:39 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	parent_here_doc(int p[2], t_token **token, int pid)
 	int		len;
 
 		close(p[1]);
-		signal(SIGINT, SIG_IGN);
+		_ctrl_handler();
 		byte = read (p[0], &len, sizeof(int));
 		tmp = ft_any_alloc(sizeof(char), len + 1);
 		if(!tmp)
