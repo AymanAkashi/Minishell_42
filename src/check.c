@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:45:28 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/19 15:01:24 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/23 13:59:50 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int	check_quote(t_token *token)
 		if (tmp->type == TOKEN_WORD)
 		{
 			i = 0;
-			while (tmp->cmd[i])
+			while (tmp->cmd && tmp->cmd[i])
 			{
 				if (tmp->cmd[i] == '\"')
 				{
