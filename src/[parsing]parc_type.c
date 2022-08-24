@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   [parsing]parc_type.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 15:19:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/21 12:22:06 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/24 09:50:28 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_ast	*parc_opera(t_scanner *scan, t_ast *ast, t_data *data)
 	new->cmd = ft_strdup(scan->curr_token->cmd);
 	new->type = scan->curr_token->type;
 	new->left = ast;
+	new->args = NULL;
 	scanner_token(data->token, &scan);
 	if (scan->curr_token && (scan->curr_token->type == TOKEN_WORD
 			|| scan->curr_token->type == TOKEN_PIPE))
@@ -57,7 +58,7 @@ void	add_redirection(t_ast *ast, t_scanner *scan, t_data *data)
 	else
 	{
 		new->cmd = ft_strdup(scan->curr_token->cmd);
-		new->args = ft_any_alloc(sizeof(char *), 3);
+		new->args = ft_any_alloc(sizeof(char *), 4);
 		new->args[0] = ft_strdup(scan->curr_token->cmd);
 		new->type = scan->curr_token->type;
 		scanner_token(data->token, &scan);
@@ -77,7 +78,7 @@ t_ast	*parc_paren(t_scanner *scan, t_ast *ast, t_data *data)
 	new->in = 1;
 	scanner_token(data->token, &scan);
 	new = parcing(data, ast, scan);
-	if(is_redirection(scan->curr_token->type))
+	if(scan->curr_token && is_redirection(scan->curr_token->type))
 		add_redirection(new, scan, data);
 	if (scan->curr_token && scan->curr_token->type == TOKEN_PAREN_OUT)
 	{
@@ -105,6 +106,7 @@ t_ast	*parc_pipe(t_scanner *scan, t_data *data, t_ast *root, t_ast *ast)
 	new = ft_create_ast();
 	new->cmd = ft_strdup(scan->curr_token->cmd);
 	new->type = scan->curr_token->type;
+	new->args = NULL;
 	if (ast && ast->cmd)
 		new->left = ast;
 	else if (root && root->cmd
@@ -143,6 +145,7 @@ t_ast	*parc_cmd(t_scanner *scan, t_data *data)
 			scanner_token(scan->curr_token, &scan);
 		}
 	}
+	new->args[i] = NULL;
 	// check_expender(new->args, data);
 	return (new);
 }
