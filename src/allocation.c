@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   allocation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 18:39:29 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/02 20:09:07 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/23 15:22:42 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,17 @@ char	**alloc_tab(t_data *data, t_type_token type, t_scanner *scan)
 	char	**tab;
 	t_token	*tmp;
 
-	i = 0;
+	i = 1;
 	tmp = data->token;
 	while (scan && scan->curr_token != tmp)
 		tmp = tmp->next;
-	while (data->token && data->token->type == type)
+	tmp = tmp->next;
+	while (tmp && tmp->type == type)
 	{
-		data->token = data->token->next;
+		tmp = tmp->next;
 		i++;
 	}
 	tab = ft_any_alloc(sizeof(char *), i + 1);
-	data->token = tmp;
 	return (tab);
 }
 
