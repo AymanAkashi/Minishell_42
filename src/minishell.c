@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/22 19:04:07 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/25 18:41:54 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,8 +159,10 @@ int	main(int ac, char **av, char *envp[])
 	(void)ac, (void)av;
 	_ctrl_handler();
 	alloc_envp(&data, envp);
+	_hidectrl();
 	while (1)
 	{
+		// _ctrl_handler();
 		line = readline("\001\x1B[1;1;33m\002Minishell $> \001\e[00m\002");
 		if (line != NULL && line[0] != '\0')
 		{
@@ -189,6 +191,7 @@ int	main(int ac, char **av, char *envp[])
 			ctrl_d_handler(&data);
 		free(line);
 	}
+	_restctrl();
 	free_token(&data.token);
 	free_ast(data.root);
 	free(data.scanner);

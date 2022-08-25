@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 16:17:43 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/21 13:15:31 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/25 18:39:48 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include "minishell.h"
 
+void			_hidectrl(void);
+void			_restctrl(void);
 void			sigint_handler(int sig);
 void			_ctrl_handler(void);
 void			_reset_ctrl_handler(void);
