@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 15:19:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/24 09:50:28 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/25 15:43:51 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ void	add_ast(t_ast *ast, t_ast *new)
 	if (ast && ast->type == TOKEN_WORD && (ast->left == NULL || ast->right == NULL))
 	{
 		if (ast->left == NULL)
-			ast->left = new;
+			ast->left = copy_ast(new);
 		else if (ast->right == NULL)
-			ast->right = new;
+			ast->right = copy_ast(new);
 	}
 	else
 	{
