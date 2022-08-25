@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 20:12:24 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/25 18:50:10 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/25 19:20:10 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	_reset_ctrl_handler(void)
 void	ctrl_d_handler(t_data *data)
 {
 	(void)data;
-	printf("\x1B[1;A\x1B[13;Cexit\n");
+	printf("\n\x1B[0;A\x1B[13;Cexit\n");
 	rl_clear_history();
 	_restctrl();
 	exit(EXIT_SUCCESS);
