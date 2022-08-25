@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 15:44:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/21 11:04:10 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/25 15:44:24 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_ast{
 	char			*here_doc;
 }	t_ast;
 
-
+t_ast		*copy_ast(t_ast *ast);
 t_ast		*ft_create_ast(void);
 void		free_ast(t_ast *root);
 void		ast_add_left(t_ast **ast, t_ast *new);
