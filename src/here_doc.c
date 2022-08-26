@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 16:10:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/25 18:48:00 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/26 13:23:16 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	child_here_doc(int p[2], t_token **token)
 			free (line);
 			free_token(token);
 			close(p[1]);
-			_restctrl();
 			exit(1);
 		}
 		if (line[0] == '\0' && (((*token)->next->cmd[0] == '\"'
@@ -81,7 +80,7 @@ void	child_here_doc(int p[2], t_token **token)
 	free_token(token);
 }
 
-void	parent_here_doc(int p[2], t_token **token, int pid)
+void	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
 {
 	char	*tmp;
 	int		byte;
@@ -103,6 +102,8 @@ void	parent_here_doc(int p[2], t_token **token, int pid)
 	}
 	free(tmp);
 	waitpid(pid, NULL, 0);
+	if ((*token)->exp == 1 && (*token)->here_doc)
+		(*token)->here_doc = expand_heredoc((*token)->here_doc, data);
 	close(p[0]);
 }
 
@@ -141,11 +142,12 @@ char	*remove_quotes(char *str)
 	return (dest);
 }
 
-void	type_heredoc(t_token **token)
+void	type_heredoc(t_token **token, t_data *data)
 {
 	int	pid;
 	int	p[2];
 
+	(*token)->exp = 1;
 	if((*token)->next->cmd)
 		if (search_quote((*token)->next->cmd))
 			(*token)->exp = 0;
@@ -163,5 +165,5 @@ void	type_heredoc(t_token **token)
 	if (pid == 0)
 		child_here_doc(p, token);
 	else
-		parent_here_doc(p, token, pid);
+		parent_here_doc(p, token, pid, data);
 }

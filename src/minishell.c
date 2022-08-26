@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/25 18:41:54 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/26 12:33:08 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	disp(t_ast *tree, int ident, char *str) {
 	else if (tree->type == TOKEN_RED2_OUT && tree->cmd)
 		printf("[%s] REDIR2_OUT", str);
 	else if (tree->type == TOKEN_HEREDOC && tree->cmd)
-		printf("[%s] HEREDOC", str);
+		printf("[%s] HEREDOC = %s", str, tree->here_doc);
 	else if (tree->type == TOKEN_PAREN_IN)
 		printf("(");
 	else if (tree->type == TOKEN_PAREN_OUT)
@@ -141,14 +141,14 @@ void	init_data(t_data *data, char *envp[])
 	//************************ *****************************//
 }
 
-void	add_here_doc(t_token **token)
+void	add_here_doc(t_token **token, t_data *data)
 {
 	t_token *tmp;
 
 	tmp = *token;
 	while(tmp && tmp->type != TOKEN_HEREDOC)
 		tmp = tmp->next;
-	type_heredoc(&tmp);
+	type_heredoc(&tmp, data);
 }
 
 int	main(int ac, char **av, char *envp[])
@@ -179,7 +179,7 @@ int	main(int ac, char **av, char *envp[])
 				continue ;
 			}
 			if (data.here_doc == 1)
-				add_here_doc(&data.token);
+				add_here_doc(&data.token, &data);
 			scanner_token(data.token, &data.scanner);
 			data.root = parcing(&data, data.root, data.scanner);
 			disp(data.root, 0, "ROOT");
