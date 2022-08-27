@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/26 12:33:08 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/27 19:18:56 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,15 @@
 
 //************************Test_parcing********************//
 
-void	disp(t_ast *tree, int ident, char *str) {
+void	disp(t_ast *tree, int ident, char *str, t_data *data) {
 	if (!tree) return ;
 	for (int i = 0; i < ident; i++)
 		printf("---- ");
 	if (tree && tree->type == TOKEN_WORD && tree->cmd) {
-		printf("[%s]%s",str, tree->cmd);
+		if(!ft_strcmp(tree->cmd, "export"))
+			ft_export_new(data);
+		else
+			printf("[%s]%s",str, tree->cmd);
 	}
 	else if (tree->type == TOKEN_PIPE && tree->cmd) {
 		printf("[%s]PIPE",str);
@@ -83,8 +86,8 @@ void	disp(t_ast *tree, int ident, char *str) {
 	else if (tree->type == TOKEN_PAREN_OUT)
 		printf(")");
 	printf("\n");
-	disp(tree->left, ident + 1, "left");
-	disp(tree->right, ident + 1, "Right");
+	disp(tree->left, ident + 1, "left",data);
+	disp(tree->right, ident + 1, "Right",data);
 }
 
 //********************************************************/
@@ -115,6 +118,18 @@ int	size_ast(t_ast *ast)
 		return (i);
 }
 
+void	init_print_env(t_list *env)
+{
+	t_env	*e;
+
+	while (env)
+	{
+		e = env->content;
+		e->print = 0;
+		env = env->next;
+	}
+}
+
 void	init_data(t_data *data, char *envp[])
 {
 	data->token = (t_token *)malloc(sizeof(t_token));
@@ -127,7 +142,8 @@ void	init_data(t_data *data, char *envp[])
 	data->dou_quothe = 0;
 	data->sin_quothe = 0;
 	data->here_doc = 0;
-	//***********************envp**************************//
+	init_print_env(data->envp);
+	// //***********************envp**************************//
 	// t_env *e;
 	// t_list *lst;
 	// lst = data->envp;
@@ -138,7 +154,7 @@ void	init_data(t_data *data, char *envp[])
 	// 	data->envp = data->envp->next;
 	// }
 	// data->envp = lst  ;
-	//************************ *****************************//
+	// //************************ *****************************//
 }
 
 void	add_here_doc(t_token **token, t_data *data)
@@ -182,7 +198,7 @@ int	main(int ac, char **av, char *envp[])
 				add_here_doc(&data.token, &data);
 			scanner_token(data.token, &data.scanner);
 			data.root = parcing(&data, data.root, data.scanner);
-			disp(data.root, 0, "ROOT");
+			disp(data.root, 0, "ROOT", &data);
 			free_token(&data.token);
 			free_ast(data.root);
 			free(data.scanner);
