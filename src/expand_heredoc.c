@@ -6,11 +6,18 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 12:35:26 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/26 14:40:57 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/28 11:58:57 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	type_caracter(char c)
+{
+	if ((c >= '?' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_')
+		return (1);
+	return (0);
+}
 
 char	*expander_dollar(char *str, t_data *data)
 {
@@ -21,6 +28,8 @@ char	*expander_dollar(char *str, t_data *data)
 	result = NULL;
 	while (str[i])
 	{
+		while (str[i] == '$' && str[i + 1] == '$')
+			append_char(&result, str[i++]);
 		if (str[i] == '$')
 			i = exporting(&result, str, i, data);
 		else
@@ -36,7 +45,9 @@ char	*expand_heredoc(char *str, t_data *data)
 	i = 0;
 	while(str[i])
 	{
-		if(str[i] == '$')
+		while(str[i] == '$' && str[i + 1] == '$')
+			i++;
+		if(str[i] == '$' && type_caracter(str[i+1]))
 		{
 			str = expander_dollar(str, data);
 			break ;
