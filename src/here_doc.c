@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 16:10:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/22 18:54:39 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/26 13:23:16 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,64 +80,76 @@ void	child_here_doc(int p[2], t_token **token)
 	free_token(token);
 }
 
-void	parent_here_doc(int p[2], t_token **token, int pid)
+void	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
 {
 	char	*tmp;
 	int		byte;
 	int		len;
 
-		close(p[1]);
-		_ctrl_handler();
+	tmp = NULL;
+	close(p[1]);
+	_ctrl_handler();
+	byte = read (p[0], &len, sizeof(int));
+	tmp = ft_any_alloc(sizeof(char), len + 1);
+	byte = read (p[0], tmp, len);
+	while (byte > 0)
+	{
+		(*token)->here_doc = ft_strjoin_nl((*token)->here_doc, tmp, '\n');
+		ft_bzero(tmp, len);
 		byte = read (p[0], &len, sizeof(int));
 		tmp = ft_any_alloc(sizeof(char), len + 1);
-		if(!tmp)
-			printf("Error\n");
 		byte = read (p[0], tmp, len);
-		while (byte > 0)
-		{
-			(*token)->here_doc = ft_strjoin_nl((*token)->here_doc, tmp, '\n');
-			ft_bzero(tmp, len);
-			byte = read (p[0], &len, sizeof(int));
-			tmp = ft_any_alloc(sizeof(char), len + 1);
-			byte = read (p[0], tmp, len);
-		}
-		free(tmp);
-		waitpid(pid, NULL, 0);
-		close(p[0]);
+	}
+	free(tmp);
+	waitpid(pid, NULL, 0);
+	if ((*token)->exp == 1 && (*token)->here_doc)
+		(*token)->here_doc = expand_heredoc((*token)->here_doc, data);
+	close(p[0]);
+}
+
+int	search_quote(char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		if (str[i] == '\'' || str[i] == '\"')
+			return (1);
+	return (0);
 }
 
 char	*remove_quotes(char *str)
 {
-	char	*new;
 	int		i;
 	int		j;
-	int		len;
+	char	*dest;
 
-	i = 1;
 	j = 0;
-	if (!str)
-		return (NULL);
-	len = ft_strlen(str);
-	new = ft_any_alloc(sizeof(char), len - 1);
-	if (!new)
-		return (NULL);
-	while (str[i] && len - 1 > i)
-	{
-		new[j++] = str[i];
-		i++;
-	}
+	i = -1;
+	while(str[++i])
+		if (str[i] != '\'' && str[i] != '\"')
+			j++;
+	dest = ft_any_alloc(sizeof(char), j + 1);
+	if (!dest)
+		perror("Error allocation");
+	i = -1;
+	j = -1;
+	while(str[++i])
+		if(str[i] != '\'' && str[i] != '\"')
+			dest[++j] = str[i];
+	dest[++j] = '\0';
 	free(str);
-	new[j] = '\0';
-	return (new);
+	return (dest);
 }
 
-void	type_heredoc(t_token **token)
+void	type_heredoc(t_token **token, t_data *data)
 {
 	int	pid;
 	int	p[2];
 
+	(*token)->exp = 1;
 	if((*token)->next->cmd)
-		if ((*token)->next->cmd[0] == '\"' || (*token)->next->cmd[0] == '\'')
+		if (search_quote((*token)->next->cmd))
 			(*token)->exp = 0;
 	if (((*token)->next->cmd[0] == '\"' && (*token)->next->cmd[1] == '\"')
 		|| ((*token)->next->cmd[0] == '\'' && (*token)->next->cmd[1] == '\''))
@@ -145,10 +157,7 @@ void	type_heredoc(t_token **token)
 		free((*token)->next->cmd);
 		(*token)->next->cmd = ft_strdup("");
 	}
-	if (((*token)->next->cmd[0] == '\"'
-			&& (*token)->next->cmd[ft_strlen((*token)->next->cmd) - 1] == '\"')
-		|| ((*token)->next->cmd[0] == '\''
-			&& (*token)->next->cmd[ft_strlen((*token)->next->cmd) - 1] == '\''))
+	if (search_quote((*token)->next->cmd))
 			(*token)->next->cmd = remove_quotes((*token)->next->cmd);
 	if (pipe(p) == -1)
 		return ;
@@ -156,5 +165,5 @@ void	type_heredoc(t_token **token)
 	if (pid == 0)
 		child_here_doc(p, token);
 	else
-		parent_here_doc(p, token, pid);
+		parent_here_doc(p, token, pid, data);
 }

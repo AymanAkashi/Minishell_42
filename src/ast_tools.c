@@ -3,15 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ast_tools.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 15:43:52 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/25 15:44:52 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/27 15:09:29 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+t_ast	*last_ast(t_ast *root)
+{
+	t_ast *ast;
+
+	ast = root;
+	if (!ast)
+		return (NULL);
+	if(ast->right == NULL && ast->left == NULL)
+		return (ast);
+	else if (ast->left && !ast->right)
+		return (ast->left);
+	else
+		return (last_ast(ast->right));
+}
 
 char	**copy_args(char **args)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/22 19:04:07 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/27 19:18:56 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,15 @@
 
 //************************Test_parcing********************//
 
-void	disp(t_ast *tree, int ident, char *str) {
+void	disp(t_ast *tree, int ident, char *str, t_data *data) {
 	if (!tree) return ;
 	for (int i = 0; i < ident; i++)
 		printf("---- ");
 	if (tree && tree->type == TOKEN_WORD && tree->cmd) {
-		printf("[%s]%s",str, tree->cmd);
+		if(!ft_strcmp(tree->cmd, "export"))
+			ft_export_new(data);
+		else
+			printf("[%s]%s",str, tree->cmd);
 	}
 	else if (tree->type == TOKEN_PIPE && tree->cmd) {
 		printf("[%s]PIPE",str);
@@ -77,14 +80,14 @@ void	disp(t_ast *tree, int ident, char *str) {
 	else if (tree->type == TOKEN_RED2_OUT && tree->cmd)
 		printf("[%s] REDIR2_OUT", str);
 	else if (tree->type == TOKEN_HEREDOC && tree->cmd)
-		printf("[%s] HEREDOC", str);
+		printf("[%s] HEREDOC = %s", str, tree->here_doc);
 	else if (tree->type == TOKEN_PAREN_IN)
 		printf("(");
 	else if (tree->type == TOKEN_PAREN_OUT)
 		printf(")");
 	printf("\n");
-	disp(tree->left, ident + 1, "left");
-	disp(tree->right, ident + 1, "Right");
+	disp(tree->left, ident + 1, "left",data);
+	disp(tree->right, ident + 1, "Right",data);
 }
 
 //********************************************************/
@@ -115,6 +118,18 @@ int	size_ast(t_ast *ast)
 		return (i);
 }
 
+void	init_print_env(t_list *env)
+{
+	t_env	*e;
+
+	while (env)
+	{
+		e = env->content;
+		e->print = 0;
+		env = env->next;
+	}
+}
+
 void	init_data(t_data *data, char *envp[])
 {
 	data->token = (t_token *)malloc(sizeof(t_token));
@@ -127,7 +142,8 @@ void	init_data(t_data *data, char *envp[])
 	data->dou_quothe = 0;
 	data->sin_quothe = 0;
 	data->here_doc = 0;
-	//***********************envp**************************//
+	init_print_env(data->envp);
+	// //***********************envp**************************//
 	// t_env *e;
 	// t_list *lst;
 	// lst = data->envp;
@@ -138,17 +154,17 @@ void	init_data(t_data *data, char *envp[])
 	// 	data->envp = data->envp->next;
 	// }
 	// data->envp = lst  ;
-	//************************ *****************************//
+	// //************************ *****************************//
 }
 
-void	add_here_doc(t_token **token)
+void	add_here_doc(t_token **token, t_data *data)
 {
 	t_token *tmp;
 
 	tmp = *token;
 	while(tmp && tmp->type != TOKEN_HEREDOC)
 		tmp = tmp->next;
-	type_heredoc(&tmp);
+	type_heredoc(&tmp, data);
 }
 
 int	main(int ac, char **av, char *envp[])
@@ -159,8 +175,10 @@ int	main(int ac, char **av, char *envp[])
 	(void)ac, (void)av;
 	_ctrl_handler();
 	alloc_envp(&data, envp);
+	_hidectrl();
 	while (1)
 	{
+		// _ctrl_handler();
 		line = readline("\001\x1B[1;1;33m\002Minishell $> \001\e[00m\002");
 		if (line != NULL && line[0] != '\0')
 		{
@@ -177,10 +195,10 @@ int	main(int ac, char **av, char *envp[])
 				continue ;
 			}
 			if (data.here_doc == 1)
-				add_here_doc(&data.token);
+				add_here_doc(&data.token, &data);
 			scanner_token(data.token, &data.scanner);
 			data.root = parcing(&data, data.root, data.scanner);
-			disp(data.root, 0, "ROOT");
+			disp(data.root, 0, "ROOT", &data);
 			free_token(&data.token);
 			free_ast(data.root);
 			free(data.scanner);
@@ -189,6 +207,7 @@ int	main(int ac, char **av, char *envp[])
 			ctrl_d_handler(&data);
 		free(line);
 	}
+	_restctrl();
 	free_token(&data.token);
 	free_ast(data.root);
 	free(data.scanner);

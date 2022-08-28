@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 07:39:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/20 13:51:55 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/26 13:18:45 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	free_token(t_token **token)
 	while (*token != NULL)
 	{
 		tmp = *token;
+		if ((*token)->type == TOKEN_HEREDOC)
+			free((*token)->here_doc);
 		free((*token)->cmd);
 		*token = (*token)->next;
 		free(tmp);
