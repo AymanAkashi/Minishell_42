@@ -6,11 +6,11 @@
 /*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:55:04 by yjarhbou          #+#    #+#             */
-/*   Updated: 2022/08/27 20:38:43 by yjarhbou         ###   ########.fr       */
+/*   Updated: 2022/08/28 20:42:11 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "minishell.h"
 
 int	ft_echo(char **cmd)
 {

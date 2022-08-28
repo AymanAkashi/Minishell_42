@@ -17,3 +17,14 @@ void	ft_env(t_data *data)
 	data->export = lst  ;
 	//************************ *****************************//
 }
+
+	// t_env *e;
+	// t_list *lst;
+	// lst = data->export;
+	// for (int i = 0;data->export; i++)
+	// {
+	// 	e = data->export->content;
+	// 	printf("[name]%s === [value]%s\n", e->name, e->value);
+	// 	data->export = data->export->next;
+	// }
+	// data->export = lst  ;
