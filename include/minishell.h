@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/27 14:49:47 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/29 12:53:02 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,17 @@ typedef struct s_env
 	int		print;
 }				t_env;
 
+void		execution(t_data *data, t_ast *root);
+void		add_path(t_data *data);
 void		update_data(t_ast *ast, t_data *data);
 char		*expand_heredoc(char *str, t_data *data);
 int			exporting(char **result, char *line, int pos, t_data *data);
+char		*ft_strjoin2(char *str, char *buff);
 void		ft_env_del(t_env *env);
 void		type_heredoc(t_token **token, t_data *data);
 t_env		*ft_env_new(char *name, char *value);
 void		ft_env_del(t_env *env);
-void		alloc_envp(t_data *data, char *envp[]);
+void		alloc_envp(t_data *data, char *envp[], t_list *head);
 void		ft_export_new(t_data *data);
 
 
