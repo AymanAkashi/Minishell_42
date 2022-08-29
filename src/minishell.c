@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/27 19:18:56 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/29 12:53:22 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,9 @@ void	init_data(t_data *data, char *envp[])
 	data->sin_quothe = 0;
 	data->here_doc = 0;
 	init_print_env(data->envp);
+	//********PAth test*********************//
+	// for (int i = 0; data->path[i]; i++)
+	// 	printf("[%d]==%s\n",i,data->path[i]);
 	// //***********************envp**************************//
 	// t_env *e;
 	// t_list *lst;
@@ -174,7 +177,8 @@ int	main(int ac, char **av, char *envp[])
 
 	(void)ac, (void)av;
 	_ctrl_handler();
-	alloc_envp(&data, envp);
+	alloc_envp(&data, envp,data.envp);
+	add_path(&data);
 	_hidectrl();
 	while (1)
 	{
@@ -198,7 +202,8 @@ int	main(int ac, char **av, char *envp[])
 				add_here_doc(&data.token, &data);
 			scanner_token(data.token, &data.scanner);
 			data.root = parcing(&data, data.root, data.scanner);
-			disp(data.root, 0, "ROOT", &data);
+			execution(&data, data.root);
+			// disp(data.root, 0, "ROOT", &data);
 			free_token(&data.token);
 			free_ast(data.root);
 			free(data.scanner);
