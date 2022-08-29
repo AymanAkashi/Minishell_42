@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 21:52:49 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/22 19:00:15 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/29 20:16:01 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ char	*check_expender(char *args, t_data *data)
 	i = 0;
 	while(args[i] && !is_token(args[i]))
 	{
-		if(args[i] == '$')
+		if(args[i] == '$' || args[i] == '\'' || args[i] == '\"')
 		{
 			args = expander(args, data);
 			break;
