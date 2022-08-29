@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 18:07:51 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/27 19:18:01 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/29 12:03:50 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@
 // 	*line = dest;
 // }
 
+void	add_path(t_data *data)
+{
+	data->path = ft_split(search_env("PATH", data), ':');
+	if (!data->path)
+		perror(*data->path);
+}
+
 void	alloc_empty_envp(t_data *data)
 {
 	char *pwd;
@@ -44,15 +51,20 @@ void	alloc_empty_envp(t_data *data)
 	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("_","/usr/bin/env")));
 }
 
-void	alloc_envp(t_data *data, char *envp[])
+void	add_oldpwd(t_env *e,t_list **lst)
 {
-	int i;
-	t_list *head;
-	char *tmp;
-	t_env *e;
-	int		o;
+	ft_env_new("OLDPWD", "");
+	ft_lstadd_back(lst, ft_lstnew(e));
+}
 
-	i = 1;
+void	alloc_envp(t_data *data, char *envp[], t_list *head)
+{
+	int		i;
+	int		o;
+	char	*tmp;
+	t_env 	*e;
+
+	i = 0;
 	o = 0;
 	if (!*envp)
 		alloc_empty_envp(data);
@@ -63,7 +75,7 @@ void	alloc_envp(t_data *data, char *envp[])
 		e = ft_env_new(envp[0], tmp);
 		data->envp = ft_lstnew(e);
 		head = data->envp;
-		while (envp[i])
+		while (envp[++i])
 		{
 			tmp = ft_strchr(envp[i], '=') + 1;
 			*ft_strchr(envp[i], '=') = '\0';
@@ -75,13 +87,9 @@ void	alloc_envp(t_data *data, char *envp[])
 			else
 				e = ft_env_new(envp[i], tmp);
 			ft_lstadd_back(&head, ft_lstnew(e));
-			i++;
 		}
 		if (!o)
-		{
-			ft_env_new("OLDPWD", "");
-			ft_lstadd_back(&head, ft_lstnew(e));
-		}
+			add_oldpwd(e,&head);
 		ft_lstadd_back(&head, NULL);
 		data->envp = head;
 	}
