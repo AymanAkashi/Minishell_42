@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 16:10:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/26 13:23:16 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/31 18:04:27 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,12 @@ void	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
 	while (byte > 0)
 	{
 		(*token)->here_doc = ft_strjoin_nl((*token)->here_doc, tmp, '\n');
-		ft_bzero(tmp, len);
+		ft_bzero(tmp, len - 1);
 		byte = read (p[0], &len, sizeof(int));
 		tmp = ft_any_alloc(sizeof(char), len + 1);
 		byte = read (p[0], tmp, len);
 	}
+	(*token)->here_doc = ft_strjoin((*token)->here_doc,"\n");
 	free(tmp);
 	waitpid(pid, NULL, 0);
 	if ((*token)->exp == 1 && (*token)->here_doc)
