@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 21:52:49 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/29 20:16:01 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/31 10:19:44 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	exporting(char **result, char *line, int pos, t_data *data)
 	while (line[i] == '$')
 		i++;
 	while (line[i] && line[i] != ' '&& line[i] != '\t' && line[i] != '\n'
-		&& line[i] != '\"' && line[i] != '\'' && line[i] != '$')
+		&& line[i] != '\"' && line[i] != '\'' && line[i] != '$' && (ft_isalpha(line[i]) || line[i] == '_'))
 			append_char(&key, line[i++]);
 		value = search_env(key, data);
 		*result = ft_strjoin2(*result, value);
