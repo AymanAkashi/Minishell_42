@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/31 16:14:26 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/31 18:44:23 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,22 @@ void	child_cmd(t_ast *ast, t_data *data, int absolut, char *str)
 int	execut_redirection(t_ast *ast, t_ast *red ,t_data *data)
 {
 	(void)data;
+	int pip[2];
+
 	if (red->type == TOKEN_RED_IN)
 		ast->in = open(red->args[1], O_RDONLY);
 	if (red->type == TOKEN_RED_OUT)
 		ast->out = open(red->args[1], O_CREAT | O_RDWR | O_TRUNC, 0000644);
 	if (red->type == TOKEN_RED2_OUT)
 		ast->out = open(red->args[1], O_CREAT | O_RDWR | O_APPEND, 0000644);
+	if (red->type ==TOKEN_HEREDOC)
+	{
+		if(pipe(pip) == -1)
+			perror("Pipe :");
+		ft_putstr_fd(red->here_doc, pip[1]);
+		ast->in = pip[0];
+		close(pip[1]);
+	}
 	if (ast->in == -1 || ast->out == -1)
 	{
 		if (ast->in == -1)
@@ -134,7 +144,6 @@ void	execut_cmd(t_ast *ast, t_data *data)
 	int		absolut;
 
 	status = 0;
-	
 	if (ast->left)
 		if (is_redirection(ast->left->type))
 			if (!execut_redirection(ast, ast->left, data))
@@ -145,12 +154,14 @@ void	execut_cmd(t_ast *ast, t_data *data)
 				return ;
 	str = check_expender(ast->cmd, data);
 	absolut = check_cmd(str, data);
-	_restctrl();
 	if (!absolut)
 		perror(str); // TODO check exit status "127"
+	_restctrl();
 	pid = fork();
 	if (pid == 0)
 	{
+		_reset_ctrl_handler();
+		signal(SIGQUIT, SIG_DFL);
 		dup2(ast->in, STDIN_FILENO);
 		dup2(ast->out, STDOUT_FILENO);
 		if (ast->in != STDIN_FILENO)
@@ -159,9 +170,8 @@ void	execut_cmd(t_ast *ast, t_data *data)
 			close(ast->out);
 		child_cmd(ast, data, absolut, str);
 	}
-	waitpid(pid, &status, 0);
-	g_exitstatus = WEXITSTATUS(status);
-	_hidectrl();
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void	exec_or(t_ast *ast, t_data *data)
