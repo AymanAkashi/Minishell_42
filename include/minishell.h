@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/31 09:01:45 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/31 18:48:00 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_env
 	int		print;
 }				t_env;
 
+void		wait_all(void);
 void		execution(t_data *data, t_ast *root);
 void		add_path(t_data *data);
 void		update_data(t_ast *ast, t_data *data);

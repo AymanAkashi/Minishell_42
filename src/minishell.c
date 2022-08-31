@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/29 12:53:22 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/08/31 18:47:05 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,14 +176,15 @@ int	main(int ac, char **av, char *envp[])
 	t_data	data;
 
 	(void)ac, (void)av;
-	_ctrl_handler();
 	alloc_envp(&data, envp,data.envp);
 	add_path(&data);
 	_hidectrl();
 	while (1)
 	{
 		// _ctrl_handler();
-		line = readline("\001\x1B[1;1;33m\002Minishell $> \001\e[00m\002");
+		// line = readline("\001\x1B[1;1;33m\002Minishell $> \001\e[00m\002");
+		_ctrl_handler();
+		line = readline("Minishell $>");
 		if (line != NULL && line[0] != '\0')
 		{
 			init_data(&data, envp);
@@ -202,8 +203,10 @@ int	main(int ac, char **av, char *envp[])
 				add_here_doc(&data.token, &data);
 			scanner_token(data.token, &data.scanner);
 			data.root = parcing(&data, data.root, data.scanner);
-			execution(&data, data.root);
 			// disp(data.root, 0, "ROOT", &data);
+			execution(&data, data.root);
+			wait_all();
+			_hidectrl();
 			free_token(&data.token);
 			free_ast(data.root);
 			free(data.scanner);
