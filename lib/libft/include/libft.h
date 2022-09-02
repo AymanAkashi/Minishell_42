@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 17:24:23 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/10 18:53:03 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/01 02:47:36 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,20 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+
+// //***********************envp**************************//
+// 	t_env *e;
+// 	t_list *lst;
+// 	lst = data->envp;
+// 	for (int i = 0;data->envp; i++)
+// 	{
+// 		e = data->envp->content;
+// 		printf("[name]%s === [value]%s\n", e->name, e->value);
+// 		data->envp = data->envp->next;
+// 	}
+// 	data->envp = lst  ;
+	//************************ *****************************//
+
 
 typedef struct s_list
 {
