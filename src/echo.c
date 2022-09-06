@@ -6,7 +6,7 @@
 /*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:55:04 by yjarhbou          #+#    #+#             */
-/*   Updated: 2022/09/01 04:38:53 by yjarhbou         ###   ########.fr       */
+/*   Updated: 2022/09/06 01:41:42 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	ft_echo(char **cmd)
 {
 	int	i;
 	int	nextl;
+	int	j;
 
 	i = 1;
 	nextl = 0;
@@ -53,9 +54,10 @@ int	ft_echo(char **cmd)
 		nextl = 1;
 		i++;
 	}
-	while (cmd[i++])
-		write(1, &cmd[i], 1);
+	while (cmd[i])
+		ft_putstr(cmd[i++]);
 	if (nextl == 0)
 		write(1, "\n", 1);
 	return (0);
 }
+
