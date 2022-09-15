@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/15 22:56:06 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/15 23:15:33 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,10 +144,10 @@ int	is_builting(char *str)
 	return (0);
 }
 
-void	exec_builting(char *str, t_data *data)
+void	exec_builting(char *str, t_data *data, char **args)
 {
-	// if (ft_strcmp(str, "echo") == 0)
-	// 	echo();
+	if (ft_strcmp(str, "echo") == 0)
+		ft_echo(args, data);
 	// else if (ft_strcmp(str, "cd"))
 	// 	ft_cd();
 	if (!ft_strcmp(str, "export"))
@@ -176,7 +176,7 @@ void	execut_cmd(t_ast *ast, t_data *data)
 	str = check_expender(ast->cmd, data);
 	absolut = check_cmd(str, data);
 	if (is_builting(str))
-		exec_builting(str,data);
+		exec_builting(str, data, ast->args);
 	else
 	{
 		_restctrl();
