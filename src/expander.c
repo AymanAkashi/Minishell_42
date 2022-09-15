@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 21:52:49 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/02 19:19:21 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/15 23:24:26 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,16 @@ int	exporting(char **result, char *line, int pos, t_data *data)
 		*result = ft_strjoin2(*result, ft_itoa(g_exitstatus));
 		i++;
 	}
-	while (line[i] && line[i] != ' '&& line[i] != '\t' && line[i] != '\n'
-		&& line[i] != '\"' && line[i] != '\'' && line[i] != '$' && (ft_isalpha(line[i]) || line[i] == '_'))
-			append_char(&key, line[i++]);
-		value = search_env(key, data);
-		*result = ft_strjoin2(*result, value);
-		if(value && value[0] != '\0')
+	while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '\n'
+		&& line[i] != '\"' && line[i] != '\'' && line[i] != '$'
+		&& (ft_isalpha(line[i]) || line[i] == '_'))
+		append_char(&key, line[i++]);
+	value = search_env(key, data);
+	*result = ft_strjoin2(*result, value);
+	if (value && value[0] != '\0')
 		free(value);
-		free(key);
-		return (i);
+	free(key);
+	return (i);
 }
 
 int	expand_dou_quote(char *line, int i, t_state *state,
