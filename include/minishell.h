@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/31 18:48:00 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/15 22:48:42 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <termios.h>
+# include <dirent.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -45,8 +46,15 @@ typedef struct s_env
 	int		print;
 }				t_env;
 
-void		wait_all(void);
+char		**check_args(char **args);
+char		*ft_revsplit(char **str, char *sep);
+int			check_str(char *str, char *src);
+int			check_wildcard(char *str);
+char		**wild(char *str);
+void		wait_all(pid_t pid);
 void		execution(t_data *data, t_ast *root);
+void		exec_block(t_ast *ast, t_data *data);
+void		execut_pipe(t_ast *ast, t_data *data);
 void		add_path(t_data *data);
 void		update_data(t_ast *ast, t_data *data);
 char		*expand_heredoc(char *str, t_data *data);

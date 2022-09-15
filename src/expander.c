@@ -6,11 +6,13 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 21:52:49 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/31 10:19:44 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/02 19:19:21 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int g_exitstatus;
 
 char	*ft_strjoin2(char *str, char *buff)
 {
@@ -56,6 +58,16 @@ char	*search_env(char *key, t_data *data)
 	return ("");
 }
 
+/**
+ * It takes a line, and a position in that line, and returns the position of the end of the variable name
+ * 
+ * @param result the string that will be returned
+ * @param line the line of code that is being parsed
+ * @param pos the position in the line where the $ is found
+ * @param data the data structure that contains the environment variables
+ * 
+ * @return The position of the last character that was added to the result string.
+ */
 int	exporting(char **result, char *line, int pos, t_data *data)
 {
 	char	*key;
@@ -66,6 +78,11 @@ int	exporting(char **result, char *line, int pos, t_data *data)
 	key = NULL;
 	while (line[i] == '$')
 		i++;
+	if (line[i] == '?')
+	{
+		*result = ft_strjoin2(*result, ft_itoa(g_exitstatus));
+		i++;
+	}
 	while (line[i] && line[i] != ' '&& line[i] != '\t' && line[i] != '\n'
 		&& line[i] != '\"' && line[i] != '\'' && line[i] != '$' && (ft_isalpha(line[i]) || line[i] == '_'))
 			append_char(&key, line[i++]);
@@ -112,6 +129,15 @@ int	expand_sin_quote(char *line, int i, t_state *state, char **result)
 	return (i);
 }
 
+/**
+ * It takes a string, and
+ * returns a string with all the variables expanded
+ * 
+ * @param line the line to be expanded
+ * @param data a pointer to the data structure
+ * 
+ * @return a pointer to a string.
+ */
 char	*expander(char *line, t_data *data)
 {
 	char	*result;

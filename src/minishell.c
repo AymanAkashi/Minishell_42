@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/31 18:47:05 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/03 16:21:43 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,21 +170,38 @@ void	add_here_doc(t_token **token, t_data *data)
 	type_heredoc(&tmp, data);
 }
 
-int	main(int ac, char **av, char *envp[])
+char **copy_table(char **envp)
+{
+	char **dest;
+	int i;
+
+	i = 0;
+	while (envp[i])
+		i++;
+	dest = ft_calloc(i + 1, sizeof(char *));
+	i = -1;
+	while (envp[++i])
+		dest[i] = ft_strdup(envp[i]);
+	dest[i] = NULL;
+	return (dest);
+}
+
+
+int	main(int ac, char **av, char **envp)
 {
 	char	*line;
 	t_data	data;
 
 	(void)ac, (void)av;
-	alloc_envp(&data, envp,data.envp);
+	data.env = copy_table(envp);
+	alloc_envp(&data, data.env,data.envp);
 	add_path(&data);
+	g_exitstatus = 0;
 	_hidectrl();
 	while (1)
 	{
-		// _ctrl_handler();
-		// line = readline("\001\x1B[1;1;33m\002Minishell $> \001\e[00m\002");
 		_ctrl_handler();
-		line = readline("Minishell $>");
+		line = readline("\001\x1B[1;1;33m\002Minishell $> \001\e[00m\002");
 		if (line != NULL && line[0] != '\0')
 		{
 			init_data(&data, envp);
@@ -205,7 +222,7 @@ int	main(int ac, char **av, char *envp[])
 			data.root = parcing(&data, data.root, data.scanner);
 			// disp(data.root, 0, "ROOT", &data);
 			execution(&data, data.root);
-			wait_all();
+			// wait_all();
 			_hidectrl();
 			free_token(&data.token);
 			free_ast(data.root);

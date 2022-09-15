@@ -6,11 +6,13 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/31 18:44:23 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/15 22:56:06 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern int g_exitstatus;
 
 char	*get_thecmd(char **path, char *cmd)
 {
@@ -90,16 +92,18 @@ void	child_cmd(t_ast *ast, t_data *data, int absolut, char *str)
 	envp = list_to_args(data->envp);
 	while(ast->args[++i])
 		ast->args[i] = check_expender(ast->args[i], data);
-	if (absolut == 1)
+	if (absolut == 2)
 	{
-		cmd = get_thecmd(data->path, str);
-		execve(cmd, ast->args, envp);
-		exit(1);
+		execve(str, ast->args, envp);
+		ft_putstr_fd("command not found\n", 2);
+		exit(127);
 	}
 	else
 	{
-		execve(str, ast->args, envp);
-		exit(1);
+		cmd = get_thecmd(data->path, str);
+		execve(cmd, ast->args, envp);
+		ft_putstr_fd("command not found\n", 2);
+		exit(127);
 	}
 }
 
@@ -114,7 +118,7 @@ int	execut_redirection(t_ast *ast, t_ast *red ,t_data *data)
 		ast->out = open(red->args[1], O_CREAT | O_RDWR | O_TRUNC, 0000644);
 	if (red->type == TOKEN_RED2_OUT)
 		ast->out = open(red->args[1], O_CREAT | O_RDWR | O_APPEND, 0000644);
-	if (red->type ==TOKEN_HEREDOC)
+	if (red->type ==TOKEN_HEREDOC)//part heredoc-------
 	{
 		if(pipe(pip) == -1)
 			perror("Pipe :");
@@ -133,8 +137,23 @@ int	execut_redirection(t_ast *ast, t_ast *red ,t_data *data)
 	return (1);
 }
 
-void	exec_block(t_ast *ast, t_data *data);
-void	execut_pipe(t_ast *ast, t_data *data);
+int	is_builting(char *str)
+{
+	if (!ft_strcmp(str, "echo") || !ft_strcmp(str, "cd") || !ft_strcmp(str, "export"))
+		return (1);
+	return (0);
+}
+
+void	exec_builting(char *str, t_data *data)
+{
+	// if (ft_strcmp(str, "echo") == 0)
+	// 	echo();
+	// else if (ft_strcmp(str, "cd"))
+	// 	ft_cd();
+	if (!ft_strcmp(str, "export"))
+		ft_export_new(data);
+	//.........
+}
 
 void	execut_cmd(t_ast *ast, t_data *data)
 {
@@ -144,6 +163,7 @@ void	execut_cmd(t_ast *ast, t_data *data)
 	int		absolut;
 
 	status = 0;
+	str = NULL;
 	if (ast->left)
 		if (is_redirection(ast->left->type))
 			if (!execut_redirection(ast, ast->left, data))
@@ -152,26 +172,31 @@ void	execut_cmd(t_ast *ast, t_data *data)
 		if (is_redirection(ast->right->type))
 			if (!execut_redirection(ast, ast->right, data))
 				return ;
+	ast->args = check_args(ast->args);
 	str = check_expender(ast->cmd, data);
 	absolut = check_cmd(str, data);
-	if (!absolut)
-		perror(str); // TODO check exit status "127"
-	_restctrl();
-	pid = fork();
-	if (pid == 0)
+	if (is_builting(str))
+		exec_builting(str,data);
+	else
 	{
-		_reset_ctrl_handler();
-		signal(SIGQUIT, SIG_DFL);
-		dup2(ast->in, STDIN_FILENO);
-		dup2(ast->out, STDOUT_FILENO);
-		if (ast->in != STDIN_FILENO)
-			close(ast->in);
-		if (ast->out != STDOUT_FILENO)
-			close(ast->out);
-		child_cmd(ast, data, absolut, str);
+		_restctrl();
+		pid = fork();
+		if (pid == 0)
+		{
+			_reset_ctrl_handler();
+			signal(SIGQUIT, SIG_DFL);
+			dup2(ast->in, STDIN_FILENO);
+			dup2(ast->out, STDOUT_FILENO);
+			if (ast->in != STDIN_FILENO)
+				close(ast->in);
+			if (ast->out != STDOUT_FILENO)
+				close(ast->out);
+			child_cmd(ast, data, absolut, str);
+		}
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		wait_all(pid);
 	}
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
 }
 
 void	exec_or(t_ast *ast, t_data *data)
@@ -184,7 +209,7 @@ void	exec_or(t_ast *ast, t_data *data)
 void	exec_and(t_ast *ast, t_data *data)
 {
 	exec_block(ast->left, data);
-		if (g_exitstatus == 0)
+	if (g_exitstatus == 0)
 		exec_block(ast->right, data);
 }
 
@@ -210,7 +235,10 @@ void	execut_pipe(t_ast *ast, t_data *data)
 	int pip[2];
 
 	if (ast->type == TOKEN_PIPE || ast->type == TOKEN_AND || ast->type == TOKEN_OR)
+	{
 		ast->left->in = ast->in;
+		ast->right->in = ast->in;
+	}
 	if (is_redirection(ast->type))
 		execut_redirection(ast, ast, data);
 	else if (ast->type == TOKEN_WORD)

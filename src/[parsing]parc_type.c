@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   [parsing]parc_type.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 15:19:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/25 15:43:51 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/03 13:59:29 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,16 @@ void	add_ast(t_ast *ast, t_ast *new)
 	}
 	else
 	{
-	if (ast && ast->left)
-		add_ast(ast->left, new);
-	if(ast && ast->right)
-		add_ast(ast->right, new);
+		if (ast->type == TOKEN_PIPE && (new->type == TOKEN_RED_OUT
+			|| new->type == TOKEN_RED2_OUT))
+				add_ast(ast->right, new);
+		else
+		{
+			if (ast && ast->left)
+				add_ast(ast->left, new);
+			if(ast && ast->right)
+				add_ast(ast->right, new);
+		}
 	}
 }
 

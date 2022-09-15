@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 18:47:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/31 18:47:46 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/03 13:00:29 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,20 @@ void	set_signal(int sig)
 		printf("QUIT: 3");
 }
 
-void	wait_all(void)
+void	wait_all(pid_t pid)
 {
 	int	status;
 
-	while(waitpid(-1, &status, 0) != -1)
+	if (waitpid(pid, &status, 0) != -1)
 	{
 		if (WIFSIGNALED(status))
 		{
 			g_exitstatus = 128+WTERMSIG(status);
 			set_signal(WTERMSIG(status));
+		}
+		if (WIFEXITED(status))
+		{
+			g_exitstatus = WEXITSTATUS(status);
 		}
 	}
 }
