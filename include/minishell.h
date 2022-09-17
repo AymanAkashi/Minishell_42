@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/15 22:48:42 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/17 21:39:42 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <dirent.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -46,6 +47,7 @@ typedef struct s_env
 	int		print;
 }				t_env;
 
+int			type_caracter(char c);
 char		**check_args(char **args);
 char		*ft_revsplit(char **str, char *sep);
 int			check_str(char *str, char *src);

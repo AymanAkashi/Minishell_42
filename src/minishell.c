@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/03 16:21:43 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/16 21:11:45 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,7 @@ int	main(int ac, char **av, char **envp)
 			data.root = parcing(&data, data.root, data.scanner);
 			// disp(data.root, 0, "ROOT", &data);
 			execution(&data, data.root);
-			// wait_all();
+			wait_all(0);
 			_hidectrl();
 			free_token(&data.token);
 			free_ast(data.root);
