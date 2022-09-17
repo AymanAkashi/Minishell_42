@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/15 22:56:06 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/17 21:37:49 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ void	child_cmd(t_ast *ast, t_data *data, int absolut, char *str)
 	int		i;
 
 	i = -1;
-	// if (ast->in != STDIN_FILENO)
+	if (ast->in != STDIN_FILENO)
 		dup2(ast->in, 0);
-	// if (ast->out != STDOUT_FILENO)
+	if (ast->out != STDOUT_FILENO)
 		dup2(ast->out, 1);
 	envp = list_to_args(data->envp);
 	while(ast->args[++i])
@@ -175,9 +175,9 @@ void	execut_cmd(t_ast *ast, t_data *data)
 	ast->args = check_args(ast->args);
 	str = check_expender(ast->cmd, data);
 	absolut = check_cmd(str, data);
-	if (is_builting(str))
-		exec_builting(str,data);
-	else
+	// if (is_builting(str))
+	// 	exec_builting(str,data);
+	// else
 	{
 		_restctrl();
 		pid = fork();
@@ -195,7 +195,7 @@ void	execut_cmd(t_ast *ast, t_data *data)
 		}
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
-		wait_all(pid);
+		// wait_all(pid);
 	}
 }
 
