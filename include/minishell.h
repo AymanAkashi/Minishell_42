@@ -6,7 +6,7 @@
 /*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/15 23:13:54 by yjarhbou         ###   ########.fr       */
+/*   Updated: 2022/09/18 18:42:57 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,10 @@ void		append_char(char **line, char c);
 void		free_table(char **table);
 char		**alloc_tab(t_data *data, t_type_token type, t_scanner *scan);
 //****************************************************************
+
+
+int ft_cd(t_data *data, char **cmd);
+t_env *ft_get_env(void *env);
+int ft_update_oldpwd(t_list *env);
 
 #endif /* MINISHELL_H */
