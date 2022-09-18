@@ -6,7 +6,7 @@
 /*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:59:50 by yjarhbou          #+#    #+#             */
-/*   Updated: 2022/09/18 18:50:06 by yjarhbou         ###   ########.fr       */
+/*   Updated: 2022/09/18 19:00:04 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ static int go_to_path(t_data *data,char **cmd)
 
 int ft_cd(t_data *data, char **cmd)
 {
+	printf("%s", cmd[0]);
     if (ft_strcmp(cmd[0], "cd") || ft_strcmp(cmd[0], "CD"))
         return (1);
     g_exitstatus = 0;
