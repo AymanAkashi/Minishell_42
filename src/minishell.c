@@ -6,11 +6,13 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/03 16:21:43 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/19 06:15:31 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_exitstatus;
 
 //************____Test_Tokenization____*****************//
 // void	test_tokenization(t_token *token)

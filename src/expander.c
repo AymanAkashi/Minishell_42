@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 21:52:49 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/15 23:24:26 by yjarhbou         ###   ########.fr       */
+/*   Updated: 2022/09/17 21:33:42 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,23 +76,24 @@ int	exporting(char **result, char *line, int pos, t_data *data)
 
 	i = pos;
 	key = NULL;
-	while (line[i] == '$')
+	while(line[i] == '$' &&( line[i + 1] == '$' || !type_caracter(line[i + 1])))
+		append_char(result, line[i++]);
+	if(line[i] == '$')
 		i++;
 	if (line[i] == '?')
 	{
 		*result = ft_strjoin2(*result, ft_itoa(g_exitstatus));
 		i++;
 	}
-	while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '\n'
-		&& line[i] != '\"' && line[i] != '\'' && line[i] != '$'
-		&& (ft_isalpha(line[i]) || line[i] == '_'))
-		append_char(&key, line[i++]);
-	value = search_env(key, data);
-	*result = ft_strjoin2(*result, value);
-	if (value && value[0] != '\0')
+	while (line[i] && line[i] != ' '&& line[i] != '\t' && line[i] != '\n'
+		&& line[i] != '\"' && line[i] != '\'' && line[i] != '$' && (ft_isalpha(line[i]) || line[i] == '_'))
+			append_char(&key, line[i++]);
+		value = search_env(key, data);
+		*result = ft_strjoin2(*result, value);
+		if(value && value[0] != '\0')
 		free(value);
-	free(key);
-	return (i);
+		free(key);
+		return (i);
 }
 
 int	expand_dou_quote(char *line, int i, t_state *state,
@@ -172,7 +173,10 @@ char	*check_expender(char *args, t_data *data)
 	i = 0;
 	while(args[i] && !is_token(args[i]))
 	{
-		if(args[i] == '$' || args[i] == '\'' || args[i] == '\"')
+		while(args[i] == '$' && args[i + 1] == '$')
+			i++;
+		if((args[i] == '$' || args[i] == '\'' || args[i] == '\"')
+			&& type_caracter(args[i + 1]))
 		{
 			args = expander(args, data);
 			break;

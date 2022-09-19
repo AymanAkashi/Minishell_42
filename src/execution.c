@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/18 18:56:52 by yjarhbou         ###   ########.fr       */
+/*   Updated: 2022/09/19 06:19:46 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void	exec_builting(char *str, t_data *data, char **args)
 {
 	if (ft_strcmp(str, "echo") == 0)
 		ft_echo(args, data);
-	else if (ft_strcmp(str, "cd"))
+	else if (!ft_strcmp(str, "cd"))
 		ft_cd(data, args);
 	if (!ft_strcmp(str, "export"))
 		ft_export_new(data);
@@ -159,10 +159,8 @@ void	execut_cmd(t_ast *ast, t_data *data)
 {
 	pid_t	pid;
 	char	*str;
-	int		status;
 	int		absolut;
 
-	status = 0;
 	str = NULL;
 	if (ast->left)
 		if (is_redirection(ast->left->type))
