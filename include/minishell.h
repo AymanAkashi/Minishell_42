@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/18 18:42:57 by yjarhbou         ###   ########.fr       */
+/*   Updated: 2022/09/19 22:42:12 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <dirent.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -37,7 +38,7 @@
 //****************************************************************
 
 
-int	g_exitstatus;
+extern int	g_exitstatus;
 
 typedef struct s_env
 {
@@ -46,11 +47,15 @@ typedef struct s_env
 	int		print;
 }				t_env;
 
+
+int			type_caracter(char c);
+t_env		*search_env2(char *name, t_list	*lst);
 int			ft_echo(char **cmd, t_data *data);
 char		**check_args(char **args);
 char		*ft_revsplit(char **str, char *sep);
 int			check_str(char *str, char *src);
 int			check_wildcard(char *str);
+void		update_pwd(t_data *data);
 char		**wild(char *str);
 void		wait_all(pid_t pid);
 void		execution(t_data *data, t_ast *root);

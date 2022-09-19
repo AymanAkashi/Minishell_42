@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:55:04 by yjarhbou          #+#    #+#             */
-/*   Updated: 2022/09/15 23:15:11 by yjarhbou         ###   ########.fr       */
+/*   Updated: 2022/09/19 06:14:31 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,8 @@ int	ft_echo(char **cmd, t_data *data)
 {
  	int	i;
  	int	nextl;
- 	int	j;
 
  	i = 0;
- 	j = 1;
  	nextl = 0;
     while(cmd[++i])
 		cmd[i] = check_expender(cmd[i], data);
