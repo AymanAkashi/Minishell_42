@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/19 06:19:46 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/19 22:51:11 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,8 +150,9 @@ void	exec_builting(char *str, t_data *data, char **args)
 		ft_echo(args, data);
 	else if (!ft_strcmp(str, "cd"))
 		ft_cd(data, args);
-	if (!ft_strcmp(str, "export"))
-		ft_export_new(data);
+	else if (!ft_strcmp(str, "export"))
+		ft_export(data, args);
+		
 	//.........
 }
 
