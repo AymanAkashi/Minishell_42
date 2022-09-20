@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/19 22:51:11 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/21 00:14:47 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ int	execut_redirection(t_ast *ast, t_ast *red ,t_data *data)
 	{
 		if(pipe(pip) == -1)
 			perror("Pipe :");
+		red->here_doc = expand_heredoc(red->here_doc, data);
 		ft_putstr_fd(red->here_doc, pip[1]);
 		ast->in = pip[0];
 		close(pip[1]);
@@ -139,7 +140,7 @@ int	execut_redirection(t_ast *ast, t_ast *red ,t_data *data)
 
 int	is_builting(char *str)
 {
-	if (!ft_strcmp(str, "echo") || !ft_strcmp(str, "cd") || !ft_strcmp(str, "export"))
+	if (!ft_strcmp(str, "echo") || !ft_strcmp(str, "cd") || !ft_strcmp(str, "export") || !ft_strcmp(str, "env") || !ft_strcmp(str, "unset") || !ft_strcmp(str, "pwd") || !ft_strcmp(str, "exit"))
 		return (1);
 	return (0);
 }
@@ -152,7 +153,14 @@ void	exec_builting(char *str, t_data *data, char **args)
 		ft_cd(data, args);
 	else if (!ft_strcmp(str, "export"))
 		ft_export(data, args);
-		
+	else if (!ft_strcmp(str, "env"))
+		ft_env(data);
+	else if (!ft_strcmp(str, "unset"))
+		ft_unset(data, args);
+	else if (!ft_strcmp(str, "pwd"))
+		ft_pwd();
+	else if (!ft_strcmp(str, "exit"))
+		ft_exit(args);
 	//.........
 }
 

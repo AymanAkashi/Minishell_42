@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/19 22:42:12 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/21 00:14:00 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,14 @@ typedef struct s_env
 }				t_env;
 
 
+void		ft_exit(char **args);
+void		ft_pwd(void);
+void		ft_unset(t_data *data, char **args);
+void		ft_env(t_data *data);
+void		add_export_var(t_data *data, char *cmd);
+void		creat_export_var(t_data *data, char *cmd);
+void		print_err(char *str, char *s, int fd);
+void		ft_export(t_data *data, char **cmd);
 int			type_caracter(char c);
 t_env		*search_env2(char *name, t_list	*lst);
 int			ft_echo(char **cmd, t_data *data);
