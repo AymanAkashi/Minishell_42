@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:59:50 by yjarhbou          #+#    #+#             */
-/*   Updated: 2022/09/19 22:27:26 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/21 17:00:21 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,11 @@ static int go_to_home(t_data *data)
 	// if (ft_update_oldpwd(data->envp) == 0)
 	//     return (0);
 	path = search_env("HOME",data);
+	if (path[0] == '\0')
+	{
+		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+		return (0);
+	}
 	if (chdir(path) == -1)
 	{
 		g_exitstatus = 1;
