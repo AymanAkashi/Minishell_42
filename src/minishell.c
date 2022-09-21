@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/19 06:15:31 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/21 18:21:43 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,8 +207,6 @@ int	main(int ac, char **av, char **envp)
 		if (line != NULL && line[0] != '\0')
 		{
 			init_data(&data, envp);
-			if (ft_strncmp(line, "exit", 5) == 0)
-				break ;
 			tokenizetion(&data.token, line, &data);
 			add_history(line);
 			if (!check_line(data.token, &data, line))
@@ -224,7 +222,7 @@ int	main(int ac, char **av, char **envp)
 			data.root = parcing(&data, data.root, data.scanner);
 			// disp(data.root, 0, "ROOT", &data);
 			execution(&data, data.root);
-			// wait_all();
+			wait_all(0);
 			_hidectrl();
 			free_token(&data.token);
 			free_ast(data.root);

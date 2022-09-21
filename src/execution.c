@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/21 00:14:47 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/21 18:12:42 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,6 @@ void	execut_cmd(t_ast *ast, t_data *data)
 		}
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
-		wait_all(pid);
 	}
 }
 
