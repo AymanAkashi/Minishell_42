@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 18:47:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/03 13:00:29 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/21 22:26:53 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	wait_all(pid_t pid)
 {
 	int	status;
 
-	if (waitpid(pid, &status, 0) != -1)
+	while (waitpid(pid, &status, 0) != -1)
 	{
 		if (WIFSIGNALED(status))
 		{
