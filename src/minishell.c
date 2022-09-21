@@ -6,11 +6,13 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/16 21:11:45 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/21 18:21:43 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_exitstatus;
 
 //************____Test_Tokenization____*****************//
 // void	test_tokenization(t_token *token)
@@ -205,8 +207,6 @@ int	main(int ac, char **av, char **envp)
 		if (line != NULL && line[0] != '\0')
 		{
 			init_data(&data, envp);
-			if (ft_strncmp(line, "exit", 5) == 0)
-				break ;
 			tokenizetion(&data.token, line, &data);
 			add_history(line);
 			if (!check_line(data.token, &data, line))
