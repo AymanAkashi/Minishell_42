@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 14:30:39 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/27 15:10:43 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/21 21:56:38 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_env	*search_env2(char *name, t_list	*lst)
 	}
 	return (NULL);
 }
+
 
 void	update_pwd(t_data *data)
 {
@@ -54,17 +55,16 @@ char	*last_args(char **args)
 	return (args[i]);
 }
 
-void	update_underscore(t_data *data)
+void	update_underscore(t_data *data, char **args)
 {
 	t_env	*e;
-
+	if(!ft_strcmp(last_args(args), "$_"))
+		return ;
 	e = search_env2("_", data->envp);
-	e->value = last_args(last_ast(data->root)->args);
-}
-
-void	update_data(t_ast *ast, t_data *data)
-{
-	(void)ast;
-	update_pwd(data);
-	update_underscore(data);
+	if (e)
+	{
+		if(e->value)
+			free(e->value);
+		e->value = ft_strdup(last_args(args));
+	}
 }
