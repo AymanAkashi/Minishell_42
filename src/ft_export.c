@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 22:49:59 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/20 18:22:49 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/22 12:50:43 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ void	search_export(t_data *data, char *key, char *value, int add)
 		else
 		{
 			tmp = e->value;
-			e->value = ft_strjoin(e->value, value);
+			if (e->value == NULL)
+				e->value = ft_strdup(value);
+			else
+				e->value = ft_strjoin(e->value, value);
 			free(tmp);
 		}
 	}
