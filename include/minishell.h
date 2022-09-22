@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/21 21:56:58 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/22 11:10:06 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_env
 
 void		update_underscore(t_data *data, char **args);
 void		ft_exit(char **args);
-void		ft_pwd(void);
+void		ft_pwd(t_data *data);
 void		ft_unset(t_data *data, char **args);
 void		ft_env(t_data *data);
 void		add_export_var(t_data *data, char *cmd);

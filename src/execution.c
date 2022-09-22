@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/21 22:20:43 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/22 11:11:27 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void	exec_builting(char *str, t_data *data, char **args)
 	else if (!ft_strcmp(str, "unset"))
 		ft_unset(data, args);
 	else if (!ft_strcmp(str, "pwd"))
-		ft_pwd();
+		ft_pwd(data);
 	else if (!ft_strcmp(str, "exit"))
 		ft_exit(args);
 	//.........
