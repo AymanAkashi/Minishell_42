@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 20:19:07 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/21 14:38:13 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/22 10:17:44 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	remove_content(t_list **lst, char *cmd)
 	{
 		if (ft_strcmp(((t_env *)tmp->content)->name, cmd) == 0)
 		{
-			*lst = tmp->next;
+			// *lst = tmp->next;
 			free(((t_env *)tmp->content)->value);
 			return ;
 		}

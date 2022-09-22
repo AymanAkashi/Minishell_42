@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 14:30:39 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/21 21:56:38 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/22 11:00:30 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ void	update_pwd(t_data *data)
 	if (ft_strcmp(pwd, e->value) != 0)
 	{
 		old = search_env2("OLDPWD", data->envp);
-		old->value = e->value;
+		if(e->value == NULL)
+			old->value = NULL;
+		else
+			old->value = e->value;
 		e->value = pwd;
 	}
 }
