@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 14:30:39 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/22 11:00:30 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/22 12:28:39 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@ void	update_pwd(t_data *data)
 			old->value = NULL;
 		else
 			old->value = e->value;
+		if (pwd == NULL)
+			e->value = ft_strjoin(e->value, "/..");
+		else
+			e->value = pwd;
 		e->value = pwd;
 	}
 }
