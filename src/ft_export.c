@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 22:49:59 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/22 12:50:43 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/23 20:21:15 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	ft_export(t_data *data, char **cmd)
 		{
 			if(ft_strchr(cmd[i], '+') == NULL)
 				creat_export_var(data, cmd[i]);
-			else
+			else if(envirement already exit dont go in)
 				add_export_var(data, cmd[i]);
 			i++;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 20:19:07 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/22 10:17:44 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/23 18:41:04 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	remove_content(t_list **lst, char *cmd)
 	{
 		if (ft_strcmp(((t_env *)tmp->content)->name, cmd) == 0)
 		{
-			// *lst = tmp->next;
 			free(((t_env *)tmp->content)->value);
 			return ;
 		}
@@ -58,7 +57,7 @@ void	remove_content(t_list **lst, char *cmd)
 
 void	ft_unset(t_data *data, char **args)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	while (args[i])
@@ -69,13 +68,4 @@ void	ft_unset(t_data *data, char **args)
 			remove_var(&data->envp, args[i]);
 		i++;
 	}
-	// t_env 	*e;
-	// t_list *lst;
-	// lst = data->envp;
-	// while (lst)
-	// {
-	// 	e = lst->content;
-	// 	printf("[%s]-->[%s]\n", e->name, e->value);
-	// 	lst = lst->next;
-	// }
 }

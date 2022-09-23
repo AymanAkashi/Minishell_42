@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 22:17:28 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/21 12:02:59 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/23 19:53:03 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_digit(char *str)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (str[++i])
@@ -27,7 +27,7 @@ int	check_digit(char *str)
 
 void	ft_exit(char **args)
 {
-	if(args[1] == NULL)
+	if (args[1] == NULL)
 		exit(0);
 	if (check_digit(args[1]) && args[2] != NULL)
 	{
