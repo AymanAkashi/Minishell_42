@@ -6,7 +6,7 @@
 /*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 22:49:59 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/23 20:21:15 by yjarhbou         ###   ########.fr       */
+/*   Updated: 2022/09/23 23:48:48 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ void	ft_export(t_data *data, char **cmd)
 	int		i;
 
 	i = 1;
-	if(cmd[1] == NULL)
+	//printf("%s", cmd[i]);
+	if (cmd[1] == NULL && check_envp(data->envp, ft_strchr(cmd[i], '=')) == 0)
 	{
 		ft_export_new(data);
 		return ;
@@ -102,11 +103,28 @@ void	ft_export(t_data *data, char **cmd)
 	{
 		while (cmd[i])
 		{
-			if(ft_strchr(cmd[i], '+') == NULL)
+			if (ft_strchr(cmd[i], '+') == NULL)
 				creat_export_var(data, cmd[i]);
-			else if(envirement already exit dont go in)
+			else
 				add_export_var(data, cmd[i]);
 			i++;
 		}
 	}
+}
+
+//check if name exist in t_env from t_Data
+int	check_envp(t_list *data, char *name)
+{
+	t_list	*tmp;
+
+	tmp = data;
+	while (tmp)
+	{
+		if (ft_strcmp(((t_env *)tmp->content)->name, name) == 0)
+		{
+			return (1);
+		}
+		tmp = tmp->next;
+	}
+	return (0);
 }
