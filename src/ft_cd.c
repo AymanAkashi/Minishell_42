@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:59:50 by yjarhbou          #+#    #+#             */
-/*   Updated: 2022/09/21 17:00:21 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/22 18:30:32 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,8 +166,11 @@ static int go_to_path(t_data *data,char **cmd)
 
 int ft_cd(t_data *data, char **cmd)
 {
-	// if (ft_strcmp(cmd[0], "cd") || ft_strcmp(cmd[0], "CD"))
-	//     return (1);
+	int i;
+
+	i = -1;
+	while (cmd[++i])
+	cmd[i] = check_expender(cmd[i], data);
 	g_exitstatus = 0;
 	if (cmd[1])
 		return (go_to_path(data, cmd));

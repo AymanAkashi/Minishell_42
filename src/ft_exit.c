@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 22:17:28 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/23 19:53:03 by yjarhbou         ###   ########.fr       */
+/*   Updated: 2022/09/22 22:07:03 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_digit(char *str)
 {
-	int	i;
+	int i;
 
 	i = -1;
 	while (str[++i])
@@ -27,13 +27,13 @@ int	check_digit(char *str)
 
 void	ft_exit(char **args)
 {
-	if (args[1] == NULL)
+	if(args[1] == NULL)
 		exit(0);
 	if (check_digit(args[1]) && args[2] != NULL)
 	{
 		ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		exit(ft_atoi(args[1]));
+		g_exitstatus = 1;
 	}
 	else if (!check_digit(args[1]))
 	{
@@ -44,6 +44,6 @@ void	ft_exit(char **args)
 	else
 	{
 		ft_putstr_fd("exit\n", 2);
-		exit(ft_atoi(args[1]));
+		exit(ft_atoi(args[1]) % 256);
 	}
 }

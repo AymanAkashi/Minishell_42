@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 22:49:59 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/23 23:48:48 by yjarhbou         ###   ########.fr       */
+/*   Updated: 2022/09/23 22:45:29 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	search_export(t_data *data, char *key, char *value, int add)
 			ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new(key, value)));
 		else
 		{
+			if (value == NULL)
+				return ;
 			free(e->value);
 			e->value = ft_strdup(value);
 		}
@@ -93,8 +95,7 @@ void	ft_export(t_data *data, char **cmd)
 	int		i;
 
 	i = 1;
-	//printf("%s", cmd[i]);
-	if (cmd[1] == NULL && check_envp(data->envp, ft_strchr(cmd[i], '=')) == 0)
+	if(cmd[1] == NULL)
 	{
 		ft_export_new(data);
 		return ;
@@ -103,28 +104,11 @@ void	ft_export(t_data *data, char **cmd)
 	{
 		while (cmd[i])
 		{
-			if (ft_strchr(cmd[i], '+') == NULL)
+			if(ft_strchr(cmd[i], '+') == NULL)
 				creat_export_var(data, cmd[i]);
 			else
 				add_export_var(data, cmd[i]);
 			i++;
 		}
 	}
-}
-
-//check if name exist in t_env from t_Data
-int	check_envp(t_list *data, char *name)
-{
-	t_list	*tmp;
-
-	tmp = data;
-	while (tmp)
-	{
-		if (ft_strcmp(((t_env *)tmp->content)->name, name) == 0)
-		{
-			return (1);
-		}
-		tmp = tmp->next;
-	}
-	return (0);
 }

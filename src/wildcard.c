@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 10:40:40 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/05 10:01:00 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/22 21:16:30 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,17 +125,26 @@ char	**remove_hidefile(char **args)
 
 	i = 0;
 	j = 0;
-	while(args[i][0] == '.')
-		i++;
 	if (!args[i])
 		return (NULL);
 	while (args[i + j])
-		j++;
+	{
+		if(args[i][0] != '.')
+			j++;
+		i++;
+	}
 	dest = ft_calloc(j + 1, sizeof(char *));
-	j = i;
+	j = 0;
 	i = 0;
 	while (args[j])
-		dest[i++] = ft_strdup(args[j++]);
+	{
+		if (args[j][0] != '.')
+		{
+			dest[i] = ft_strdup(args[j]);
+			i++;
+		}
+		j++;
+	}
 	dest[i] = NULL;
 	free_table(args);
 	return (dest);
@@ -144,9 +153,7 @@ char	**remove_hidefile(char **args)
 char	**get_path_wildcard(char *str)
 {
 	char	**args;
-	int		i;
 
-	i = 0;
 	str = ft_strdup(str);
 	args = ft_calloc(3, sizeof(char *));
 	if (ft_strchr(str, '/') == NULL)

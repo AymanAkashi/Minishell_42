@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 07:39:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/26 13:18:45 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/23 11:30:44 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,21 @@ void	free_table(char **table)
 	free(table);
 }
 
+void	free_list(t_list *lst)
+{
+	t_list	*tmp;
+
+	while (lst != NULL)
+	{
+		tmp = lst;
+		lst = lst->next;
+		free(((t_env *)tmp->content)->name);
+		free(((t_env *)tmp->content)->value);
+		free(tmp->content);
+		free(tmp);
+	}
+}
+
 void	free_ast(t_ast *root)
 {
 	if (!root)
@@ -57,4 +72,13 @@ void	free_ast(t_ast *root)
 	root->cmd = NULL;
 	root->args = NULL;
 	free(root);
+}
+
+void	free_all(t_data *data)
+{
+	free_ast(data->ast);
+	free_token(&data->token);
+	// free_list(data->envp);
+	free_table(data->path);
+	// free(data);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/23 23:26:02 by yjarhbou         ###   ########.fr       */
+/*   Updated: 2022/09/23 12:18:49 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,16 @@ typedef struct s_env
 }				t_env;
 
 
+
+void		first_init(char **envp, t_data *data);
+void		init_print_env(t_list *env);
+void		init_data(t_data *data, char *envp[], char *line);
+
+char		**copy_table(char **envp);
+
+void		beg_minishell(t_data *data);
+
+void		free_all(t_data *data);
 void		update_underscore(t_data *data, char **args);
 void		ft_exit(char **args);
 void		ft_pwd(t_data *data);
@@ -92,10 +102,9 @@ void		free_table(char **table);
 char		**alloc_tab(t_data *data, t_type_token type, t_scanner *scan);
 //****************************************************************
 
-t_env		*ft_get_env(void *env);
 
-int			ft_cd(t_data *data, char **cmd);
-int			ft_update_oldpwd(t_list *env);
-int			check_envp(t_list *data, char *name);
+int ft_cd(t_data *data, char **cmd);
+t_env *ft_get_env(void *env);
+int ft_update_oldpwd(t_list *env);
 
 #endif /* MINISHELL_H */
