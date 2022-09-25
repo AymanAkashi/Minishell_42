@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 16:11:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/29 20:12:28 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/24 18:11:14 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct t_data{
 	t_ast				*ast;
 	t_ast				*root;
 	char				**env;
+	int					found_env;
 	char				**path;
 	int					here_doc;
 	int					len;

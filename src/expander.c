@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 21:52:49 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/17 21:33:42 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/25 10:30:04 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ char	*check_expender(char *args, t_data *data)
 		if((args[i] == '$' || args[i] == '\'' || args[i] == '\"')
 			&& type_caracter(args[i + 1]))
 		{
+			printf("heuy");
 			args = expander(args, data);
 			break;
 		}

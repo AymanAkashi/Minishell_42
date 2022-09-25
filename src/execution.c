@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/22 11:11:27 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/25 15:31:03 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char **list_to_args(t_list *lst)
 	}
 	return (args);
 }
-
+//************************************************************************
 void	child_cmd(t_ast *ast, t_data *data, int absolut, char *str)
 {
 	char **envp;
@@ -85,10 +85,7 @@ void	child_cmd(t_ast *ast, t_data *data, int absolut, char *str)
 	int		i;
 
 	i = -1;
-	if (ast->in != STDIN_FILENO)
-		dup2(ast->in, 0);
-	if (ast->out != STDOUT_FILENO)
-		dup2(ast->out, 1);
+	// printf("heyy\n");
 	envp = list_to_args(data->envp);
 	while(ast->args[++i])
 		ast->args[i] = check_expender(ast->args[i], data);
@@ -106,6 +103,7 @@ void	child_cmd(t_ast *ast, t_data *data, int absolut, char *str)
 		exit(127);
 	}
 }
+//************************************************************************
 
 int	execut_redirection(t_ast *ast, t_ast *red ,t_data *data)
 {
@@ -140,7 +138,10 @@ int	execut_redirection(t_ast *ast, t_ast *red ,t_data *data)
 
 int	is_builting(char *str)
 {
-	if (!ft_strcmp(str, "echo") || !ft_strcmp(str, "cd") || !ft_strcmp(str, "export") || !ft_strcmp(str, "env") || !ft_strcmp(str, "unset") || !ft_strcmp(str, "pwd") || !ft_strcmp(str, "exit"))
+	if (!ft_strcmp(str, "echo") || !ft_strcmp(str, "cd")
+		|| !ft_strcmp(str, "export") || !ft_strcmp(str, "env")
+			|| !ft_strcmp(str, "unset") || !ft_strcmp(str, "pwd")
+				|| !ft_strcmp(str, "exit"))
 		return (1);
 	return (0);
 }
@@ -161,10 +162,9 @@ void	exec_builting(char *str, t_data *data, char **args)
 		ft_pwd(data);
 	else if (!ft_strcmp(str, "exit"))
 		ft_exit(args);
-	//.........
 }
 
-void	execut_cmd(t_ast *ast, t_data *data)
+void	execut_cmd(t_ast *ast, t_data *data, int p)
 {
 	pid_t	pid;
 	char	*str;
@@ -179,7 +179,6 @@ void	execut_cmd(t_ast *ast, t_data *data)
 		if (is_redirection(ast->right->type))
 			if (!execut_redirection(ast, ast->right, data))
 				return ;
-	ast->args = check_args(ast->args);
 	str = check_expender(ast->cmd, data);
 	absolut = check_cmd(str, data);
 	update_underscore(data, ast->args);
@@ -188,10 +187,13 @@ void	execut_cmd(t_ast *ast, t_data *data)
 	else
 	{
 		_restctrl();
+		ast->args = check_args(ast->args);
 		pid = fork();
 		if (pid == 0)
 		{
-			_reset_ctrl_handler();
+			if (p > 0)
+				close(p);
+			signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, SIG_DFL);
 			dup2(ast->in, STDIN_FILENO);
 			dup2(ast->out, STDOUT_FILENO);
@@ -225,9 +227,9 @@ void	exec_block(t_ast *ast, t_data *data)
 	if (is_redirection(ast->type))
 		execut_redirection(ast, ast, data);
 	else if (ast->type == TOKEN_WORD)
-		execut_cmd(ast, data);
+		execut_cmd(ast, data, -1);
 	else if (ast->type == TOKEN_PIPE)
-		execut_pipe(ast, data);
+		execut_pipe(ast, data, -1);
 	else
 	{
 		if (ast->type == TOKEN_AND)
@@ -237,7 +239,7 @@ void	exec_block(t_ast *ast, t_data *data)
 	}
 }
 
-void	execut_pipe(t_ast *ast, t_data *data)
+void	execut_pipe(t_ast *ast, t_data *data, int p)
 {
 	int pip[2];
 
@@ -249,7 +251,7 @@ void	execut_pipe(t_ast *ast, t_data *data)
 	if (is_redirection(ast->type))
 		execut_redirection(ast, ast, data);
 	else if (ast->type == TOKEN_WORD)
-		execut_cmd(ast, data);
+		execut_cmd(ast, data, p);
 	else if (ast->type == TOKEN_OR || ast->type == TOKEN_AND)
 		exec_block(ast, data);
 	else
@@ -259,9 +261,9 @@ void	execut_pipe(t_ast *ast, t_data *data)
 			perror("Pipe :");
 		ast->right->in = pip[0];
 		ast->left->out = pip[1];
-		execut_pipe(ast->left, data);
+		execut_pipe(ast->left, data, pip[0]);
 		close(pip[1]);
-		execut_pipe(ast->right, data);
+		execut_pipe(ast->right, data, pip[1]);
 		close(pip[0]);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 10:40:40 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/05 10:01:00 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:15:49 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,6 @@ char	**add_case_alloc(char **str)
 	}
 	return (dest);
 }
-
-/**
- * It checks if the string str matches the pattern src
- * 
- * @param str the string to be checked
- * @param src the string to be checked
- */
 
 int	return_check(char *str,char *src, int i, int j)
 {

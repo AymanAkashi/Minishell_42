@@ -27,7 +27,7 @@ LIBFT_INC		:= libft.h
 
 # ****************************** Compiler Options ******************************
 CC				:= cc
-CFLAGS			:= #-Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS			:= -Wall -Wextra -Werror -g #`-fsanitize=address
 INCFLAGS		:= -I $(INC_DIR) -I $(LIBFT_DIR)/$(INC_DIR)
 LIBFLAGS		:= -L $(LIBFT_DIR) -lft
 

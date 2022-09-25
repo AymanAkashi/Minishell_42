@@ -6,52 +6,52 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 18:07:51 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/29 12:03:50 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/25 15:36:04 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-// void	append_char(char **line, char c)
-// {
-// 	char	*dest;
-// 	int		i;
-
-// 	i = 0;
-// 	if (*line == NULL)
-// 		*line = ft_any_alloc(sizeof(char), 2);
-// 	dest = ft_any_alloc(sizeof(char), ft_strlen(*line) + 2);
-// 	while ((*line)[i])
-// 	{
-// 		dest[i] = (*line)[i];
-// 		i++;
-// 	}
-// 	dest[i] = c;
-// 	dest[i + 1] = '\0';
-// 	free(*line);
-// 	*line = dest;
-// }
-
 void	add_path(t_data *data)
 {
+	int		shlvl;
+	t_env	*e;
+
 	data->path = ft_split(search_env("PATH", data), ':');
 	if (!data->path)
 		perror(*data->path);
+	e = search_env2("SHLVL", data->envp);
+	if (!e)
+		return ;
+	shlvl = ft_atoi(e->value);
+	if (data->found_env == 0)
+		e->value = ft_strdup("1");
+	else
+	{
+		if (shlvl < 0)
+			shlvl = 1;
+		else
+			shlvl++;
+		e->value = ft_strdup(ft_itoa(shlvl));
+	}
 }
 
 void	alloc_empty_envp(t_data *data)
 {
-	char *pwd;
+	char	*pwd;
 
+	data->path = ft_split(ft_strdup(_PATH_STDPATH), ':');
+	// for (int i = 0; data->path[i]; i++)
+	// 	printf("%s\n", data->path[i]);
+	data->found_env = 0;
 	pwd = getcwd(NULL, 0);
-	data->envp = ft_lstnew(ft_env_new("PWD",pwd));
-	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("OLDPWD",NULL)));
-	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("SHLVL","1")));
-	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("_","/usr/bin/env")));
+	data->envp = ft_lstnew(ft_env_new("PWD", pwd));
+	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("OLDPWD", NULL)));
+	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("SHLVL", "1")));
+	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("_", "/usr/bin/env")));
 }
 
-void	add_oldpwd(t_env *e,t_list **lst)
+void	add_oldpwd(t_env *e, t_list **lst)
 {
 	ft_env_new("OLDPWD", "");
 	ft_lstadd_back(lst, ft_lstnew(e));
@@ -62,7 +62,7 @@ void	alloc_envp(t_data *data, char *envp[], t_list *head)
 	int		i;
 	int		o;
 	char	*tmp;
-	t_env 	*e;
+	t_env	*e;
 
 	i = 0;
 	o = 0;
@@ -70,12 +70,10 @@ void	alloc_envp(t_data *data, char *envp[], t_list *head)
 		alloc_empty_envp(data);
 	else
 	{
-		tmp = ft_strchr(envp[0], '=') + 1;
-		*ft_strchr(envp[0], '=') = '\0';
-		e = ft_env_new(envp[0], tmp);
-		data->envp = ft_lstnew(e);
-		head = data->envp;
-		while (envp[++i])
+		data->found_env = 1;
+		head = NULL;
+		while (data->found_env);
+		while (envp[i])
 		{
 			tmp = ft_strchr(envp[i], '=') + 1;
 			*ft_strchr(envp[i], '=') = '\0';
@@ -87,9 +85,10 @@ void	alloc_envp(t_data *data, char *envp[], t_list *head)
 			else
 				e = ft_env_new(envp[i], tmp);
 			ft_lstadd_back(&head, ft_lstnew(e));
+			i++;
 		}
 		if (!o)
-			add_oldpwd(e,&head);
+			add_oldpwd(e, &head);
 		ft_lstadd_back(&head, NULL);
 		data->envp = head;
 	}
@@ -105,13 +104,14 @@ void	print_export(char *name, char *value, t_env **e)
 		printf("\n");
 }
 
-char *no_print(t_list *lst)
+char	*no_print(t_list *lst)
 {
-	t_env *e;
-	while(lst)
+	t_env	*e;
+
+	while (lst)
 	{
 		e = lst->content;
-		if(e->print == 0)
+		if (e->print == 0)
 			return (e->name);
 		lst = lst->next;
 	}
@@ -122,11 +122,11 @@ void	sort_list(t_list *lst, t_list *head)
 {
 	char	*key;
 	char	*value;
-	t_list *tmp;
+	t_list	*tmp;
 	t_env	*name;
-	t_env   *min;
+	t_env	*min;
 
-	while(lst)
+	while (lst)
 	{
 		tmp = head;
 		name = tmp->content;
@@ -149,13 +149,13 @@ void	sort_list(t_list *lst, t_list *head)
 
 t_list	*ft_lstcopy(t_list *lst)
 {
-	t_list *new;
+	t_list	*new;
 
 	new = ft_lstnew(lst->content);
 	lst = lst->next;
 	new->next = malloc(sizeof(t_list) * 1);
 	new = new->next;
-	while(lst)
+	while (lst)
 	{
 		new->content = lst->content;
 		lst = lst->next;
@@ -175,7 +175,7 @@ void	ft_export_new(t_data *data)
 
 t_env	*ft_env_new(char *name, char *value)
 {
-	t_env *new;
+	t_env	*new;
 
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
@@ -184,4 +184,3 @@ t_env	*ft_env_new(char *name, char *value)
 	new->value = ft_strdup(value);
 	return (new);
 }
-

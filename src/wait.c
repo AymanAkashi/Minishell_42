@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 18:47:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/21 22:26:53 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:14:58 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	set_signal(int sig)
 {
-	if(sig == SIGINT)
+	if (sig == SIGINT)
 		printf("\n");
 	else if (sig == SIGQUIT)
 		printf("QUIT: 3");
@@ -28,7 +28,7 @@ void	wait_all(pid_t pid)
 	{
 		if (WIFSIGNALED(status))
 		{
-			g_exitstatus = 128+WTERMSIG(status);
+			g_exitstatus = 128 + WTERMSIG(status);
 			set_signal(WTERMSIG(status));
 		}
 		if (WIFEXITED(status))

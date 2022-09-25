@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 22:49:59 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/22 12:50:43 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/25 09:50:47 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ void	search_export(t_data *data, char *key, char *value, int add)
 			ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new(key, value)));
 		else
 		{
-			free(e->value);
+			if (!value)
+				return ;
+			// free(e->value);
 			e->value = ft_strdup(value);
 		}
 	}
@@ -95,7 +97,7 @@ void	ft_export(t_data *data, char **cmd)
 	i = 1;
 	if(cmd[1] == NULL)
 	{
-		ft_export_new(data);
+		sort_list(data->envp, data->envp);
 		return ;
 	}
 	else

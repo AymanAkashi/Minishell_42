@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 22:17:28 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/21 12:02:59 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/24 16:16:48 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ int	check_digit(char *str)
 void	ft_exit(char **args)
 {
 	if(args[1] == NULL)
-		exit(0);
+		exit(g_exitstatus);
 	if (check_digit(args[1]) && args[2] != NULL)
 	{
 		ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		exit(ft_atoi(args[1]));
+		g_exitstatus = 1;
 	}
 	else if (!check_digit(args[1]))
 	{

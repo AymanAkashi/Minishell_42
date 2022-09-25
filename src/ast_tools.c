@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 15:43:52 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/27 15:09:29 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:46:46 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 t_ast	*last_ast(t_ast *root)
 {
-	t_ast *ast;
+	t_ast	*ast;
 
 	ast = root;
 	if (!ast)
 		return (NULL);
-	if(ast->right == NULL && ast->left == NULL)
+	if (ast->right == NULL && ast->left == NULL)
 		return (ast);
 	else if (ast->left && !ast->right)
 		return (ast->left);
@@ -50,6 +50,6 @@ t_ast	*copy_ast(t_ast *ast)
 	new = ft_create_ast();
 	new->cmd = ft_strdup(ast->cmd);
 	new->type = ast->type;
-	new->args =	copy_args(ast->args);
+	new->args = copy_args(ast->args);
 	return (new);
 }

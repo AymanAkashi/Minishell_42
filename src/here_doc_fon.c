@@ -1,28 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   here_doc_fon.cc                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/24 19:56:10 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/25 17:55:33 by aaggoujj         ###   ########.fr       */
+/*   Created: 2022/09/24 20:40:54 by aaggoujj          #+#    #+#             */
+/*   Updated: 2022/09/24 20:41:29 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft.h"
+#include "minishell.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+void	set_here_doc(t_token **token, t_data *data)
 {
-	t_list	*last;
-
-	if (!(*lst))
-	{
-		*lst = new;
-		return ;
-	}
-	last = *lst;
-	while (last->next)
-		last = last->next;
-	last->next = new;
+	(*token)->type = TOKEN_HEREDOC;
+	data->here_doc = 1;
 }

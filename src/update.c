@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 14:30:39 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/22 12:28:39 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:14:19 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ t_env	*search_env2(char *name, t_list	*lst)
 	return (NULL);
 }
 
-
 void	update_pwd(t_data *data)
 {
 	char	*pwd;
@@ -40,7 +39,7 @@ void	update_pwd(t_data *data)
 	if (ft_strcmp(pwd, e->value) != 0)
 	{
 		old = search_env2("OLDPWD", data->envp);
-		if(e->value == NULL)
+		if (e->value == NULL)
 			old->value = NULL;
 		else
 			old->value = e->value;
@@ -65,12 +64,13 @@ char	*last_args(char **args)
 void	update_underscore(t_data *data, char **args)
 {
 	t_env	*e;
-	if(!ft_strcmp(last_args(args), "$_"))
+
+	if (!ft_strcmp(last_args(args), "$_"))
 		return ;
 	e = search_env2("_", data->envp);
 	if (e)
 	{
-		if(e->value)
+		if (e->value)
 			free(e->value);
 		e->value = ft_strdup(last_args(args));
 	}

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 16:10:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/31 18:04:27 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:44:50 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	child_here_doc(int p[2], t_token **token)
 	int		byte;
 
 	close(p[0]);
-	_reset_ctrl_handler();
+	signal(SIGINT, SIG_DFL);
 	while (1)
 	{
 		line = readline("heredoc> ");
@@ -102,7 +102,11 @@ void	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
 	}
 	(*token)->here_doc = ft_strjoin((*token)->here_doc,"\n");
 	free(tmp);
-	waitpid(pid, NULL, 0);
+	waitpid(pid, &len, 0);
+	// if (WIFSIGNALED(len))
+	// {
+	// 	exit (1);
+	// }
 	if ((*token)->exp == 1 && (*token)->here_doc)
 		(*token)->here_doc = expand_heredoc((*token)->here_doc, data);
 	close(p[0]);

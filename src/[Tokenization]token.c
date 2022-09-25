@@ -6,17 +6,11 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 08:04:09 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/21 10:54:51 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:42:30 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	set_here_doc(t_token **token, t_data *data)
-{
-	(*token)->type = TOKEN_HEREDOC;
-	data->here_doc = 1;
-}
 
 void	type_token(t_token **token, t_data *data)
 {
@@ -69,6 +63,18 @@ void	set_num(int *n)
 		*n = 0;
 }
 
+int	creat_tokenization(t_token **token, char *line, t_data *data, int i)
+{
+	(*token)->state = check_state(line[i]);
+	if ((*token)->state == DEFAULT)
+		i = ft_str_cpyn(line, token, i, data);
+	else if ((*token)->state == SIN_QUOTHE)
+		i = ft_sin_quote(line, *token, i, data);
+	else if ((*token)->state == DOU_QUOTHE)
+		i = ft_dou_quote(line, *token, i, data);
+	return (i);
+}
+
 void	tokenizetion(t_token **token, char *line, t_data *data)
 {
 	t_token	*head;
@@ -91,16 +97,9 @@ void	tokenizetion(t_token **token, char *line, t_data *data)
 			if ((*token)->cmd != NULL)
 				alloc_token(token);
 		}
-		(*token)->state = check_state(line[i]);
-		if ((*token)->state == DEFAULT)
-			i = ft_str_cpyn(line, token, i, data);
-		else if ((*token)->state == SIN_QUOTHE)
-			i = ft_sin_quote(line, *token, i, data);
-		else if ((*token)->state == DOU_QUOTHE)
-			i = ft_dou_quote(line, *token, i, data);
+		i = creat_tokenization(token, line, data, i);
 	}
 	*token = head;
 	type_token(&head, data);
 	index_token(token);
 }
-
