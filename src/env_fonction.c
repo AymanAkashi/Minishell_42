@@ -72,7 +72,6 @@ void	alloc_envp(t_data *data, char *envp[], t_list *head)
 	{
 		data->found_env = 1;
 		head = NULL;
-		while (data->found_env);
 		while (envp[i])
 		{
 			tmp = ft_strchr(envp[i], '=') + 1;
