@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/25 14:32:34 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/25 20:23:35 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_env
 	int		print;
 }				t_env;
 
-
+void		add_shlvl(t_data *data);
 int			is_type_token(t_type_token type);
 void		set_here_doc(t_token **token, t_data *data);
 

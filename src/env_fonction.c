@@ -6,20 +6,17 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 18:07:51 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/25 15:36:04 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/25 20:23:18 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	add_path(t_data *data)
+void	add_shlvl(t_data *data)
 {
 	int		shlvl;
 	t_env	*e;
 
-	data->path = ft_split(search_env("PATH", data), ':');
-	if (!data->path)
-		perror(*data->path);
 	e = search_env2("SHLVL", data->envp);
 	if (!e)
 		return ;
@@ -34,6 +31,13 @@ void	add_path(t_data *data)
 			shlvl++;
 		e->value = ft_strdup(ft_itoa(shlvl));
 	}
+}
+
+void	add_path(t_data *data)
+{
+	data->path = ft_split(search_env("PATH", data), ':');
+	if (!data->path)
+		perror(*data->path);
 }
 
 void	alloc_empty_envp(t_data *data)

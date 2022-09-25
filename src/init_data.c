@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 19:59:42 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/24 20:08:33 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/25 20:23:53 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	first_init(char **envp, t_data *data)
 {
 	data->env = copy_table(envp);
 	alloc_envp(data, data->env,data->envp);
-	// add_path(data);
+	add_shlvl(data);
 	g_exitstatus = 0;
 	_hidectrl();
 }
