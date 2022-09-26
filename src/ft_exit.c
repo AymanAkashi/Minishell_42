@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 22:17:28 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/24 16:16:48 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/26 18:44:08 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_digit(char *str)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (str[++i])
@@ -27,7 +27,7 @@ int	check_digit(char *str)
 
 void	ft_exit(char **args)
 {
-	if(args[1] == NULL)
+	if (args[1] == NULL)
 		exit(g_exitstatus);
 	if (check_digit(args[1]) && args[2] != NULL)
 	{
@@ -39,7 +39,7 @@ void	ft_exit(char **args)
 	{
 		ft_putstr_fd("exit\n", 2);
 		print_err("minishell: exit: %s: numeric argument required\n",args[1], 2);
-		exit(2);
+		exit(255);
 	}
 	else
 	{

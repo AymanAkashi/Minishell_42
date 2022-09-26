@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 22:49:59 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/25 09:50:47 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/26 18:44:29 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	ft_export(t_data *data, char **cmd)
 	int		i;
 
 	i = 1;
-	if(cmd[1] == NULL)
+	if (cmd[1] == NULL)
 	{
 		sort_list(data->envp, data->envp);
 		return ;
@@ -104,7 +104,7 @@ void	ft_export(t_data *data, char **cmd)
 	{
 		while (cmd[i])
 		{
-			if(ft_strchr(cmd[i], '+') == NULL)
+			if (ft_strchr(cmd[i], '+') == NULL)
 				creat_export_var(data, cmd[i]);
 			else
 				add_export_var(data, cmd[i]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 21:52:49 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/25 10:30:04 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/25 20:54:06 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ int	exporting(char **result, char *line, int pos, t_data *data)
 			append_char(&key, line[i++]);
 		value = search_env(key, data);
 		*result = ft_strjoin2(*result, value);
-		if(value && value[0] != '\0')
-		free(value);
+		if (value && value[0] != '\0')
+			free(value);
 		free(key);
 		return (i);
 }
@@ -101,11 +101,11 @@ int	expand_dou_quote(char *line, int i, t_state *state,
 {
 	while (line[i] && *state == DOU_QUOTHE)
 	{
-		if(line[i] == '\"')
+		if (line[i] == '\"')
 		{
-			*state = check_state(line[i+1]);
+			*state = check_state(line[i + 1]);
 			i++;
-			break;
+			break ;
 		}
 		if (line[i] == '$')
 			i = exporting(result, line, i, data);
@@ -155,7 +155,7 @@ char	*expander(char *line, t_data *data)
 			state = check_state(line[i++]);
 		if (line[i] && state == DOU_QUOTHE)
 			i = expand_dou_quote(line, i, &state, &result, data);
-		else if(line[i] && state == SIN_QUOTHE)
+		else if (line[i] && state == SIN_QUOTHE)
 			i = expand_sin_quote(line, i, &state, &result);
 		if (state == DEFAULT && line[i] == '$')
 			i = exporting(&result, line, i, data);
@@ -178,7 +178,7 @@ char	*check_expender(char *args, t_data *data)
 		if((args[i] == '$' || args[i] == '\'' || args[i] == '\"')
 			&& type_caracter(args[i + 1]))
 		{
-			printf("heuy");
+			//printf("heuy");
 			args = expander(args, data);
 			break;
 		}

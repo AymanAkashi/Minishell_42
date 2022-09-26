@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/25 15:31:03 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/26 18:06:12 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,7 @@ int	check_cmd(char *str, t_data *data)
 
 	if (ft_strchr(str,'/'))
 	{
-		if (check_if_path(str))
 			return (2);
-		else
-			return (0);
 	}
 	else
 	{
