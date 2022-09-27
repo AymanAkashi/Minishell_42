@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/25 20:23:35 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/27 18:34:21 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@
 
 #define ECHECK "minishell: syntax error near unexpected token `"
 //****************************************************************
-
 
 extern int	g_exitstatus;
 
@@ -91,7 +90,7 @@ void		sort_list(t_list *lst, t_list *head);
 void		beg_minishell(t_data *data);
 void		free_all(t_data *data);
 void		first_init(char **envp, t_data *data);
-void		init_data(t_data *data, char *envp[],char *line);
+void		init_data(t_data *data, char *envp[], char *line);
 //****************************************************************
 char		*ft_alloc_cmd(char *str, char *str2);
 void		append_char(char **line, char c);
@@ -102,9 +101,11 @@ void		free_table(char **table);
 char		**alloc_tab(t_data *data, t_type_token type, t_scanner *scan);
 //****************************************************************
 
-
-int ft_cd(t_data *data, char **cmd);
-t_env *ft_get_env(void *env);
-int ft_update_oldpwd(t_list *env);
+int			go_to_path(t_data *data, char **cmd);
+int			ft_cd(t_data *data, char **cmd);
+void		no_dir(t_data	*data);
+t_env		*ft_get_env(void *env);
+int			ft_update_oldpwd(t_list *env);
+int			go_path_helper(t_data *data, char *path);
 
 #endif /* MINISHELL_H */

@@ -6,7 +6,7 @@
 /*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 22:17:28 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/26 18:44:08 by yjarhbou         ###   ########.fr       */
+/*   Updated: 2022/09/27 17:47:39 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_exit(char **args)
 	else if (!check_digit(args[1]))
 	{
 		ft_putstr_fd("exit\n", 2);
-		print_err("minishell: exit: %s: numeric argument required\n",args[1], 2);
+		print_err("minishell: exit: %s:numeric argument required\n", args[1], 2);
 		exit(255);
 	}
 	else

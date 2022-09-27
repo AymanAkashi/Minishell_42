@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 21:00:11 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/22 12:29:14 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/27 17:46:56 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_pwd(t_data *data)
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
-	if(pwd == NULL)
+	if (pwd == NULL)
 	{
 		e = search_env2("PWD", data->envp);
 		if (e->value == NULL)
