@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 14:30:39 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/24 20:14:19 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/26 09:34:06 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	update_pwd(t_data *data)
 
 	e = search_env2("PWD", data->envp);
 	pwd = getcwd(NULL, 0);
-	if (ft_strcmp(pwd, e->value) != 0)
+	if (e && ft_strcmp(pwd, e->value) != 0)
 	{
 		old = search_env2("OLDPWD", data->envp);
 		if (e->value == NULL)

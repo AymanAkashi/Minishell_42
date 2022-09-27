@@ -6,13 +6,15 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/25 15:31:03 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/27 19:20:52 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern int g_exitstatus;
+
+int	exec_red(t_ast *ast, t_data *data);
 
 char	*get_thecmd(char **path, char *cmd)
 {
@@ -45,10 +47,10 @@ int	check_cmd(char *str, t_data *data)
 
 	if (ft_strchr(str,'/'))
 	{
-		if (check_if_path(str))
+		// if (check_if_path(str))
 			return (2);
-		else
-			return (0);
+		// else
+			// return (0);
 	}
 	else
 	{
@@ -85,22 +87,23 @@ void	child_cmd(t_ast *ast, t_data *data, int absolut, char *str)
 	int		i;
 
 	i = -1;
-	// printf("heyy\n");
 	envp = list_to_args(data->envp);
 	while(ast->args[++i])
 		ast->args[i] = check_expender(ast->args[i], data);
 	if (absolut == 2)
 	{
 		execve(str, ast->args, envp);
-		ft_putstr_fd("command not found\n", 2);
-		exit(127);
+		print_err("Minishell: %s : No such file or directory\n", str, 2);
+		g_exitstatus = 127;
+		exit(g_exitstatus);
 	}
 	else
 	{
 		cmd = get_thecmd(data->path, str);
 		execve(cmd, ast->args, envp);
-		ft_putstr_fd("command not found\n", 2);
-		exit(127);
+		print_err("Minishell: %s : command not found\n", str ,2);
+		g_exitstatus = 127;
+		exit(g_exitstatus);
 	}
 }
 //************************************************************************
@@ -116,14 +119,16 @@ int	execut_redirection(t_ast *ast, t_ast *red ,t_data *data)
 		ast->out = open(red->args[1], O_CREAT | O_RDWR | O_TRUNC, 0000644);
 	if (red->type == TOKEN_RED2_OUT)
 		ast->out = open(red->args[1], O_CREAT | O_RDWR | O_APPEND, 0000644);
-	if (red->type ==TOKEN_HEREDOC)//part heredoc-------
+	if (data->num_heredoc != 0)
+		data->num_heredoc--;
+	if (red->type ==TOKEN_HEREDOC && data->num_heredoc == 1)
 	{
 		if(pipe(pip) == -1)
-			perror("Pipe :");
-		red->here_doc = expand_heredoc(red->here_doc, data);
+			perror("Pipe ");
 		ft_putstr_fd(red->here_doc, pip[1]);
 		ast->in = pip[0];
 		close(pip[1]);
+		data->here_doc = 0;
 	}
 	if (ast->in == -1 || ast->out == -1)
 	{
@@ -133,6 +138,8 @@ int	execut_redirection(t_ast *ast, t_ast *red ,t_data *data)
 			perror(red->args[1]);
 		return (0);
 	}
+	if (!exec_red(ast, data))
+		return (0);
 	return (1);
 }
 
@@ -164,6 +171,19 @@ void	exec_builting(char *str, t_data *data, char **args)
 		ft_exit(args);
 }
 
+int	exec_red(t_ast *ast, t_data *data)
+{
+	if (ast->left)
+		if (is_redirection(ast->left->type))
+			if (!execut_redirection(ast, ast->left, data))
+				return (0);
+	if (ast->right)
+		if (is_redirection(ast->right->type))
+			if (!execut_redirection(ast, ast->right, data))
+				return (0);
+	return (1);
+}
+
 void	execut_cmd(t_ast *ast, t_data *data, int p)
 {
 	pid_t	pid;
@@ -171,18 +191,12 @@ void	execut_cmd(t_ast *ast, t_data *data, int p)
 	int		absolut;
 
 	str = NULL;
-	if (ast->left)
-		if (is_redirection(ast->left->type))
-			if (!execut_redirection(ast, ast->left, data))
-				return ;
-	if (ast->right)
-		if (is_redirection(ast->right->type))
-			if (!execut_redirection(ast, ast->right, data))
-				return ;
+	if (!exec_red(ast, data))
+		return ;
 	str = check_expender(ast->cmd, data);
 	absolut = check_cmd(str, data);
 	update_underscore(data, ast->args);
-	if (is_builting(str))
+	if (is_builting(str) && p < 0)
 		exec_builting(str, data, ast->args);
 	else
 	{
@@ -201,7 +215,11 @@ void	execut_cmd(t_ast *ast, t_data *data, int p)
 				close(ast->in);
 			if (ast->out != STDOUT_FILENO)
 				close(ast->out);
-			child_cmd(ast, data, absolut, str);
+			if (is_builting(str))
+				exec_builting(str, data, ast->args);
+			else
+				child_cmd(ast, data, absolut, str);
+			exit(g_exitstatus);
 		}
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
@@ -211,6 +229,7 @@ void	execut_cmd(t_ast *ast, t_data *data, int p)
 void	exec_or(t_ast *ast, t_data *data)
 {
 	exec_block(ast->left, data);
+	wait_all(0);
 	if (g_exitstatus != 0)
 		exec_block(ast->right, data);
 }
@@ -218,6 +237,7 @@ void	exec_or(t_ast *ast, t_data *data)
 void	exec_and(t_ast *ast, t_data *data)
 {
 	exec_block(ast->left, data);
+	wait_all(0);
 	if (g_exitstatus == 0)
 		exec_block(ast->right, data);
 }

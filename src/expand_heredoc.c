@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 12:35:26 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/28 11:58:57 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/26 14:02:46 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,14 @@ char	*expander_dollar(char *str, t_data *data)
 
 char	*expand_heredoc(char *str, t_data *data)
 {
-		size_t	i;
+	size_t	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
-		while(str[i] == '$' && str[i + 1] == '$')
+		while (str[i] == '$' && str[i + 1] == '$')
 			i++;
-		if(str[i] == '$' && type_caracter(str[i+1]))
+		if (str[i] == '$' && type_caracter(str[i + 1]))
 		{
 			str = expander_dollar(str, data);
 			break ;

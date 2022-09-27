@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:23:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/24 16:09:21 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/27 14:46:03 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_ast	*ast_here_doc(t_ast *ast, t_scanner *scan, t_data *data)
 	scanner_token(data->token, &scan);
 	ast->args[1] = ft_strdup(scan->curr_token->cmd);
 	ast->args[2] = NULL;
+	data->num_heredoc++;
 	return (ast);
 }
 
@@ -67,9 +68,9 @@ t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
 		tmp = tmp->left;
 	if (root)
 	{
-		if (!tmp->cmd)
+		if (tmp && !tmp->cmd)
 			tmp = new;
-		else if (!root->right)
+		else if (root && !root->right)
 			root->right = new;
 		else
 			tmp->left = new;
@@ -77,13 +78,14 @@ t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
 	}
 	else
 	{
-		root = parc_word(scan, data, new);
+		root = parcing(data, NULL, scan);
+		// root = parc_word(scan, data, new);
 		tmp = root;
 		while (tmp && tmp->left)
 			tmp = tmp->left;
-		if (!tmp->cmd)
+		if (!tmp && !tmp->cmd)
 			tmp = new;
-		else if (!root->right)
+		else if (root && !root->right)
 			root->right = new;
 		else
 			tmp->left = new;
@@ -126,7 +128,7 @@ t_ast	*parcing(t_data *data, t_ast *ast, t_scanner *scan)
 			return (ast);
 		}
 	}
-	if (ast->cmd == NULL)
+	if (ast == NULL || ast->cmd == NULL)
 		return (NULL);
 	return (ast);
 }

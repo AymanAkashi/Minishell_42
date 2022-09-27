@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 22:49:59 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/25 09:50:47 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/27 10:26:19 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,32 @@ void	creat_export_var(t_data *data, char *cmd)
 	}
 }
 
+char	*check_expend_export(char *args, t_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	while(args[i] && !is_token(args[i]))
+	{
+		while(args[i] == '$' && args[i + 1] == '$')
+			i++;
+		if((args[i] == '$' || args[i] == '\'' || args[i] == '\"'))
+		{
+			args = expander(args, data);
+			break;
+		}
+		i++;
+	}
+	return (args);
+}
+
 void	ft_export(t_data *data, char **cmd)
 {
 	int		i;
 
+	i = -1;
+	while(cmd[++i])
+		cmd[i] = check_expend_export(cmd[i], data);
 	i = 1;
 	if(cmd[1] == NULL)
 	{

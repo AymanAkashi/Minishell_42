@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/25 20:23:35 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/26 13:52:09 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_env
 void		add_shlvl(t_data *data);
 int			is_type_token(t_type_token type);
 void		set_here_doc(t_token **token, t_data *data);
-
+char		*expander(char *line, t_data *data);
 void		free_null(void	**ptr);
 void		update_underscore(t_data *data, char **args);
 void		ft_exit(char **args);
@@ -82,7 +82,7 @@ char		*expand_heredoc(char *str, t_data *data);
 int			exporting(char **result, char *line, int pos, t_data *data);
 char		*ft_strjoin2(char *str, char *buff);
 void		ft_env_del(t_env *env);
-void		type_heredoc(t_token **token, t_data *data);
+int			type_heredoc(t_token **token, t_data *data);
 t_env		*ft_env_new(char *name, char *value);
 void		ft_env_del(t_env *env);
 void		alloc_envp(t_data *data, char *envp[], t_list *head);

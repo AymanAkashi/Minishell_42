@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 16:10:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/24 20:44:50 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/27 11:39:06 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	child_here_doc(int p[2], t_token **token)
 
 	close(p[0]);
 	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	while (1)
 	{
 		line = readline("heredoc> ");
@@ -80,7 +81,7 @@ void	child_here_doc(int p[2], t_token **token)
 	free_token(token);
 }
 
-void	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
+int	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
 {
 	char	*tmp;
 	int		byte;
@@ -103,13 +104,12 @@ void	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
 	(*token)->here_doc = ft_strjoin((*token)->here_doc,"\n");
 	free(tmp);
 	waitpid(pid, &len, 0);
-	// if (WIFSIGNALED(len))
-	// {
-	// 	exit (1);
-	// }
+	if (WIFSIGNALED(len))
+		return (0);
 	if ((*token)->exp == 1 && (*token)->here_doc)
 		(*token)->here_doc = expand_heredoc((*token)->here_doc, data);
 	close(p[0]);
+	return (1);
 }
 
 int	search_quote(char *str)
@@ -147,7 +147,7 @@ char	*remove_quotes(char *str)
 	return (dest);
 }
 
-void	type_heredoc(t_token **token, t_data *data)
+int	type_heredoc(t_token **token, t_data *data)
 {
 	int	pid;
 	int	p[2];
@@ -165,10 +165,12 @@ void	type_heredoc(t_token **token, t_data *data)
 	if (search_quote((*token)->next->cmd))
 			(*token)->next->cmd = remove_quotes((*token)->next->cmd);
 	if (pipe(p) == -1)
-		return ;
+		return (print_err("Error Pipe:", NULL, 2), 0);
 	pid = fork();
 	if (pid == 0)
 		child_here_doc(p, token);
 	else
-		parent_here_doc(p, token, pid, data);
+		if (!parent_here_doc(p, token, pid, data))
+			return (0);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 16:11:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/24 18:11:14 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/27 14:44:26 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct t_data{
 	int					sin_quothe;
 	int					parenthes;
 	int					operator;
+	int					num_heredoc;
 }		t_data;
 
 char		*remove_quotes(char *str);

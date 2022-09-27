@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 15:19:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/03 13:59:29 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/27 10:34:49 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ t_ast	*parc_word(t_scanner *scan, t_data *data, t_ast *root)
 	t_ast	*ast;
 
 	// ast = ft_create_ast();
+	ast = NULL;
 	while (scan->curr_token)
 	{
 		if (scan->curr_token->type == TOKEN_WORD)

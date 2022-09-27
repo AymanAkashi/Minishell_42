@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:55:04 by yjarhbou          #+#    #+#             */
-/*   Updated: 2022/09/25 12:05:25 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/27 20:23:30 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ int	ft_echo(char **cmd, t_data *data)
 	while (cmd[i])
 	{
 		printf("%s", cmd[i]);
+		i++;
 		if (cmd[i])
 			printf(" ");
-		i++;
 	}
 	if (nextl == 0)
 		printf("\n");
