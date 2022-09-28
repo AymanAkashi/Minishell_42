@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:55:04 by yjarhbou          #+#    #+#             */
-/*   Updated: 2022/09/27 20:23:30 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/28 16:15:25 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	ft_echo(char **cmd, t_data *data)
 	int	i;
 	int	nextl;
 
-	i = 0;
+	i = -1;
 	nextl = 0;
 	while (cmd[++i])
 		cmd[i] = check_expender(cmd[i], data);
