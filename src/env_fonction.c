@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 18:07:51 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/26 12:38:36 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/29 09:27:49 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	alloc_empty_envp(t_data *data)
 {
 	char	*pwd;
 
-	data->path = ft_split(ft_strdup(_PATH_STDPATH), ':');
+	data->path = ft_split(_PATH_STDPATH, ':');
 	data->found_env = 0;
 	pwd = getcwd(NULL, 0);
 	data->envp = ft_lstnew(ft_env_new("PWD", pwd));

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:23:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/27 14:46:03 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/30 15:20:03 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_ast	*ft_create_ast(void)
 	new->cmd = NULL;
 	new->left = NULL;
 	new->right = NULL;
+	new->here_doc = NULL;
 	new->in = 0;
 	new->out = 1;
 	new->exp = 1;
@@ -42,10 +43,91 @@ t_ast	*ast_here_doc(t_ast *ast, t_scanner *scan, t_data *data)
 	return (ast);
 }
 
+t_ast	*just_red(t_scanner *scan, t_data *data)
+{
+	t_ast	*new;
+
+	new = ft_create_ast();
+	new->cmd = ft_strdup(scan->curr_token->cmd);
+	new->here_doc = ft_strdup(scan->curr_token->here_doc);
+	new->args = ft_any_alloc(sizeof(char *), 3);
+	new->args[0] = ft_strdup(scan->curr_token->cmd);
+	new->type = scan->curr_token->type;
+	scanner_token(data->token, &scan);
+	new->args[1] = ft_strdup(scan->curr_token->cmd);
+	new->args[2] = NULL;
+	scanner_token(data->token, &scan);
+	return (new);
+}
+
+t_ast	*parc_red_in(t_scanner *scan, t_ast *root, t_ast *ast, t_data *data)
+{
+	t_ast 	*new;
+
+	new = NULL;
+	if (scan->curr_token &&( scan->curr_token->type == TOKEN_WORD || scan->curr_token->type == TOKEN_PIPE))
+	{
+		new = parc_word(scan, data, root);
+		ast_add_left(&new, ast);
+	}
+	if(root)
+	{
+		if (!root->left)
+			root->left = new;
+		else if (!root->right)
+			root->right = new;
+		else
+			ast_add_left(&root,new);
+	}
+	else
+		root = new;
+	return (root);
+}
+
+t_ast	*parc_red_here(t_scanner *scan, t_ast *root, t_ast *ast, t_data *data)
+{
+	t_ast	*new;
+
+	new = NULL;
+	if (!scan->curr_token)
+		ast_add_left(&root, ast);
+	if (scan->curr_token &&( scan->curr_token->type == TOKEN_WORD || scan->curr_token->type == TOKEN_PIPE))
+	{
+		ast_add_left(&root, ast);
+		root = parc_word(scan, data, root);
+	}
+	if (scan->curr_token && (scan->curr_token->type == TOKEN_AND || scan->curr_token->type == TOKEN_OR))
+	{
+		ast_add_left(&root, ast);
+		root = parc_opera(scan, root, data);
+	}
+	return (root);
+}
+
+t_ast	*parc_red_out(t_scanner *scan, t_ast *root, t_ast *ast, t_data *data)
+{
+	t_ast 	*new;
+
+	new = NULL;
+	if (!scan->curr_token)
+		ast_add_right(&root, ast);
+	if (scan->curr_token &&( scan->curr_token->type == TOKEN_WORD || scan->curr_token->type == TOKEN_PIPE))
+	{
+		ast_add_right(&root, ast);
+		root = parc_word(scan, data, root);
+	}
+	if (scan->curr_token && (scan->curr_token->type == TOKEN_AND || scan->curr_token->type == TOKEN_OR))
+	{
+		ast_add_right(&root, ast);
+		root = parc_opera(scan, root, data);
+	}
+	return (root);
+}
+
+
 t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
 {
 	t_ast	*new;
-	t_ast	*tmp;
 
 	new = ft_create_ast();
 	if (scan->curr_token && scan->curr_token->type == TOKEN_HEREDOC)
@@ -61,36 +143,21 @@ t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
 		new->args[2] = NULL;
 	}
 	scanner_token(data->token, &scan);
+	while(scan->curr_token && (scan->curr_token->type == TOKEN_RED_IN
+		|| scan->curr_token->type == TOKEN_HEREDOC))
+		ast_add_left(&new, just_red(scan, data));
+	while(scan->curr_token && (scan->curr_token->type == TOKEN_RED2_OUT
+		|| scan->curr_token->type == TOKEN_RED_OUT))
+		ast_add_right(&new, just_red(scan, data));
 	if(!scan->curr_token && !root)
 		return (new);
-	tmp = root;
-	while (tmp && tmp->left)
-		tmp = tmp->left;
-	if (root)
-	{
-		if (tmp && !tmp->cmd)
-			tmp = new;
-		else if (root && !root->right)
-			root->right = new;
-		else
-			tmp->left = new;
-		return (root);
-	}
+	if (new->type == TOKEN_RED_IN)
+		root = parc_red_in(scan, root, new, data);
+	else if (new->type == TOKEN_RED2_OUT || new->type == TOKEN_RED_OUT)
+		root = parc_red_out(scan, root, new, data);
 	else
-	{
-		root = parcing(data, NULL, scan);
-		// root = parc_word(scan, data, new);
-		tmp = root;
-		while (tmp && tmp->left)
-			tmp = tmp->left;
-		if (!tmp && !tmp->cmd)
-			tmp = new;
-		else if (root && !root->right)
-			root->right = new;
-		else
-			tmp->left = new;
-		return (root);
-	}
+		ast_add_left(&root, new);
+	// 	parc_red_here(scan, root, new, data);
 	return (root);
 }
 

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 07:39:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/24 19:57:55 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/29 11:13:22 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,6 @@ void	free_all(t_data *data)
 	free_ast(data->ast);
 	free_token(&data->token);
 	// free_list(data->envp);
-	free_table(data->path);
+	free(data->path);
 	// free(data);
 }

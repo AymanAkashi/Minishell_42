@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 16:10:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/27 11:39:06 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/30 18:45:05 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	child_here_doc(int p[2], t_token **token)
 		}
 	}
 	free_token(token);
+	exit(1);
 }
 
 int	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
@@ -89,7 +90,8 @@ int	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
 
 	tmp = NULL;
 	close(p[1]);
-	_ctrl_handler();
+	signal(SIGINT, sighere_handler);
+	signal(SIGQUIT, SIG_IGN);
 	byte = read (p[0], &len, sizeof(int));
 	tmp = ft_any_alloc(sizeof(char), len + 1);
 	byte = read (p[0], tmp, len);

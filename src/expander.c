@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 21:52:49 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/28 19:10:02 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/29 10:44:03 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,13 @@ int	exporting(char **result, char *line, int i, t_data *data)
 		&& line[i] != '\"' && line[i] != '\'' && line[i] != '$'
 		&& (ft_isalpha(line[i]) || line[i] == '_'))
 		append_char(&key, line[i++]);
-	value = search_env(key, data);
+	if (!ft_strcmp("PATH", key))
+		value = ft_strdup(_PATH_STDPATH);
+	else
+		value = search_env(key, data);
 	*result = ft_strjoin2(*result, value);
-	if (value && value[0] != '\0')
-		free(value);
+	if (value != NULL && value[0] != '\0')
+	free(value);
 	free(key);
 	return (i);
 }

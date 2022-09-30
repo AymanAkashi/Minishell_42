@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 19:59:42 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/27 14:44:52 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/29 20:19:57 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	add_path(t_data *data)
 {
-	data->path = ft_split(search_env("PATH", data), ':');
+	data->path = ft_split(_PATH_STDPATH, ':');
 	if (!data->path)
 		perror(*data->path);
 }
@@ -69,6 +69,7 @@ void	init_data(t_data *data, char *envp[],char *line)
 	data->sin_quothe = 0;
 	data->here_doc = 0;
 	data->num_heredoc = 0;
+	data->state = DEFAULT;
 	init_print_env(data->envp);
 	tokenizetion(&data->token, line, data);
 	add_path(data);

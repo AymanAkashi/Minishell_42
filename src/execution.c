@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/27 20:56:28 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/09/30 18:42:17 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,18 @@ char	*get_thecmd(char **path, char *cmd)
 {
 	char	*tmp;
 	char	*arg;
+	int		i;
 
-	while (*path)
+	i = 0;
+	while (path[i])
 	{
-		tmp = ft_strjoin(*path, "/");
+		tmp = ft_strjoin(path[i], "/");
 		arg = ft_strjoin(tmp, cmd);
 		if (access(arg, 0) == 0)
 			return (arg);
 		free(arg);
 		free(tmp);
-		path++;
+		i++;
 	}
 	return (NULL);
 }
@@ -47,10 +49,7 @@ int	check_cmd(char *str, t_data *data)
 
 	if (ft_strchr(str,'/'))
 	{
-		// if (check_if_path(str))
-			return (2);
-		// else
-			// return (0);
+		return (2);
 	}
 	else
 	{
@@ -61,14 +60,17 @@ int	check_cmd(char *str, t_data *data)
 	return (1);
 }
 
-char **list_to_args(t_list *lst)
+char **list_to_args(t_list *lst, int env)
 {
 	char	**args;
 	int		i;
 	t_env	*e;
 
 	i = 0;
-	args = ft_any_alloc(sizeof(char *), ft_lstsize(lst) + 1);
+	if (env == 0)
+		args = ft_any_alloc(sizeof(char *), ft_lstsize(lst) + 2);
+	else
+		args = ft_any_alloc(sizeof(char *), ft_lstsize(lst) + 1);
 	while (lst)
 	{
 		e = lst->content;
@@ -77,6 +79,9 @@ char **list_to_args(t_list *lst)
 		lst = lst->next;
 		i++;
 	}
+	if (env == 0)
+		args[i++] = ft_strjoin("PATH=", _PATH_STDPATH);
+	args[i] = NULL;
 	return (args);
 }
 //************************************************************************
@@ -87,7 +92,7 @@ void	child_cmd(t_ast *ast, t_data *data, int absolut, char *str)
 	int		i;
 
 	i = -1;
-	envp = list_to_args(data->envp);
+	envp = list_to_args(data->envp, data->found_env);
 	while(ast->args[++i])
 		ast->args[i] = check_expender(ast->args[i], data);
 	if (absolut == 2)
@@ -112,23 +117,37 @@ int	execut_redirection(t_ast *ast, t_ast *red ,t_data *data)
 {
 	(void)data;
 	int pip[2];
-
+	// if (!exec_red(red, data))
+	// 	return (0);
 	if (red->type == TOKEN_RED_IN)
 		ast->in = open(red->args[1], O_RDONLY);
 	if (red->type == TOKEN_RED_OUT)
+	{
+		if (ast->out != 1)
+			close(ast->out);
 		ast->out = open(red->args[1], O_CREAT | O_RDWR | O_TRUNC, 0000644);
+		if (red->right && red->right->type == TOKEN_RED_OUT)
+			execut_redirection(red, red->right, data);
+		if (ast->out == STDOUT_FILENO)
+			ast->out = red->out;
+	}
 	if (red->type == TOKEN_RED2_OUT)
 		ast->out = open(red->args[1], O_CREAT | O_RDWR | O_APPEND, 0000644);
-	if (data->num_heredoc != 0)
-		data->num_heredoc--;
-	if (red->type ==TOKEN_HEREDOC && data->num_heredoc == 1)
+	if (red->type ==TOKEN_HEREDOC)
 	{
-		if(pipe(pip) == -1)
-			perror("Pipe ");
-		ft_putstr_fd(red->here_doc, pip[1]);
-		ast->in = pip[0];
-		close(pip[1]);
-		data->here_doc = 0;
+		if (red->left && red->left->type == TOKEN_HEREDOC)
+			execut_redirection(red, red->left, data);
+		if (data->here_doc != 0)
+		{
+			data->here_doc = 0;
+			if(pipe(pip) == -1)
+				perror("Pipe ");
+			ft_putstr_fd(red->here_doc, pip[1]);
+			ast->in = pip[0];
+			close(pip[1]);
+		}
+		if (ast->in == STDIN_FILENO)
+			ast->in = red->in;
 	}
 	if (ast->in == -1 || ast->out == -1)
 	{
@@ -138,8 +157,6 @@ int	execut_redirection(t_ast *ast, t_ast *red ,t_data *data)
 			perror(red->args[1]);
 		return (0);
 	}
-	if (!exec_red(ast, data))
-		return (0);
 	return (1);
 }
 
@@ -173,15 +190,19 @@ void	exec_builting(char *str, t_data *data, char **args)
 
 int	exec_red(t_ast *ast, t_data *data)
 {
-	if (ast->left)
-		if (is_redirection(ast->left->type))
-			if (!execut_redirection(ast, ast->left, data))
-				return (0);
-	if (ast->right)
-		if (is_redirection(ast->right->type))
-			if (!execut_redirection(ast, ast->right, data))
-				return (0);
-	return (1);
+	if (ast->left && is_redirection(ast->left->type))
+	{
+		if (!execut_redirection(ast, ast->left, data))
+			return (0);
+		return (1);
+	}
+	if (ast->right && is_redirection(ast->right->type))
+	{
+		if (!execut_redirection(ast, ast->right, data))
+			return (0);
+		return (1);
+	}
+	return (2);
 }
 
 void	execut_cmd(t_ast *ast, t_data *data, int p)
@@ -190,7 +211,6 @@ void	execut_cmd(t_ast *ast, t_data *data, int p)
 	char	*str;
 	int		absolut;
 
-	str = NULL;
 	if (!exec_red(ast, data))
 		return ;
 	str = check_expender(ast->cmd, data);
