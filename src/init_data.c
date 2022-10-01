@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 19:59:42 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/29 20:19:57 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/01 18:20:40 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	add_path(t_data *data)
 		perror(*data->path);
 }
 
-char **copy_table(char **envp)
+char	**copy_table(char **envp)
 {
-	char **dest;
-	int i;
+	char	**dest;
+	int		i;
 
 	i = 0;
 	while (envp[i])
@@ -38,7 +38,7 @@ char **copy_table(char **envp)
 void	first_init(char **envp, t_data *data)
 {
 	data->env = copy_table(envp);
-	alloc_envp(data, data->env,data->envp);
+	alloc_envp(data, data->env, data->envp);
 	add_shlvl(data);
 	g_exitstatus = 0;
 	_hidectrl();
@@ -56,7 +56,7 @@ void	init_print_env(t_list *env)
 	}
 }
 
-void	init_data(t_data *data, char *envp[],char *line)
+void	init_data(t_data *data, char *envp[], char *line)
 {
 	data->token = (t_token *)malloc(sizeof(t_token));
 	data->scanner = NULL;

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 15:44:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/30 12:59:40 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/01 19:41:55 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PARSING_H
 
 # include "minishell.h"
-
 
 typedef struct s_ast{
 	char			*cmd;
@@ -27,7 +26,6 @@ typedef struct s_ast{
 	struct s_ast	*right;
 	char			*here_doc;
 }	t_ast;
-
 
 t_ast		*last_ast(t_ast *ast);
 t_ast		*copy_ast(t_ast *ast);

@@ -6,13 +6,13 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/30 18:42:17 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/01 20:53:55 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int g_exitstatus;
+// extern int	g_exitstatus;
 
 int	exec_red(t_ast *ast, t_data *data);
 
@@ -47,7 +47,7 @@ int	check_cmd(char *str, t_data *data)
 {
 	char	*cmd;
 
-	if (ft_strchr(str,'/'))
+	if (ft_strchr(str, '/'))
 	{
 		return (2);
 	}
@@ -60,7 +60,7 @@ int	check_cmd(char *str, t_data *data)
 	return (1);
 }
 
-char **list_to_args(t_list *lst, int env)
+char	**list_to_args(t_list *lst, int env)
 {
 	char	**args;
 	int		i;
@@ -85,15 +85,16 @@ char **list_to_args(t_list *lst, int env)
 	return (args);
 }
 //************************************************************************
+
 void	child_cmd(t_ast *ast, t_data *data, int absolut, char *str)
 {
-	char **envp;
+	char	**envp;
 	char	*cmd;
 	int		i;
 
 	i = -1;
 	envp = list_to_args(data->envp, data->found_env);
-	while(ast->args[++i])
+	while (ast->args[++i])
 		ast->args[i] = check_expender(ast->args[i], data);
 	if (absolut == 2)
 	{
@@ -115,32 +116,41 @@ void	child_cmd(t_ast *ast, t_data *data, int absolut, char *str)
 
 int	execut_redirection(t_ast *ast, t_ast *red ,t_data *data)
 {
-	(void)data;
-	int pip[2];
-	// if (!exec_red(red, data))
-	// 	return (0);
+	int	pip[2];
+	if (!exec_red(red, data))
+		return (0);
 	if (red->type == TOKEN_RED_IN)
+	{
+		if (ast->in != STDIN_FILENO)
+			close(ast->in);
 		ast->in = open(red->args[1], O_RDONLY);
+		if (red->in != STDIN_FILENO)
+			ast->in = red->in;
+	}
 	if (red->type == TOKEN_RED_OUT)
 	{
 		if (ast->out != 1)
 			close(ast->out);
 		ast->out = open(red->args[1], O_CREAT | O_RDWR | O_TRUNC, 0000644);
-		if (red->right && red->right->type == TOKEN_RED_OUT)
-			execut_redirection(red, red->right, data);
-		if (ast->out == STDOUT_FILENO)
+		if (red->out != STDOUT_FILENO)
 			ast->out = red->out;
 	}
 	if (red->type == TOKEN_RED2_OUT)
+	{
+		if (ast->out != 1)
+			close(ast->out);
 		ast->out = open(red->args[1], O_CREAT | O_RDWR | O_APPEND, 0000644);
-	if (red->type ==TOKEN_HEREDOC)
+		if (red->out != STDOUT_FILENO)
+			ast->out = red->out;
+	}
+	if (red->type == TOKEN_HEREDOC)
 	{
 		if (red->left && red->left->type == TOKEN_HEREDOC)
 			execut_redirection(red, red->left, data);
 		if (data->here_doc != 0)
 		{
 			data->here_doc = 0;
-			if(pipe(pip) == -1)
+			if (pipe(pip) == -1)
 				perror("Pipe ");
 			ft_putstr_fd(red->here_doc, pip[1]);
 			ast->in = pip[0];
@@ -164,16 +174,23 @@ int	is_builting(char *str)
 {
 	if (!ft_strcmp(str, "echo") || !ft_strcmp(str, "cd")
 		|| !ft_strcmp(str, "export") || !ft_strcmp(str, "env")
-			|| !ft_strcmp(str, "unset") || !ft_strcmp(str, "pwd")
-				|| !ft_strcmp(str, "exit"))
+		|| !ft_strcmp(str, "unset") || !ft_strcmp(str, "pwd")
+		|| !ft_strcmp(str, "exit"))
 		return (1);
 	return (0);
 }
 
 void	exec_builting(char *str, t_data *data, char **args)
 {
+	int	i;
+
+	i = -1;
 	if (ft_strcmp(str, "echo") == 0)
-		ft_echo(args, data);
+	{
+		while (args[++i])
+			args[i] = check_expender(args[i], data);
+		ft_echo(args);
+	}
 	else if (!ft_strcmp(str, "cd"))
 		ft_cd(data, args);
 	else if (!ft_strcmp(str, "export"))
@@ -194,15 +211,13 @@ int	exec_red(t_ast *ast, t_data *data)
 	{
 		if (!execut_redirection(ast, ast->left, data))
 			return (0);
-		return (1);
 	}
 	if (ast->right && is_redirection(ast->right->type))
 	{
 		if (!execut_redirection(ast, ast->right, data))
 			return (0);
-		return (1);
 	}
-	return (2);
+	return (1);
 }
 
 void	execut_cmd(t_ast *ast, t_data *data, int p)
@@ -297,13 +312,13 @@ void	execut_pipe(t_ast *ast, t_data *data, int p)
 	else
 	{
 		(void)data;
-		if(pipe(pip) == -1)
+		if (pipe(pip) == -1)
 			perror("Pipe :");
 		ast->right->in = pip[0];
 		ast->left->out = pip[1];
 		execut_pipe(ast->left, data, pip[0]);
 		close(pip[1]);
-		execut_pipe(ast->right, data, pip[1]);
+		execut_pipe(ast->right, data, pip[1]);//TODO ... "ls | cat > outfile"
 		close(pip[0]);
 	}
 }

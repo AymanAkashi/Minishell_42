@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:45:28 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/25 10:26:58 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/01 17:04:23 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ int	check_double(t_token *token)
 		if ((tmp->type == TOKEN_PAREN_OUT) && tmp->next
 			&& tmp->next->type == TOKEN_WORD)
 			return (ft_exit_ps(ECHECK, tmp->next->cmd));
-		if (type != TOKEN_WORD && tmp->next && type == tmp->next->type)
-			return (ft_exit_ps(ECHECK, tmp->cmd));
 		if (tmp->type == TOKEN_WORD && tmp->next
 			&& tmp->next->type == TOKEN_PAREN_IN)
 			return (ft_exit_ps(ECHECK, tmp->cmd));
@@ -63,43 +61,40 @@ int	check_double(t_token *token)
 	return (1);
 }
 
-int	close_quote(char *str, char c, int index)
+int	check_quote_2(t_token *tmp)
 {
-	while (str[index])
+	int	i;
+
+	i = -1;
+	while (tmp->cmd && tmp->cmd[++i])
 	{
-		if (str[index] == c)
-			return (index);
-		index++;
+		if (tmp->cmd[i] == '\"')
+		{
+			i = close_quote(tmp->cmd, '\"', ++i);
+			if (!i)
+				return (0);
+		}
+		else if (tmp->cmd[i] == '\'')
+		{
+			i = close_quote(tmp->cmd, '\'', ++i);
+			if (!i)
+				return (0);
+		}
 	}
-	return (0);
+	return (1);
 }
 
 int	check_quote(t_token *token)
 {
 	t_token	*tmp;
-	int		i;
 
 	tmp = token;
 	while (tmp)
 	{
 		if (tmp->type == TOKEN_WORD)
 		{
-			i = -1;
-			while (tmp->cmd && tmp->cmd[++i])
-			{
-				if (tmp->cmd[i] == '\"')
-				{
-					i = close_quote(tmp->cmd, '\"', ++i);
-					if (!i)
-						return (0);
-				}
-				else if (tmp->cmd[i] == '\'')
-				{
-					i = close_quote(tmp->cmd, '\'', ++i);
-					if (!i)
-						return (0);
-				}
-			}
+			if (check_quote_2(tmp) == 0)
+				return (0);
 		}
 		tmp = tmp->next;
 	}

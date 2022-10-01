@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 20:26:53 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/27 10:24:26 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/01 16:59:44 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_token	*get_next_token(t_token *token)
 
 void	scanner_token(t_token *token, t_scanner **curr_scan)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	tmp = token;
 	if ((*curr_scan) == NULL)

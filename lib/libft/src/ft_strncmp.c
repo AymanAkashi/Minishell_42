@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 21:51:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/26 12:01:39 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/01 19:43:49 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_strncmp(char const *s1, char const *s2, unsigned int n)
 	i = 0;
 	if (n == 0)
 		return (0);
-	if(!str1 || !str2)
+	if (!str1 || !str2)
 		return (-1);
 	while (i < n && (str1[i] != '\0' || str2[i] != '\0') && str1[i] == str2[i])
 		i++;

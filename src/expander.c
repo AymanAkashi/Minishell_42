@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 21:52:49 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/29 10:44:03 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/01 17:21:32 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ char	*search_env(char *key, t_data *data)
 	t_list	*lst;
 
 	lst = data->envp;
+	if (!strcmp(key, "PATH"))
+		return (ft_strdup(_PATH_STDPATH));
 	while (lst)
 	{
 		e = lst->content;
@@ -67,58 +69,18 @@ int	exporting(char **result, char *line, int i, t_data *data)
 		i++;
 	if (line[i] == '?')
 	{
-		*result = ft_strjoin2(*result, ft_itoa(g_exitstatus));
-		i++;
+		i += add_exitstatue(result);
+		return (i);
 	}
 	while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '\n'
 		&& line[i] != '\"' && line[i] != '\'' && line[i] != '$'
 		&& (ft_isalpha(line[i]) || line[i] == '_'))
 		append_char(&key, line[i++]);
-	if (!ft_strcmp("PATH", key))
-		value = ft_strdup(_PATH_STDPATH);
-	else
-		value = search_env(key, data);
+	value = search_env(key, data);
 	*result = ft_strjoin2(*result, value);
 	if (value != NULL && value[0] != '\0')
-	free(value);
+		free(value);
 	free(key);
-	return (i);
-}
-
-int	expand_dou_quote(char *line, int i, char **result, t_data *data)
-{
-	t_state	state;
-
-	state = check_state(line[i]);
-	while (line[i] && state == DOU_QUOTHE)
-	{
-		if (line[i] == '\"')
-		{
-			state = check_state(line[i +1]);
-			i++;
-			break ;
-		}
-		if (line[i] == '$')
-			i = exporting(result, line, i, data);
-		else
-			append_char(result, line[i++]);
-	}
-	return (i);
-}
-
-int	expand_sin_quote(char *line, int i, t_state *state, char **result)
-{
-	while (line[i] && *state == SIN_QUOTHE)
-	{
-		if (line[i] == '\'')
-		{
-			*state = check_state(line[i +1]);
-			i++;
-			break ;
-		}
-		append_char(result, line[i]);
-		i++;
-	}
 	return (i);
 }
 
@@ -159,8 +121,8 @@ char	*check_expender(char *args, t_data *data)
 	{
 		while (args[i] == '$' && args[i + 1] == '$')
 			i++;
-		if ((args[i] == '$' || args[i] == '\'' || args[i] == '\"')
-			&& type_caracter(args[i + 1]))
+		if ((args[i] == '$' && type_caracter(args[i + 1]))
+			|| args[i] == '\'' || args[i] == '\"')
 		{
 			args = expander(args, data);
 			break ;

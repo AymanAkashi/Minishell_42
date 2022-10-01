@@ -6,13 +6,12 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/26 13:52:09 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/01 20:35:21 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
 
 # include <unistd.h>
 # include <fcntl.h>
@@ -33,13 +32,14 @@
 
 # include "../lib/libft/include/libft.h"
 # include "tokenization.h"
-#include "data.h"
+# include "data.h"
 # include "parsing.h"
 # include "mini_signal.h"
-
-#define ECHECK "minishell: syntax error near unexpected token `"
+# define NO_SUCH_DIR "minishell: cd: no such file or directory:"
+# define ERROR_CD "cd: error retrieving current directory: getcwd: "
+# define ERROR_CD2 "cannot access parent directories: No such file or director"
+# define ECHECK "minishell: syntax error near unexpected token `"
 //****************************************************************
-
 
 extern int	g_exitstatus;
 
@@ -50,6 +50,12 @@ typedef struct s_env
 	int		print;
 }				t_env;
 
+int			search_quote(char *str);
+void		add_redirection(t_ast *ast, t_scanner *scan, t_data *data);
+int			expand_dou_quote(char *line, int i, char **result, t_data *data);
+int			expand_sin_quote(char *line, int i, t_state *state, char **result);
+int			add_exitstatue(char **result);
+int			close_quote(char *str, char c, int index);
 void		add_shlvl(t_data *data);
 int			is_type_token(t_type_token type);
 void		set_here_doc(t_token **token, t_data *data);
@@ -66,7 +72,7 @@ void		print_err(char *str, char *s, int fd);
 void		ft_export(t_data *data, char **cmd);
 int			type_caracter(char c);
 t_env		*search_env2(char *name, t_list	*lst);
-int			ft_echo(char **cmd, t_data *data);
+int			ft_echo(char **cmd);
 char		**check_args(char **args);
 char		*ft_revsplit(char **str, char *sep);
 int			check_str(char *str, char *src);
@@ -91,7 +97,7 @@ void		sort_list(t_list *lst, t_list *head);
 void		beg_minishell(t_data *data);
 void		free_all(t_data *data);
 void		first_init(char **envp, t_data *data);
-void		init_data(t_data *data, char *envp[],char *line);
+void		init_data(t_data *data, char *envp[], char *line);
 //****************************************************************
 char		*ft_alloc_cmd(char *str, char *str2);
 void		append_char(char **line, char c);
@@ -102,9 +108,8 @@ void		free_table(char **table);
 char		**alloc_tab(t_data *data, t_type_token type, t_scanner *scan);
 //****************************************************************
 
-
-int ft_cd(t_data *data, char **cmd);
-t_env *ft_get_env(void *env);
-int ft_update_oldpwd(t_list *env);
+int			ft_cd(t_data *data, char **cmd);
+t_env		*ft_get_env(void *env);
+int			ft_update_oldpwd(t_list *env);
 
 #endif /* MINISHELL_H */

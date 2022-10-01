@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 22:49:59 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/27 20:55:52 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/01 18:18:18 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	search_export(t_data *data, char *key, char *value, int add)
 	char	*tmp;
 
 	e = search_env2(key, data->envp);
-	if(add == 0)
+	if (add == 0)
 	{
 		if (e == NULL)
 			ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new(key, value)));
@@ -26,7 +26,6 @@ void	search_export(t_data *data, char *key, char *value, int add)
 		{
 			if (!value)
 				return ;
-			// free(e->value);
 			e->value = ft_strdup(value);
 		}
 	}
@@ -48,21 +47,21 @@ void	search_export(t_data *data, char *key, char *value, int add)
 
 void	add_export_var(t_data *data, char *cmd)
 {
-	int	i;
+	int		i;
 	char	*pwd;
 
 	i = 0;
-	while(cmd[i] && cmd[i] != '=' && cmd[i] != '+' && ft_isalpha(cmd[i]))
+	while (cmd[i] && cmd[i] != '=' && cmd[i] != '+' && ft_isalpha(cmd[i]))
 		i++;
 	if (!cmd[i])
 		search_export(data, cmd, NULL, 0);
 	else if (!ft_isalpha(cmd[i]) && cmd[i] != '=' && cmd[i] != '+')
 		print_err("minishell : export: `%s': not a valid identifier\n", cmd, 2);
-	else if(cmd[i] == '=')
+	else if (cmd[i] == '=')
 		creat_export_var(data, cmd);
 	else if (cmd[i] == '+' && cmd[i + 1] == '=')
 	{
-		pwd	= ft_strchr(cmd, '+') + 2;
+		pwd = ft_strchr(cmd, '+') + 2;
 		*ft_strchr(cmd, '+') = '\0';
 		search_export(data, cmd, pwd, 1);
 	}
@@ -72,19 +71,19 @@ void	add_export_var(t_data *data, char *cmd)
 
 void	creat_export_var(t_data *data, char *cmd)
 {
-	int i;
-	char *pwd;
+	int		i;
+	char	*pwd;
 
 	i = 0;
-	while(cmd[i] && cmd[i] != '=' && cmd[i] != '+' && ft_isalpha(cmd[i]))
+	while (cmd[i] && cmd[i] != '=' && cmd[i] != '+' && ft_isalpha(cmd[i]))
 		i++;
 	if (!cmd[i])
 		search_export(data, cmd, NULL, 0);
-	else if(cmd[i] != '=' && cmd[i] != '+' && !ft_isalpha(cmd[i]))
+	else if (cmd[i] != '=' && cmd[i] != '+' && !ft_isalpha(cmd[i]))
 		print_err("minishell : export: `%s': not a valid identifier\n", cmd, 2);
 	else if (cmd[i] == '=')
 	{
-		pwd	= ft_strchr(cmd, '=') + 1;
+		pwd = ft_strchr(cmd, '=') + 1;
 		*ft_strchr(cmd, '=') = '\0';
 		search_export(data, cmd, pwd, 0);
 	}
@@ -95,14 +94,14 @@ char	*check_expend_export(char *args, t_data *data)
 	size_t	i;
 
 	i = 0;
-	while(args[i] && !is_token(args[i]))
+	while (args[i] && !is_token(args[i]))
 	{
-		while(args[i] == '$' && args[i + 1] == '$')
+		while (args[i] == '$' && args[i + 1] == '$')
 			i++;
-		if((args[i] == '$' || args[i] == '\'' || args[i] == '\"'))
+		if ((args[i] == '$' || args[i] == '\'' || args[i] == '\"'))
 		{
 			args = expander(args, data);
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -114,7 +113,7 @@ void	ft_export(t_data *data, char **cmd)
 	int		i;
 
 	i = -1;
-	while(cmd[++i])
+	while (cmd[++i])
 		cmd[i] = check_expend_export(cmd[i], data);
 	i = 1;
 	if (cmd[1] == NULL)

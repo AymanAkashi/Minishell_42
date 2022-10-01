@@ -6,14 +6,14 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 16:17:43 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/30 18:45:21 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/01 19:41:47 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_SIGNAL_H
-#define MINI_SIGNAL_H
+# define MINI_SIGNAL_H
 
-#include "minishell.h"
+# include "minishell.h"
 
 void			sighere_handler(int sig);
 void			_hidectrl(void);

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 16:10:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/30 18:45:05 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/01 20:35:03 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,34 +15,23 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-char	*ft_strjoin_nl(char *str, char *dest, char c)
+char	*ft_strjoin_nl(char *str, char *dest)
 {
 	char	*src;
-	int		i;
-	int		j;
+	char	*tmp;
 
-	i = -1;
-	if (!dest)
-		return (NULL);
-	if (!str)
-	{
-		str = ft_any_alloc(sizeof(char), 2);
-		str[0] = '\0';
-	}
-		src = ft_any_alloc(sizeof(char), (ft_strlen(str) + ft_strlen(dest)) + 2);
-	if (!src)
-		return (NULL);
-	while (str[++i])
-		src[i] = str[i];
-	if (str[0] != '\0')
-		src[i++] = c;
-	j = -1;
-	while (dest[++j])
-		src[i++] = dest[j];
-	src[i] = '\0';
-	free(str);
-	free(dest);
+	tmp = ft_strjoin(str, "\n");
+	src = ft_strjoin(tmp, dest);
+	free(tmp);
 	return (src);
+}
+
+int	check_empty_line(char *str)
+{
+	if (str && ((str[0] == '\"' && str[1] == '\"')
+			|| (str[0] == '\'' && str[1] == '\'')))
+		return (1);
+	return (0);
 }
 
 void	child_here_doc(int p[2], t_token **token)
@@ -64,9 +53,7 @@ void	child_here_doc(int p[2], t_token **token)
 			close(p[1]);
 			exit(1);
 		}
-		if (line[0] == '\0' && (((*token)->next->cmd[0] == '\"'
-			&& (*token)->next->cmd[1] == '\"') || ((*token)->next->cmd[0] == '\''
-			&& (*token)->next->cmd[1] == '\'')))
+		if (line[0] == '\0' && check_empty_line((*token)->next->cmd))
 			break ;
 		if (!line || line[0] == '\0')
 			continue ;
@@ -97,13 +84,13 @@ int	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
 	byte = read (p[0], tmp, len);
 	while (byte > 0)
 	{
-		(*token)->here_doc = ft_strjoin_nl((*token)->here_doc, tmp, '\n');
+		(*token)->here_doc = ft_strjoin_nl((*token)->here_doc, tmp);
 		ft_bzero(tmp, len - 1);
 		byte = read (p[0], &len, sizeof(int));
 		tmp = ft_any_alloc(sizeof(char), len + 1);
 		byte = read (p[0], tmp, len);
 	}
-	(*token)->here_doc = ft_strjoin((*token)->here_doc,"\n");
+	(*token)->here_doc = ft_strjoin((*token)->here_doc, "\n");
 	free(tmp);
 	waitpid(pid, &len, 0);
 	if (WIFSIGNALED(len))
@@ -114,48 +101,13 @@ int	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
 	return (1);
 }
 
-int	search_quote(char *str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-		if (str[i] == '\'' || str[i] == '\"')
-			return (1);
-	return (0);
-}
-
-char	*remove_quotes(char *str)
-{
-	int		i;
-	int		j;
-	char	*dest;
-
-	j = 0;
-	i = -1;
-	while(str[++i])
-		if (str[i] != '\'' && str[i] != '\"')
-			j++;
-	dest = ft_any_alloc(sizeof(char), j + 1);
-	if (!dest)
-		perror("Error allocation");
-	i = -1;
-	j = -1;
-	while(str[++i])
-		if(str[i] != '\'' && str[i] != '\"')
-			dest[++j] = str[i];
-	dest[++j] = '\0';
-	free(str);
-	return (dest);
-}
-
 int	type_heredoc(t_token **token, t_data *data)
 {
 	int	pid;
 	int	p[2];
 
 	(*token)->exp = 1;
-	if((*token)->next->cmd)
+	if ((*token)->next->cmd)
 		if (search_quote((*token)->next->cmd))
 			(*token)->exp = 0;
 	if (((*token)->next->cmd[0] == '\"' && (*token)->next->cmd[1] == '\"')

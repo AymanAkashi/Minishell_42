@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 20:19:07 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/24 18:14:50 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/01 18:20:14 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ void	remove_var(t_list **lst, char *cmd)
 			else
 				*lst = tmp->next;
 			e = tmp->content;
-			free_null((void	**)&e->name);
-			free_null((void	**)&e->value);
-			free_null((void	**)&e);
-			free_null((void	**)&tmp);
+			free_null((void **)&e->name);
+			free_null((void **)&e->value);
+			free_null((void **)&e);
+			free_null((void **)&tmp);
 			return ;
 		}
 		prev = tmp;
@@ -49,18 +49,16 @@ void	remove_content(t_list **lst, char *cmd)
 	{
 		if (ft_strcmp(((t_env *)tmp->content)->name, cmd) == 0)
 		{
-			// *lst = tmp->next;
-			free_null((void**)&((t_env *)tmp->content)->value);
+			free_null((void **)&((t_env *)tmp->content)->value);
 			return ;
 		}
 		tmp = tmp->next;
 	}
 }
 
-
 void	ft_unset(t_data *data, char **args)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	while (args[i])
