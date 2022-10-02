@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 18:07:51 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/29 09:27:49 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/02 15:35:00 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	alloc_envp(t_data *data, char *envp[], t_list *head)
 	char		*tmp;
 	t_env		*e;
 
-	if (!*envp)
+	if (!envp || !*envp)
 		alloc_empty_envp(data);
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 22:49:59 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/01 18:18:18 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/02 20:32:20 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,30 +18,22 @@ void	search_export(t_data *data, char *key, char *value, int add)
 	char	*tmp;
 
 	e = search_env2(key, data->envp);
-	if (add == 0)
+	if (e == NULL)
+		ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new(key, value)));
+	else if (add == 0)
 	{
-		if (e == NULL)
-			ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new(key, value)));
-		else
-		{
-			if (!value)
-				return ;
-			e->value = ft_strdup(value);
-		}
+		if (!value)
+			return ;
+		e->value = ft_strdup(value);
 	}
 	else
 	{
-		if (e == NULL)
-			ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new(key, value)));
+		tmp = e->value;
+		if (e->value == NULL)
+			e->value = ft_strdup(value);
 		else
-		{
-			tmp = e->value;
-			if (e->value == NULL)
-				e->value = ft_strdup(value);
-			else
-				e->value = ft_strjoin(e->value, value);
-			free(tmp);
-		}
+			e->value = ft_strjoin(e->value, value);
+		free(tmp);
 	}
 }
 
@@ -117,10 +109,7 @@ void	ft_export(t_data *data, char **cmd)
 		cmd[i] = check_expend_export(cmd[i], data);
 	i = 1;
 	if (cmd[1] == NULL)
-	{
 		sort_list(data->envp, data->envp);
-		return ;
-	}
 	else
 	{
 		while (cmd[i])

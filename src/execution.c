@@ -6,59 +6,13 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/01 20:53:55 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/02 20:28:33 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// extern int	g_exitstatus;
-
 int	exec_red(t_ast *ast, t_data *data);
-
-char	*get_thecmd(char **path, char *cmd)
-{
-	char	*tmp;
-	char	*arg;
-	int		i;
-
-	i = 0;
-	while (path[i])
-	{
-		tmp = ft_strjoin(path[i], "/");
-		arg = ft_strjoin(tmp, cmd);
-		if (access(arg, 0) == 0)
-			return (arg);
-		free(arg);
-		free(tmp);
-		i++;
-	}
-	return (NULL);
-}
-
-int	check_if_path(char *cmd)
-{
-	if (access(cmd, X_OK) == 0)
-		return (1);
-	return (0);
-}
-
-int	check_cmd(char *str, t_data *data)
-{
-	char	*cmd;
-
-	if (ft_strchr(str, '/'))
-	{
-		return (2);
-	}
-	else
-	{
-		cmd = get_thecmd(data->path, str);
-		if (cmd == NULL)
-			return (0);
-	}
-	return (1);
-}
 
 char	**list_to_args(t_list *lst, int env)
 {
@@ -86,6 +40,24 @@ char	**list_to_args(t_list *lst, int env)
 }
 //************************************************************************
 
+void	ft_execve(char *str, t_ast *ast, char **envp, int absolut)
+{
+	if (absolut == 1)
+	{
+		execve(str, ast->args, envp);
+		print_err("Minishell: %s : No such file or directory\n", str, 2);
+		g_exitstatus = 127;
+		exit(g_exitstatus);
+	}
+	else
+	{
+		execve(str, ast->args, envp);
+		print_err("Minishell: %s : command not found\n", ast->cmd, 2);
+		g_exitstatus = 127;
+		exit(g_exitstatus);
+	}
+}
+
 void	child_cmd(t_ast *ast, t_data *data, int absolut, char *str)
 {
 	char	**envp;
@@ -97,113 +69,14 @@ void	child_cmd(t_ast *ast, t_data *data, int absolut, char *str)
 	while (ast->args[++i])
 		ast->args[i] = check_expender(ast->args[i], data);
 	if (absolut == 2)
-	{
-		execve(str, ast->args, envp);
-		print_err("Minishell: %s : No such file or directory\n", str, 2);
-		g_exitstatus = 127;
-		exit(g_exitstatus);
-	}
+		ft_execve(str, ast, envp, 1);
 	else
 	{
 		cmd = get_thecmd(data->path, str);
-		execve(cmd, ast->args, envp);
-		print_err("Minishell: %s : command not found\n", str ,2);
-		g_exitstatus = 127;
-		exit(g_exitstatus);
+		ft_execve(cmd, ast, envp, 0);
 	}
 }
 //************************************************************************
-
-int	execut_redirection(t_ast *ast, t_ast *red ,t_data *data)
-{
-	int	pip[2];
-	if (!exec_red(red, data))
-		return (0);
-	if (red->type == TOKEN_RED_IN)
-	{
-		if (ast->in != STDIN_FILENO)
-			close(ast->in);
-		ast->in = open(red->args[1], O_RDONLY);
-		if (red->in != STDIN_FILENO)
-			ast->in = red->in;
-	}
-	if (red->type == TOKEN_RED_OUT)
-	{
-		if (ast->out != 1)
-			close(ast->out);
-		ast->out = open(red->args[1], O_CREAT | O_RDWR | O_TRUNC, 0000644);
-		if (red->out != STDOUT_FILENO)
-			ast->out = red->out;
-	}
-	if (red->type == TOKEN_RED2_OUT)
-	{
-		if (ast->out != 1)
-			close(ast->out);
-		ast->out = open(red->args[1], O_CREAT | O_RDWR | O_APPEND, 0000644);
-		if (red->out != STDOUT_FILENO)
-			ast->out = red->out;
-	}
-	if (red->type == TOKEN_HEREDOC)
-	{
-		if (red->left && red->left->type == TOKEN_HEREDOC)
-			execut_redirection(red, red->left, data);
-		if (data->here_doc != 0)
-		{
-			data->here_doc = 0;
-			if (pipe(pip) == -1)
-				perror("Pipe ");
-			ft_putstr_fd(red->here_doc, pip[1]);
-			ast->in = pip[0];
-			close(pip[1]);
-		}
-		if (ast->in == STDIN_FILENO)
-			ast->in = red->in;
-	}
-	if (ast->in == -1 || ast->out == -1)
-	{
-		if (ast->in == -1)
-			perror(red->args[1]);
-		if (ast->out == -1)
-			perror(red->args[1]);
-		return (0);
-	}
-	return (1);
-}
-
-int	is_builting(char *str)
-{
-	if (!ft_strcmp(str, "echo") || !ft_strcmp(str, "cd")
-		|| !ft_strcmp(str, "export") || !ft_strcmp(str, "env")
-		|| !ft_strcmp(str, "unset") || !ft_strcmp(str, "pwd")
-		|| !ft_strcmp(str, "exit"))
-		return (1);
-	return (0);
-}
-
-void	exec_builting(char *str, t_data *data, char **args)
-{
-	int	i;
-
-	i = -1;
-	if (ft_strcmp(str, "echo") == 0)
-	{
-		while (args[++i])
-			args[i] = check_expender(args[i], data);
-		ft_echo(args);
-	}
-	else if (!ft_strcmp(str, "cd"))
-		ft_cd(data, args);
-	else if (!ft_strcmp(str, "export"))
-		ft_export(data, args);
-	else if (!ft_strcmp(str, "env"))
-		ft_env(data);
-	else if (!ft_strcmp(str, "unset"))
-		ft_unset(data, args);
-	else if (!ft_strcmp(str, "pwd"))
-		ft_pwd(data);
-	else if (!ft_strcmp(str, "exit"))
-		ft_exit(args);
-}
 
 int	exec_red(t_ast *ast, t_data *data)
 {
@@ -218,109 +91,6 @@ int	exec_red(t_ast *ast, t_data *data)
 			return (0);
 	}
 	return (1);
-}
-
-void	execut_cmd(t_ast *ast, t_data *data, int p)
-{
-	pid_t	pid;
-	char	*str;
-	int		absolut;
-
-	if (!exec_red(ast, data))
-		return ;
-	str = check_expender(ast->cmd, data);
-	absolut = check_cmd(str, data);
-	update_underscore(data, ast->args);
-	if (is_builting(str) && p < 0)
-		exec_builting(str, data, ast->args);
-	else
-	{
-		_restctrl();
-		ast->args = check_args(ast->args);
-		pid = fork();
-		if (pid == 0)
-		{
-			if (p > 0)
-				close(p);
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
-			dup2(ast->in, STDIN_FILENO);
-			dup2(ast->out, STDOUT_FILENO);
-			if (ast->in != STDIN_FILENO)
-				close(ast->in);
-			if (ast->out != STDOUT_FILENO)
-				close(ast->out);
-			if (is_builting(str))
-				exec_builting(str, data, ast->args);
-			else
-				child_cmd(ast, data, absolut, str);
-			exit(g_exitstatus);
-		}
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-	}
-}
-
-void	exec_or(t_ast *ast, t_data *data)
-{
-	exec_block(ast->left, data);
-	wait_all(0);
-	if (g_exitstatus != 0)
-		exec_block(ast->right, data);
-}
-
-void	exec_and(t_ast *ast, t_data *data)
-{
-	exec_block(ast->left, data);
-	wait_all(0);
-	if (g_exitstatus == 0)
-		exec_block(ast->right, data);
-}
-
-void	exec_block(t_ast *ast, t_data *data)
-{
-	if (is_redirection(ast->type))
-		execut_redirection(ast, ast, data);
-	else if (ast->type == TOKEN_WORD)
-		execut_cmd(ast, data, -1);
-	else if (ast->type == TOKEN_PIPE)
-		execut_pipe(ast, data, -1);
-	else
-	{
-		if (ast->type == TOKEN_AND)
-			exec_and(ast, data);
-		else
-			exec_or(ast, data);
-	}
-}
-
-void	execut_pipe(t_ast *ast, t_data *data, int p)
-{
-	int pip[2];
-
-	if (ast->type == TOKEN_PIPE || ast->type == TOKEN_AND || ast->type == TOKEN_OR)
-	{
-		ast->left->in = ast->in;
-		ast->right->in = ast->in;
-	}
-	if (is_redirection(ast->type))
-		execut_redirection(ast, ast, data);
-	else if (ast->type == TOKEN_WORD)
-		execut_cmd(ast, data, p);
-	else if (ast->type == TOKEN_OR || ast->type == TOKEN_AND)
-		exec_block(ast, data);
-	else
-	{
-		(void)data;
-		if (pipe(pip) == -1)
-			perror("Pipe :");
-		ast->right->in = pip[0];
-		ast->left->out = pip[1];
-		execut_pipe(ast->left, data, pip[0]);
-		close(pip[1]);
-		execut_pipe(ast->right, data, pip[1]);//TODO ... "ls | cat > outfile"
-		close(pip[0]);
-	}
 }
 
 void	execution(t_data *data, t_ast *root)

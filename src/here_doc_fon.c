@@ -6,17 +6,11 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 20:40:54 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/01 20:33:47 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/02 20:52:46 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	set_here_doc(t_token **token, t_data *data)
-{
-	(*token)->type = TOKEN_HEREDOC;
-	data->here_doc = 1;
-}
 
 void	sighere_handler(int sig)
 {
@@ -59,4 +53,22 @@ char	*remove_quotes(char *str)
 	dest[++j] = '\0';
 	free(str);
 	return (dest);
+}
+
+void	write_heredoc(int p, char *line)
+{
+	int	byte;
+
+	byte = ft_strlen(line);
+	write(p, &byte, sizeof(int));
+	write (p, line, ft_strlen(line));
+}
+char	*read_heredoc(int p, int len, int *byte)
+{
+	char	*tmp;
+
+	*byte = read (p, &len, sizeof(int));
+	tmp = ft_any_alloc(sizeof(char), len + 1);
+	*byte = read (p, tmp, len);
+	return (tmp);
 }

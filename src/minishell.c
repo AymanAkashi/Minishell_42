@@ -6,60 +6,13 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/01 20:47:38 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/02 20:53:37 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_exitstatus;
-
-//************____Test_Tokenization____*****************//
-// void	test_tokenization(t_token *token)
-// {
-// 	t_token	*tmp;
-// 	char *str[] = {"word","pipe","red_out","red_in",
-// 			"red2_out","heredoc","and","or","paren_in","paren_out"};
-
-// 	tmp = token;
-// 	while (tmp != NULL)
-// 	{
-// 		if (tmp->type == TOKEN_HEREDOC)
-// 		printf("[%s]-->[%s] == %s\n", tmp->cmd,str[tmp->type],tmp->here_doc);
-// 		else
-// 		printf("[%s]-->[%s]\n", tmp->cmd,str[tmp->type]);
-// 		tmp = tmp->next;
-// 	}
-// }
-//********************************************************/
-
-//************************Test_scanner********************//
-// void	test_scanner(t_data *data)
-// {
-// 	t_token *token;
-
-// 	token = data->token;
-// 	t_scanner	*scan = NULL;
-// 	char *str[] = {"word","pipe","red_out","red_in",
-// 			"red2_out","heredoc","and","or","paren_in","paren_out"};
-
-// 	scanner_token(token, &scan);
-// 	while(scan)
-// 	{
-// 		printf("[%s]-->[%s]\n", scan->curr_token->cmd,
-// 				 str[scan->curr_token->type]);
-// 		if(scan->next_token)
-// 			printf("[%s]-->[%s]\n", scan->next_token->cmd,
-// 			str[scan->next_token->type]);
-// 		printf("--------------------------\n");
-// 		scanner_token(token, &scan);
-// 		if(!scan->next_token)
-// 				break;
-// 	}
-// }
-//********************************************************/
-
-//************************Test_parcing********************//
 
 // void	disp(t_ast *tree, int ident, char *str, t_data *data) {
 // 	if (!tree) return ;
@@ -93,8 +46,6 @@ int	g_exitstatus;
 // 	disp(tree->left, ident + 1, "left",data);
 // 	disp(tree->right, ident + 1, "Right",data);
 // }
-
-//********************************************************/
 
 int	size_ast(t_ast *ast)
 {
@@ -144,6 +95,7 @@ void	beg_minishell(t_data *data)
 			return ;
 	scanner_token(data->token, &data->scanner);
 	data->root = parcing(data, data->root, data->scanner);
+	// disp(data->root, 0, "ROOT", data);
 	execution(data, data->root);
 	wait_all(0);
 	_hidectrl();

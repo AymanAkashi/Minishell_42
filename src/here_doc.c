@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 16:10:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/01 20:35:03 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/02 20:50:48 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,12 @@ char	*ft_strjoin_nl(char *str, char *dest)
 	char	*src;
 	char	*tmp;
 
-	tmp = ft_strjoin(str, "\n");
-	src = ft_strjoin(tmp, dest);
-	free(tmp);
+	tmp = NULL;
+	if (!dest)
+		return (NULL);
+	if (str)
+		tmp = ft_strjoin2(str, "\n");
+	src = ft_strjoin2(tmp, dest);
 	return (src);
 }
 
@@ -37,11 +40,9 @@ int	check_empty_line(char *str)
 void	child_here_doc(int p[2], t_token **token)
 {
 	char	*line;
-	int		byte;
 
 	close(p[0]);
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	__reset_sig(1);
 	while (1)
 	{
 		line = readline("heredoc> ");
@@ -58,12 +59,8 @@ void	child_here_doc(int p[2], t_token **token)
 		if (!line || line[0] == '\0')
 			continue ;
 		else if (line)
-		{
-			byte = ft_strlen(line);
-			write(p[1], &byte, sizeof(int));
-			write (p[1], line, ft_strlen(line));
-			free (line);
-		}
+			write_heredoc(p[1], line);
+		free(line);
 	}
 	free_token(token);
 	exit(1);
@@ -76,19 +73,16 @@ int	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
 	int		len;
 
 	tmp = NULL;
+	len = 0;
 	close(p[1]);
 	signal(SIGINT, sighere_handler);
 	signal(SIGQUIT, SIG_IGN);
-	byte = read (p[0], &len, sizeof(int));
-	tmp = ft_any_alloc(sizeof(char), len + 1);
-	byte = read (p[0], tmp, len);
+	tmp = read_heredoc(p[0], len, &byte);
 	while (byte > 0)
 	{
 		(*token)->here_doc = ft_strjoin_nl((*token)->here_doc, tmp);
-		ft_bzero(tmp, len - 1);
-		byte = read (p[0], &len, sizeof(int));
-		tmp = ft_any_alloc(sizeof(char), len + 1);
-		byte = read (p[0], tmp, len);
+		// ft_bzero(tmp, len - 1);
+		tmp = read_heredoc(p[0], len, &byte);
 	}
 	(*token)->here_doc = ft_strjoin((*token)->here_doc, "\n");
 	free(tmp);

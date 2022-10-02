@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 18:47:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/24 20:14:58 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/02 19:49:51 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	wait_all(pid_t pid)
 
 	while (waitpid(pid, &status, 0) != -1)
 	{
-		if (WIFSIGNALED(status))
+		if (WIFSIGNALED(status) && status != 13)
 		{
 			g_exitstatus = 128 + WTERMSIG(status);
 			set_signal(WTERMSIG(status));

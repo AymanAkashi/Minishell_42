@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/01 20:35:21 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/02 20:51:22 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,36 @@ typedef struct s_env
 	char	*value;
 	int		print;
 }				t_env;
+
+void		write_heredoc(int p, char *line);
+char		*read_heredoc(int p, int len, int *byte);
+
+char		*get_thecmd(char **path, char *cmd);
+int			check_cmd(char *str, t_data *data);
+int			is_builting(char *str);
+void		exec_builting(char *str, t_data *data, char **args);
+t_ast		*just_red(t_scanner *scan, t_data *data);
+t_ast		*parc_red_in(t_scanner *scan, t_ast *root,
+				t_ast *ast, t_data *data);
+t_ast		*parc_red_here(t_scanner *scan, t_ast *root,
+				t_ast *ast, t_data *data);
+t_ast		*parc_red_out(t_scanner *scan, t_ast *root,
+				t_ast *ast, t_data *data);
+
+void		__reset_sig(int def);
+void		ft_dup(int in, int out, int p);
+int			step_exec_cmd(t_ast *ast, t_data *data, char **str, int *absolut);
+
+void		execut_red_out(t_ast *ast, t_ast *red);
+void		execut_red_out2(t_ast *ast, t_ast *red);
+void		execut_red_in(t_ast *ast, t_ast *red);
+void		execut_heredoc(t_ast *ast, t_ast *red, t_data *data, int *pip);
+int			check_cmd(char *str, t_data *data);
+void		child_cmd(t_ast *ast, t_data *data, int absolut, char *str);
+int			execut_redirection(t_ast *ast, t_ast *red, t_data *data);
+int			is_builting(char *str);
+void		exec_builting(char *str, t_data *data, char **args);
+int			exec_red(t_ast *ast, t_data *data);
 
 int			search_quote(char *str);
 void		add_redirection(t_ast *ast, t_scanner *scan, t_data *data);

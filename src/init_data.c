@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 19:59:42 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/01 18:20:40 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/02 15:36:00 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,11 @@ char	**copy_table(char **envp)
 	int		i;
 
 	i = 0;
+	if (!envp || !*envp)
+		return (NULL);
 	while (envp[i])
 		i++;
-	dest = ft_calloc(i + 1, sizeof(char *));
+	dest = ft_calloc(i + 1, sizeof(char **));
 	i = -1;
 	while (envp[++i])
 		dest[i] = ft_strdup(envp[i]);
@@ -58,13 +60,13 @@ void	init_print_env(t_list *env)
 
 void	init_data(t_data *data, char *envp[], char *line)
 {
+	(void)envp;
 	data->token = (t_token *)malloc(sizeof(t_token));
 	data->scanner = NULL;
 	data->token->cmd = NULL;
 	data->token->here_doc = NULL;
 	data->token->next = NULL;
 	data->root = NULL;
-	data->env = envp;
 	data->dou_quothe = 0;
 	data->sin_quothe = 0;
 	data->here_doc = 0;

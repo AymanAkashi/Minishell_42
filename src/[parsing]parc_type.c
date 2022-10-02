@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 15:19:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/01 19:46:18 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/02 15:46:03 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_ast	*parc_paren(t_scanner *scan, t_ast *ast, t_data *data)
 	data->state = PARENT;
 	new = ft_create_ast();
 	scanner_token(data->token, &scan);
-	new = parcing(data, ast, scan);
+	new = parcing(data, NULL, scan);
 	if (scan->curr_token && is_redirection(scan->curr_token->type))
 		add_redirection(new, scan, data);
 	if (scan->curr_token && scan->curr_token->type == TOKEN_PAREN_OUT)
@@ -49,7 +49,7 @@ t_ast	*parc_paren(t_scanner *scan, t_ast *ast, t_data *data)
 		ast->left = new;
 	else
 	{
-		ast = parcing(data, ast, scan);
+		ast = parcing(data, NULL, scan);
 		if (!ast)
 			ast = new;
 		else
