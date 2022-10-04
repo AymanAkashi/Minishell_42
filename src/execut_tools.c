@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 18:08:27 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 20:18:32 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/03 20:58:55 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,14 @@ void	ft_dup(int in, int out, int p)
 
 int	step_exec_cmd(t_ast *ast, t_data *data, char **str, int *absolut)
 {
+	int	i;
+
+	i = -1;
 	if (!exec_red(ast, data))
 		return (0);
 	*str = check_expender(ast->cmd, data);
+	while (ast->args[++i])
+		ast->args[i] = check_expender(ast->args[i], data);
 	*absolut = check_cmd(*str, data);
 	update_underscore(data, ast->args);
 	ast->args = check_args(ast->args);

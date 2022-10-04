@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 16:10:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 20:50:48 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/03 15:49:40 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ char	*ft_strjoin_nl(char *str, char *dest)
 
 int	check_empty_line(char *str)
 {
-	if (str && ((str[0] == '\"' && str[1] == '\"')
-			|| (str[0] == '\'' && str[1] == '\'')))
+	if (str && ((str[0] == '\"' && str[1] == '\"' && str[2] == '\0')
+			|| (str[0] == '\'' && str[1] == '\'' && str[2] == '\0')))
 		return (1);
 	return (0);
 }
@@ -81,7 +81,7 @@ int	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
 	while (byte > 0)
 	{
 		(*token)->here_doc = ft_strjoin_nl((*token)->here_doc, tmp);
-		// ft_bzero(tmp, len - 1);
+		free(tmp);
 		tmp = read_heredoc(p[0], len, &byte);
 	}
 	(*token)->here_doc = ft_strjoin((*token)->here_doc, "\n");
@@ -104,8 +104,8 @@ int	type_heredoc(t_token **token, t_data *data)
 	if ((*token)->next->cmd)
 		if (search_quote((*token)->next->cmd))
 			(*token)->exp = 0;
-	if (((*token)->next->cmd[0] == '\"' && (*token)->next->cmd[1] == '\"')
-		|| ((*token)->next->cmd[0] == '\'' && (*token)->next->cmd[1] == '\''))
+	if (((*token)->next->cmd[0] == '\"' && (*token)->next->cmd[1] == '\"' && (*token)->next->cmd[2] == '\0')
+		|| ((*token)->next->cmd[0] == '\'' && (*token)->next->cmd[1] == '\'' && (*token)->next->cmd[2] == '\0'))
 	{
 		free((*token)->next->cmd);
 		(*token)->next->cmd = ft_strdup("");

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:23:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 20:05:13 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/04 16:08:04 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@ t_ast	*ft_create_ast(void)
 {
 	t_ast	*new;
 
-	new = malloc(sizeof(t_ast));
+	new = ft_calloc(sizeof(t_ast), 1);
 	new->cmd = NULL;
 	new->left = NULL;
 	new->right = NULL;
 	new->here_doc = NULL;
+	new->args = NULL;
 	new->in = 0;
 	new->out = 1;
 	new->exp = 1;

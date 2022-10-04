@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 10:40:40 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/24 20:15:49 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/03 11:35:03 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	size_dir(DIR *dir)
 {
-	struct dirent *wild;
-	int i;
+	struct dirent	*wild;
+	int				i;
 
 	i = 0;
 	wild = readdir(dir);
@@ -29,12 +29,12 @@ int	size_dir(DIR *dir)
 
 char	**add_case_alloc(char **str)
 {
-	char **dest;
-	int i;
+	char	**dest;
+	int		i;
 
 	i = 0;
 	if (str == NULL)
-		dest = ft_calloc(2,sizeof(char *));
+		dest = ft_calloc(2, sizeof(char *));
 	else
 	{
 		while (str[i])
@@ -48,10 +48,10 @@ char	**add_case_alloc(char **str)
 	return (dest);
 }
 
-int	return_check(char *str,char *src, int i, int j)
+int	return_check(char *str, char *src, int i, int j)
 {
 	if ((!str[j] && !src[i]) || (!src[i]
-		&& str[ft_strlen(str) - 1] == src[i - 1]) || (!src[i] && !str[j]))
+			&& str[ft_strlen(str) - 1] == src[i - 1]) || (!src[i] && !str[j]))
 		return (1);
 	if (src[i] == '*')
 		return (check_str(&str[j], &src[i]));
@@ -62,7 +62,7 @@ int	return_check(char *str,char *src, int i, int j)
 
 int	check_str(char *str, char *src)
 {
-	int i;
+	int	i;
 	int	j;
 
 	i = 0;
@@ -89,9 +89,9 @@ int	check_str(char *str, char *src)
 
 char	**wildcard_str(char **str, char *src)
 {
-	char **dest;
-	int	i;
-	int	j;
+	char	**dest;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
@@ -113,12 +113,12 @@ char	**wildcard_str(char **str, char *src)
 char	**remove_hidefile(char **args)
 {
 	char	**dest;
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
-	while(args[i][0] == '.')
+	while (args[i][0] == '.')
 		i++;
 	if (!args[i])
 		return (NULL);
@@ -169,8 +169,8 @@ char	*ft_revsplit(char **str, char *sep)
 	len = 0;
 	if (!str)
 		return (NULL);
-	while(str[++i])
-		len  += ft_strlen(str[i]) + 1;
+	while (str[++i])
+		len += ft_strlen(str[i]) + 1;
 	new = ft_calloc(len + 1, sizeof(char ));
 	i = 0;
 	new = ft_strdup(str[i++]);
@@ -182,7 +182,7 @@ char	*ft_revsplit(char **str, char *sep)
 		i++;
 	}
 	new[len + 1] = '\0';
-	return new;
+	return (new);
 }
 
 char	**check_args(char **args)
@@ -193,7 +193,7 @@ char	**check_args(char **args)
 	i = 0;
 	if (!args)
 		return (NULL);
-	while(args[i])
+	while (args[i])
 		i++;
 	new_wild = ft_calloc(i + 1, sizeof(char *));
 	i = 0;
@@ -209,14 +209,13 @@ char	**check_args(char **args)
 	return (new_wild);
 }
 
-
 int	check_wildcard(char *str)
 {
 	int	i;
 
 	i = 0;
 	if (!str)
-		return 0;
+		return (0);
 	while (str[i])
 	{
 		if (str[i] == '*')
@@ -228,11 +227,11 @@ int	check_wildcard(char *str)
 
 char	**wild(char *str)
 {
-	char **args;
-	char	**src;
-	DIR *dir;
-	struct dirent *wild;
-	int i;
+	char			**args;
+	char			**src;
+	DIR				*dir;
+	struct dirent	*wild;
+	int				i;
 
 	i = 0;
 	src = get_path_wildcard(str);

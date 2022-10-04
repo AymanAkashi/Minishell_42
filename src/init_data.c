@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 19:59:42 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 15:36:00 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/04 16:17:11 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,11 @@ char	**copy_table(char **envp)
 
 void	first_init(char **envp, t_data *data)
 {
+	data->root = NULL;
 	data->env = copy_table(envp);
 	alloc_envp(data, data->env, data->envp);
 	add_shlvl(data);
+	add_path(data);
 	g_exitstatus = 0;
 	_hidectrl();
 }
@@ -74,6 +76,5 @@ void	init_data(t_data *data, char *envp[], char *line)
 	data->state = DEFAULT;
 	init_print_env(data->envp);
 	tokenizetion(&data->token, line, data);
-	add_path(data);
 	add_history(line);
 }

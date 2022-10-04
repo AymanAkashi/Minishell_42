@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 13:27:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 20:23:55 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/04 15:55:27 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ void	exec_and(t_ast *ast, t_data *data)
 	exec_block(ast->left, data);
 	wait_all(0);
 	if (g_exitstatus == 0)
+	{
+		printf("i am here\n");
 		exec_block(ast->right, data);
+	}
 }
 
 void	exec_block(t_ast *ast, t_data *data)
@@ -80,7 +83,7 @@ void	execut_pipe(t_ast *ast, t_data *data, int p)
 		|| ast->type == TOKEN_AND || ast->type == TOKEN_OR)
 	{
 		ast->left->in = ast->in;
-		ast->right->in = ast->in;
+		// ast->right->in = ast->in;
 	}
 	if (!exec_red(ast, data))
 		return ;
@@ -95,8 +98,8 @@ void	execut_pipe(t_ast *ast, t_data *data, int p)
 		ast->right->in = pip[0];
 		ast->left->out = pip[1];
 		execut_pipe(ast->left, data, pip[0]);
+		close(pip[1]);
 		execut_pipe(ast->right, data, pip[1]);
-		close(pip[1]);//TODO
 		close(pip[0]);
 	}
 }

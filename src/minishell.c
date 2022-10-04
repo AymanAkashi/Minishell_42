@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 20:53:37 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/04 15:47:31 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ int	g_exitstatus;
 // 	if (!tree) return ;
 // 	for (int i = 0; i < ident; i++)
 // 		printf("---- ");
-// 	if (tree && tree->type == TOKEN_WORD && tree->cmd) {
-// 			printf("[%s]%s",str, tree->cmd);
-// 			if (tree->args)
-// 			printf("  == %s", tree->args[1]);
+// 	if (tree && tree->type == TOKEN_WORD && tree->cmd)
+// 	{
+// 		printf("[%s]%s",str, tree->cmd);
+// 		if (tree->args)
+// 		printf("  == %s", tree->args[1]);
 // 	}
 // 	else if (tree->type == TOKEN_PIPE && tree->cmd) {
 // 		printf("[%s]PIPE",str);
@@ -43,8 +44,8 @@ int	g_exitstatus;
 // 	else if (tree->type == TOKEN_PAREN_OUT)
 // 		printf(")");
 // 	printf("\n");
-// 	disp(tree->left, ident + 1, "left",data);
-// 	disp(tree->right, ident + 1, "Right",data);
+// 	disp(tree->left, ident + 1, "left", data);
+// 	disp(tree->right, ident + 1, "Right", data);
 // }
 
 int	size_ast(t_ast *ast)
@@ -97,6 +98,7 @@ void	beg_minishell(t_data *data)
 	data->root = parcing(data, data->root, data->scanner);
 	// disp(data->root, 0, "ROOT", data);
 	execution(data, data->root);
+	close_all(data->root);
 	wait_all(0);
 	_hidectrl();
 }

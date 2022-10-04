@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 07:39:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/01 20:47:25 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/04 16:14:55 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +71,12 @@ void	free_ast(t_ast *root)
 		free_ast(root->left);
 	if (root && root->right)
 		free_ast(root->right);
-	if (root && root->args)
-		free_table(root->args);
-	if (root && root->cmd)
-		free(root->cmd);
+	free_table(root->args);
+	free(root->cmd);
+	if (root->here_doc)
+		free(root->here_doc);
+	root->here_doc = NULL;
 	root->cmd = NULL;
 	root->args = NULL;
 	free(root);
-}
-
-void	free_all(t_data *data)
-{
-	free_ast(data->ast);
-	free_token(&data->token);
-	free(data->path);
 }

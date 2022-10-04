@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 20:04:46 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 20:05:15 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/04 15:32:44 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,9 @@ t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
 	multi_red(new, data, scan);
 	if (!scan->curr_token && !root)
 		return (new);
-	if (new->type == TOKEN_RED_IN)
+	if (new->type == TOKEN_RED_IN || new->type == TOKEN_HEREDOC)
 		root = parc_red_in(scan, root, new, data);
 	else if (new->type == TOKEN_RED2_OUT || new->type == TOKEN_RED_OUT)
 		root = parc_red_out(scan, root, new, data);
-	else if (new->type == TOKEN_HEREDOC)
-		ast_add_left(&root, new);
 	return (root);
 }

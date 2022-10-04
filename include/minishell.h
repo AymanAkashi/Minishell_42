@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 20:51:22 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/03 13:00:56 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_env
 	int		print;
 }				t_env;
 
+void		close_all(t_ast *ast);
 void		write_heredoc(int p, char *line);
 char		*read_heredoc(int p, int len, int *byte);
 
@@ -92,7 +93,7 @@ void		set_here_doc(t_token **token, t_data *data);
 char		*expander(char *line, t_data *data);
 void		free_null(void	**ptr);
 void		update_underscore(t_data *data, char **args);
-void		ft_exit(char **args);
+void		ft_exit(char **args, t_data *data);
 void		ft_pwd(t_data *data);
 void		ft_unset(t_data *data, char **args);
 void		ft_env(t_data *data);
@@ -125,7 +126,9 @@ void		alloc_envp(t_data *data, char *envp[], t_list *head);
 void		sort_list(t_list *lst, t_list *head);
 
 void		beg_minishell(t_data *data);
-void		free_all(t_data *data);
+void		free_list(t_list *lst);
+void		free_ast(t_ast *root);
+void		free_all(t_data *data, int pos);
 void		first_init(char **envp, t_data *data);
 void		init_data(t_data *data, char *envp[], char *line);
 //****************************************************************

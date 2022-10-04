@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 13:35:39 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 18:47:39 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/03 21:17:56 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@ void	execut_heredoc(t_ast *ast, t_ast *red, t_data *data, int *pip)
 {
 	if (red->left && red->left->type == TOKEN_HEREDOC)
 		execut_redirection(red, red->left, data);
-	if (data->here_doc != 0)
+	else
 	{
-		data->here_doc = 0;
 		if (pipe(pip) == -1)
 			perror("Pipe ");
 		ft_putstr_fd(red->here_doc, pip[1]);
@@ -31,8 +30,6 @@ void	execut_heredoc(t_ast *ast, t_ast *red, t_data *data, int *pip)
 
 void	execut_red_in(t_ast *ast, t_ast *red)
 {
-	if (ast->in != STDIN_FILENO)
-		close(ast->in);
 	ast->in = open(red->args[1], O_RDONLY);
 	if (red->in != STDIN_FILENO)
 		ast->in = red->in;
@@ -40,8 +37,6 @@ void	execut_red_in(t_ast *ast, t_ast *red)
 
 void	execut_red_out(t_ast *ast, t_ast *red)
 {
-	if (ast->out != 1)
-		close(ast->out);
 	ast->out = open(red->args[1], O_CREAT | O_RDWR | O_TRUNC, 0000644);
 	if (red->out != STDOUT_FILENO)
 		ast->out = red->out;
@@ -49,8 +44,6 @@ void	execut_red_out(t_ast *ast, t_ast *red)
 
 void	execut_red_out2(t_ast *ast, t_ast *red)
 {
-	if (ast->out != 1)
-		close(ast->out);
 	ast->out = open(red->args[1], O_CREAT | O_RDWR | O_APPEND, 0000644);
 	if (red->out != STDOUT_FILENO)
 		ast->out = red->out;
@@ -59,7 +52,11 @@ void	execut_red_out2(t_ast *ast, t_ast *red)
 int	execut_redirection(t_ast *ast, t_ast *red, t_data *data)
 {
 	int	pip[2];
+	int	i;
 
+	i = -1;
+	while (red->args[++i])
+		red->args[i] = check_expender(red->args[i], data);
 	if (!exec_red(red, data))
 		return (0);
 	if (red->type == TOKEN_RED_IN)

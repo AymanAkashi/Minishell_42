@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 20:40:54 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 20:52:46 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/03 11:32:45 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,6 @@ void	sighere_handler(int sig)
 	printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
-}
-
-int	search_quote(char *str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-		if (str[i] == '\'' || str[i] == '\"')
-			return (1);
-	return (0);
 }
 
 char	*remove_quotes(char *str)
@@ -63,6 +52,7 @@ void	write_heredoc(int p, char *line)
 	write(p, &byte, sizeof(int));
 	write (p, line, ft_strlen(line));
 }
+
 char	*read_heredoc(int p, int len, int *byte)
 {
 	char	*tmp;

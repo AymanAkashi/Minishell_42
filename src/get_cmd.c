@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 20:28:04 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 20:53:12 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/04 16:02:06 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ char	*get_thecmd(char **path, char *cmd)
 	{
 		tmp = ft_strjoin(path[i], "/");
 		arg = ft_strjoin(tmp, cmd);
+		free(tmp);
 		if (access(arg, 0) == 0)
 			return (arg);
 		free(arg);
-		free(tmp);
 		i++;
 	}
 	return (NULL);
@@ -54,6 +54,7 @@ int	check_cmd(char *str, t_data *data)
 		cmd = get_thecmd(data->path, str);
 		if (cmd == NULL)
 			return (0);
+		free(cmd);
 	}
 	return (1);
 }

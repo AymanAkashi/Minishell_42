@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   close_all.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/21 09:55:28 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/04 11:34:39 by aaggoujj         ###   ########.fr       */
+/*   Created: 2022/10/03 11:16:13 by aaggoujj          #+#    #+#             */
+/*   Updated: 2022/10/03 11:19:02 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"libft.h"
+#include "minishell.h"
 
-void	*ft_calloc( size_t size, size_t num)
+void	close_all(t_ast *ast)
 {
-	void	*ptr;
-
-	ptr = (void *)malloc(num * size);
-	if (!ptr)
-		return (NULL);
-	ft_bzero (ptr, num * size);
-	return (ptr);
+	if (!ast)
+		return ;
+	if (ast->in != STDIN_FILENO)
+		close(ast->in);
+	if (ast->out != STDOUT_FILENO)
+		close(ast->out);
+	if (ast->left)
+		close_all(ast->left);
+	if (ast->right)
+		close_all(ast->right);
 }

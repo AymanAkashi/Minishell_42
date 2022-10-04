@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 18:07:51 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 15:35:00 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/04 10:48:49 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	path_to_env(t_list **head, char *str, int *o)
 		path = getcwd(NULL, 0);
 		e = ft_env_new(str, path);
 		ft_lstadd_back(head, ft_lstnew(e));
+		free(path);
 	}
 }
 
@@ -77,6 +78,14 @@ t_env	*creat_env(t_list **lst, char *tmp, int *o, char *envp)
 	return (e);
 }
 
+void	add_back_envp(t_env *e, t_list **head)
+{
+	t_list	*lst;
+
+	lst = ft_lstnew(e);
+	ft_lstadd_back(head, lst);
+}
+
 void	alloc_envp(t_data *data, char *envp[], t_list *head)
 {
 	static int	i;
@@ -96,7 +105,7 @@ void	alloc_envp(t_data *data, char *envp[], t_list *head)
 			*ft_strchr(envp[i], '=') = '\0';
 			e = creat_env(&head, tmp, &o, envp[i]);
 			if (e)
-				ft_lstadd_back(&head, ft_lstnew(e));
+				add_back_envp(e, &head);
 			i++;
 		}
 		if (o < 2)

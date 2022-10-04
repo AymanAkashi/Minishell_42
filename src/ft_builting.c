@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 20:26:53 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 20:31:18 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/03 18:36:14 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	exec_builting(char *str, t_data *data, char **args)
 	i = -1;
 	if (ft_strcmp(str, "echo") == 0)
 	{
-		while (args[++i])
-			args[i] = check_expender(args[i], data);
+		// while (args[++i])
+		// 	args[i] = check_expender(args[i], data);
 		ft_echo(args);
 	}
 	else if (!ft_strcmp(str, "cd"))
@@ -44,5 +44,5 @@ void	exec_builting(char *str, t_data *data, char **args)
 	else if (!ft_strcmp(str, "pwd"))
 		ft_pwd(data);
 	else if (!ft_strcmp(str, "exit"))
-		ft_exit(args);
+		ft_exit(args, data);
 }

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 12:33:30 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 14:38:00 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/03 15:25:43 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	add_shlvl(t_data *data)
 {
 	int		shlvl;
 	t_env	*e;
+	char	*s;
 
 	e = search_env2("SHLVL", data->envp);
 	if (!e)
@@ -32,7 +33,10 @@ void	add_shlvl(t_data *data)
 			shlvl = 1;
 		else
 			shlvl++;
-		e->value = ft_strdup(ft_itoa(shlvl));
+		s = ft_itoa(shlvl);
+		free(e->value);
+		e->value = ft_strdup(s);
+		free(s);
 	}
 }
 
