@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 07:39:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/04 16:14:55 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:27:46 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	free_token(t_token **token)
 		tmp = *token;
 		if ((*token)->type == TOKEN_HEREDOC)
 			free((*token)->here_doc);
-		free((*token)->cmd);
+		if ((*token)->cmd)
+			free((*token)->cmd);
 		*token = (*token)->next;
 		free(tmp);
 	}
@@ -72,9 +73,9 @@ void	free_ast(t_ast *root)
 	if (root && root->right)
 		free_ast(root->right);
 	free_table(root->args);
-	free(root->cmd);
+	free_null((void **)&root->cmd);
 	if (root->here_doc)
-		free(root->here_doc);
+		free_null((void **) &root->here_doc);
 	root->here_doc = NULL;
 	root->cmd = NULL;
 	root->args = NULL;

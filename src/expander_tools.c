@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 17:14:40 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/01 17:21:41 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:22:01 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,21 @@
 
 int	add_exitstatue(char **result)
 {
-	*result = ft_strjoin2(*result, ft_itoa(g_exitstatus));
+	char	*tmp;
+
+	tmp = ft_itoa(g_exitstatus);
+	*result = ft_strjoin2(*result, tmp);
+	free(tmp);
 	return (1);
 }
 
 int	expand_dou_quote(char *line, int i, char **result, t_data *data)
 {
-	t_state	state;
-
-	state = check_state(line[i]);
-	while (line[i] && state == DOU_QUOTHE)
+	while (line[i] && data->state == DOU_QUOTHE)
 	{
 		if (line[i] == '\"')
 		{
-			state = check_state(line[i +1]);
+			data->state = check_state(line[i +1]);
 			i++;
 			break ;
 		}

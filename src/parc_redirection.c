@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 20:02:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/04 15:33:11 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/04 21:01:42 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,26 +66,13 @@ t_ast	*parc_red_in(t_scanner *scan, t_ast *root, t_ast *ast, t_data *data)
 	return (root);
 }
 
-t_ast	*parc_red_here(t_scanner *scan, t_ast *root, t_ast *ast, t_data *data)
+void	parcing_word_red(t_scanner *scan, t_data *data, t_ast *new)
 {
-	t_ast	*new;
-
-	new = NULL;
-	if (!scan->curr_token)
-		ast_add_left(&root, ast);
-	if (scan->curr_token && (scan->curr_token->type == TOKEN_WORD
-			|| scan->curr_token->type == TOKEN_PIPE))
-	{
-		ast_add_left(&root, ast);
-		root = parc_word(scan, data, root);
-	}
-	if (scan->curr_token && (scan->curr_token->type == TOKEN_AND
-			|| scan->curr_token->type == TOKEN_OR))
-	{
-		ast_add_left(&root, ast);
-		root = parc_opera(scan, root, data);
-	}
-	return (root);
+	if (scan->curr_token->type == TOKEN_RED2_OUT
+		|| scan->curr_token->type == TOKEN_RED_OUT)
+		ast_add_right(&new, just_red(scan, data));
+	else
+		ast_add_left(&new, just_red(scan, data));
 }
 
 t_ast	*parc_red_out(t_scanner *scan, t_ast *root, t_ast *ast, t_data *data)

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:49:21 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/24 20:37:18 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 17:40:33 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,17 +96,25 @@ void	append_char(char **line, char c)
 	int		i;
 
 	i = 0;
+	dest = NULL;
 	if (*line == NULL)
-		*line = ft_any_alloc(sizeof(char), 2);
-	dest = ft_any_alloc(sizeof(char), ft_strlen(*line) + 2);
-	while ((*line)[i])
 	{
-		dest[i] = (*line)[i];
-		i++;
+		dest = ft_any_alloc(sizeof(char), 2);
+		dest[0] = c;
+		dest[1] = '\0';
 	}
-	dest[i] = c;
-	dest[i + 1] = '\0';
-	free(*line);
+	else
+	{
+		dest = ft_any_alloc(sizeof(char), ft_strlen(*line) + 2);
+		while ((*line)[i])
+		{
+			dest[i] = (*line)[i];
+			i++;
+		}
+		dest[i] = c;
+		dest[i + 1] = '\0';
+		free(*line);
+	}
 	*line = dest;
 }
 

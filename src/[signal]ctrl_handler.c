@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 20:12:24 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/04 16:11:17 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/04 17:18:42 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ void	ctrl_d_handler(t_data *data)
 	printf("exit\n");
 	rl_clear_history();
 	_restctrl();
-	free_all(data, 2);
+	free_signal(data);
 	exit(EXIT_SUCCESS);
 }

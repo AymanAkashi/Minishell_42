@@ -6,11 +6,50 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 18:39:29 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/04 10:08:41 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/04 20:56:35 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	alloc_empty_envp(t_data *data)
+{
+	char	*pwd;
+
+	data->path = ft_split(_PATH_STDPATH, ':');
+	data->found_env = 0;
+	pwd = getcwd(NULL, 0);
+	data->envp = ft_lstnew(ft_env_new("PWD", pwd));
+	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("OLDPWD", NULL)));
+	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("SHLVL", "1")));
+	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("_", "/usr/bin/env")));
+}
+
+char	**d_alloc_tabs(char **args, char *str)
+{
+	char	**d_table;
+	int		i;
+
+	i = 0;
+	if (!args || !args[i])
+	{
+		d_table = ft_calloc(sizeof(char *), 2);
+		d_table[0] = ft_strdup(str);
+		d_table[1] = NULL;
+		return (d_table);
+	}
+	while (args[i])
+		i++;
+	d_table = ft_calloc(i + 2, sizeof(char *));
+	i = -1;
+	while (args[++i])
+		d_table[i] = ft_strdup(args[i]);
+	d_table[i++] = ft_strdup(str);
+	d_table[i] = NULL;
+	free_table(args);
+	args = NULL;
+	return (d_table);
+}
 
 void	*ft_any_alloc(size_t size, size_t len)
 {

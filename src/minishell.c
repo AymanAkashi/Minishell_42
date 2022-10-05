@@ -6,47 +6,45 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/04 15:47:31 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 17:52:36 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_exitstatus;
-
-// void	disp(t_ast *tree, int ident, char *str, t_data *data) {
-// 	if (!tree) return ;
-// 	for (int i = 0; i < ident; i++)
-// 		printf("---- ");
-// 	if (tree && tree->type == TOKEN_WORD && tree->cmd)
-// 	{
-// 		printf("[%s]%s",str, tree->cmd);
-// 		if (tree->args)
-// 		printf("  == %s", tree->args[1]);
-// 	}
-// 	else if (tree->type == TOKEN_PIPE && tree->cmd) {
-// 		printf("[%s]PIPE",str);
-// 	}
-// 	else if (tree->type == TOKEN_AND && tree->cmd)
-// 		printf("[%s] AND", str);
-// 	else if (tree->type == TOKEN_OR && tree->cmd)
-// 		printf("[%s] OR", str);
-// 	else if (tree->type == TOKEN_RED_OUT && tree->cmd)
-// 		printf("[%s] REDIR_OUT", str);
-// 	else if (tree->type == TOKEN_RED_IN && tree->cmd)
-// 		printf("[%s] REDIR_IN", str);
-// 	else if (tree->type == TOKEN_RED2_OUT && tree->cmd)
-// 		printf("[%s] REDIR2_OUT", str);
-// 	else if (tree->type == TOKEN_HEREDOC && tree->cmd)
-// 		printf("[%s] HEREDOC = %s", str, tree->here_doc);
-// 	else if (tree->type == TOKEN_PAREN_IN)
-// 		printf("(");
-// 	else if (tree->type == TOKEN_PAREN_OUT)
-// 		printf(")");
-// 	printf("\n");
-// 	disp(tree->left, ident + 1, "left", data);
-// 	disp(tree->right, ident + 1, "Right", data);
-// }
+void	disp(t_ast *tree, int ident, char *str, t_data *data) {
+	if (!tree) return ;
+	for (int i = 0; i < ident; i++)
+		printf("---- ");
+	if (tree && tree->type == TOKEN_WORD && tree->cmd)
+	{
+		printf("[%s]%s",str, tree->cmd);
+		if (tree->args)
+		printf("  == %s", tree->args[1]);
+	}
+	else if (tree->type == TOKEN_PIPE && tree->cmd) {
+		printf("[%s]PIPE",str);
+	}
+	else if (tree->type == TOKEN_AND && tree->cmd)
+		printf("[%s] AND", str);
+	else if (tree->type == TOKEN_OR && tree->cmd)
+		printf("[%s] OR", str);
+	else if (tree->type == TOKEN_RED_OUT && tree->cmd)
+		printf("[%s] REDIR_OUT", str);
+	else if (tree->type == TOKEN_RED_IN && tree->cmd)
+		printf("[%s] REDIR_IN", str);
+	else if (tree->type == TOKEN_RED2_OUT && tree->cmd)
+		printf("[%s] REDIR2_OUT", str);
+	else if (tree->type == TOKEN_HEREDOC && tree->cmd)
+		printf("[%s] HEREDOC = %s", str, tree->here_doc);
+	else if (tree->type == TOKEN_PAREN_IN)
+		printf("(");
+	else if (tree->type == TOKEN_PAREN_OUT)
+		printf(")");
+	printf("\n");
+	disp(tree->left, ident + 1, "left", data);
+	disp(tree->right, ident + 1, "Right", data);
+}
 
 int	size_ast(t_ast *ast)
 {
@@ -82,7 +80,7 @@ int	add_here_doc(t_token **token, t_data *data)
 	while (tmp)
 	{
 		if (tmp->type == TOKEN_HEREDOC)
-			if (!type_heredoc(&tmp, data))
+			if (!type_heredoc(&tmp, data, data->token->next->cmd))
 				return (0);
 		tmp = tmp->next;
 	}
@@ -96,6 +94,8 @@ void	beg_minishell(t_data *data)
 			return ;
 	scanner_token(data->token, &data->scanner);
 	data->root = parcing(data, data->root, data->scanner);
+	// for(int  i = 0; data->root->args[i]; i++)
+	// 	printf("%s ---- \n", data->root->args[i]);
 	// disp(data->root, 0, "ROOT", data);
 	execution(data, data->root);
 	close_all(data->root);

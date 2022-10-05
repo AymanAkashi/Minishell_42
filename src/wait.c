@@ -6,11 +6,27 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 18:47:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 19:49:51 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/04 21:02:58 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_wildcard(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == '*')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 void	set_signal(int sig)
 {

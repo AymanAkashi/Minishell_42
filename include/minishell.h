@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/03 13:00:56 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:18:30 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # define ECHECK "minishell: syntax error near unexpected token `"
 //****************************************************************
 
-extern int	g_exitstatus;
+int	g_exitstatus;
 
 typedef struct s_env
 {
@@ -50,6 +50,14 @@ typedef struct s_env
 	int		print;
 }				t_env;
 
+int			check_wildcard(char *str);
+int			size_dir(DIR *dir);
+char		**wildcard_str(char **str, char *src);
+
+void		free_signal(t_data *data);
+void		alloc_empty_envp(t_data *data);
+void		parcing_word_red(t_scanner *scan, t_data *data, t_ast *new);
+char		**d_alloc_tabs(char **args, char *str);
 void		close_all(t_ast *ast);
 void		write_heredoc(int p, char *line);
 char		*read_heredoc(int p, int len, int *byte);
@@ -105,7 +113,7 @@ int			type_caracter(char c);
 t_env		*search_env2(char *name, t_list	*lst);
 int			ft_echo(char **cmd);
 char		**check_args(char **args);
-char		*ft_revsplit(char **str, char *sep);
+char		*ft_revsplit(char **str, char sep);
 int			check_str(char *str, char *src);
 int			check_wildcard(char *str);
 void		update_pwd(t_data *data);
@@ -119,7 +127,7 @@ char		*expand_heredoc(char *str, t_data *data);
 int			exporting(char **result, char *line, int pos, t_data *data);
 char		*ft_strjoin2(char *str, char *buff);
 void		ft_env_del(t_env *env);
-int			type_heredoc(t_token **token, t_data *data);
+int			type_heredoc(t_token **token, t_data *data, char *eof);
 t_env		*ft_env_new(char *name, char *value);
 void		ft_env_del(t_env *env);
 void		alloc_envp(t_data *data, char *envp[], t_list *head);

@@ -6,24 +6,11 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 18:07:51 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/04 10:48:49 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/04 20:55:49 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	alloc_empty_envp(t_data *data)
-{
-	char	*pwd;
-
-	data->path = ft_split(_PATH_STDPATH, ':');
-	data->found_env = 0;
-	pwd = getcwd(NULL, 0);
-	data->envp = ft_lstnew(ft_env_new("PWD", pwd));
-	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("OLDPWD", NULL)));
-	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("SHLVL", "1")));
-	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("_", "/usr/bin/env")));
-}
 
 void	path_to_env(t_list **head, char *str, int *o)
 {

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 16:10:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/03 15:49:40 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/04 20:57:24 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
 	return (1);
 }
 
-int	type_heredoc(t_token **token, t_data *data)
+int	type_heredoc(t_token **token, t_data *data, char *eof)
 {
 	int	pid;
 	int	p[2];
@@ -104,8 +104,8 @@ int	type_heredoc(t_token **token, t_data *data)
 	if ((*token)->next->cmd)
 		if (search_quote((*token)->next->cmd))
 			(*token)->exp = 0;
-	if (((*token)->next->cmd[0] == '\"' && (*token)->next->cmd[1] == '\"' && (*token)->next->cmd[2] == '\0')
-		|| ((*token)->next->cmd[0] == '\'' && (*token)->next->cmd[1] == '\'' && (*token)->next->cmd[2] == '\0'))
+	if ((eof[0] == '\"' && eof[1] == '\"' && eof[2] == '\0')
+		|| (eof[0] == '\'' && eof[1] == '\'' && eof[2] == '\0'))
 	{
 		free((*token)->next->cmd);
 		(*token)->next->cmd = ft_strdup("");

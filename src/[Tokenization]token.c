@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/23 08:04:09 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/24 20:42:30 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/04 17:22:29 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ void	tokenizetion(t_token **token, char *line, t_data *data)
 	head = *token;
 	data->parenthes = 0;
 	data->operator = 0;
-	while (line[i] == ' ' || line[i] == '\t')
+	while (line && (line[i] == ' ' || line[i] == '\t'))
 		i++;
-	while (line[i])
+	while (line && line[i])
 	{
 		if ((line[i] == ' ' || line[i] == '\t'))
 		{

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 15:44:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/02 20:08:17 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 17:58:06 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 typedef struct s_ast{
 	char			*cmd;
 	char			**args;
+	char			**args_exp;
 	int				in;
 	int				out;
 	int				exp;

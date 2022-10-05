@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 14:30:39 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/26 09:34:06 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 14:25:54 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,13 @@ void	update_underscore(t_data *data, char **args)
 {
 	t_env	*e;
 
+	e = NULL;
 	if (!ft_strcmp(last_args(args), "$_"))
 		return ;
 	e = search_env2("_", data->envp);
 	if (e)
 	{
-		if (e->value)
+		if (e->value && e->value[0] != '\0')
 			free(e->value);
 		e->value = ft_strdup(last_args(args));
 	}

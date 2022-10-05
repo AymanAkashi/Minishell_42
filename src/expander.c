@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 21:52:49 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/01 17:21:32 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 17:55:04 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,25 +88,24 @@ char	*expander(char *line, t_data *data)
 {
 	char	*result;
 	int		i;
-	t_state	state;
 
 	i = 0;
-	state = DEFAULT;
+	data->state = DEFAULT;
 	result = NULL;
 	while (line[i])
 	{
 		if (line[i] == '\'' || line[i] == '\"')
-			state = check_state(line[i++]);
-		if (line[i] && state == DOU_QUOTHE)
+			data->state = check_state(line[i++]);
+		if (line[i] && data->state == DOU_QUOTHE)
 		{
 			i = expand_dou_quote(line, i, &result, data);
-			state = check_state(line[i]);
+			data->state = check_state(line[i]);
 		}
-		else if (line[i] && state == SIN_QUOTHE)
-			i = expand_sin_quote(line, i, &state, &result);
-		if (state == DEFAULT && line[i] == '$')
+		else if (line[i] && data->state == SIN_QUOTHE)
+			i = expand_sin_quote(line, i, &data->state, &result);
+		if (data->state == DEFAULT && line[i] == '$')
 			i = exporting(&result, line, i, data);
-		else if (line[i] && state == DEFAULT)
+		else if (line[i] && data->state == DEFAULT)
 			append_char(&result, line[i++]);
 	}
 	return (result);

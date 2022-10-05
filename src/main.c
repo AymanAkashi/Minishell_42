@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 19:56:22 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/04 16:13:27 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 18:09:13 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,30 @@ void	free_all(t_data *data, int pos)
 {
 	if (pos >= 1)
 	{
-		free_ast(data->ast);
-		free_token(&data->token);
-		// free_table(data->path);
-		// free(data->scanner);
+		free_ast(data->root);
+		if (data->token && data->token->cmd)
+			free_token(&data->token);
+		else
+			free(data->token);
+		free(data->scanner);
 	}
 	if (pos == 2)
 	{
+		free_table(data->path);
 		free_list(data->envp);
 	}
+}
+
+void	free_signal(t_data *data)
+{
+	if (data->root)
+		free_ast(data->root);
+	if (data->token && data->token->cmd)
+		free_token(&data->token);
+	else
+		free(data->token);
+	free_table(data->path);
+	free_list(data->envp);
 }
 
 int	line_check(t_data *data, char *line)
@@ -36,6 +51,19 @@ int	line_check(t_data *data, char *line)
 	}
 	return (1);
 }
+int	check_ascii(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line && line[i])
+	{
+		if (!ft_isascii(line[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 int	main(int ac, char **av, char **envp)
 {
@@ -44,15 +72,13 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac, (void)av;
 	first_init(envp, &data);
-	line = NULL;
 	while (1)
 	{
-		data.root = NULL;
 		_ctrl_handler();
 		line = readline("\001\x1B[1;1;33m\002Minishell $> \001\e[00m\002");
-		if (line != NULL && line[0] != '\0')
+		init_data(&data, envp, line);
+		if (line != NULL && line[0] != '\0' && check_ascii(line))
 		{
-			init_data(&data, envp, line);
 			if (!line_check(&data, line))
 				continue ;
 			beg_minishell(&data);
