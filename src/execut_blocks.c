@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 13:27:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/05 13:11:48 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 19:10:35 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,12 @@
 void	execut_cmd(t_ast *ast, t_data *data, int p)
 {
 	pid_t	pid;
-	char	*str;
 	int		absolut;
 
-	if (step_exec_cmd(ast, data, &str, &absolut) == 0)
+	if (step_exec_cmd(ast, data, &absolut) == 0)
 		return ;
-	if (is_builting(str) && p < 0)
-		exec_builting(str, data, ast->args);
+	if (is_builting(ast->args[0]) && p < 0)
+		exec_builting(ast->args[0], data, ast->args);
 	else
 	{
 		_restctrl();
@@ -29,10 +28,10 @@ void	execut_cmd(t_ast *ast, t_data *data, int p)
 		if (pid == 0)
 		{
 			ft_dup(ast->in, ast->out, p);
-			if (is_builting(str))
-				exec_builting(str, data, ast->args);
+			if (is_builting(ast->args[0]))
+				exec_builting(ast->args[0], data, ast->args);
 			else
-				child_cmd(ast, data, absolut, str);
+				child_cmd(ast, data, absolut, ast->args[0]);
 			exit(g_exitstatus);
 		}
 		__reset_sig(0);

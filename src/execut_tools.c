@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 18:08:27 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/05 17:37:10 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 20:52:19 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,26 @@ void	ft_dup(int in, int out, int p)
 		close(out);
 }
 
-int	step_exec_cmd(t_ast *ast, t_data *data, char **str, int *absolut)
+int	step_exec_cmd(t_ast *ast, t_data *data, int *absolut)
 {
-	int	i;
+	char	*tmp;
+	char	**args_exp;
+	int		i;
 
 	i = -1;
+	args_exp = NULL;
 	if (!exec_red(ast, data))
 		return (0);
-	*str = check_expender(ast->cmd, data);
 	while (ast->args[++i])
-		ast->args[i] = check_expender(ast->args[i], data);
-	*absolut = check_cmd(*str, data);
+	{
+		tmp = check_expender(ast->args[i], data);
+		args_exp = d_alloc_tabs(args_exp, tmp);
+		if (ft_strcmp(tmp, ast->args[i]))
+			free(tmp);
+	}
+	free_table(ast->args);
+	ast->args = args_exp;
+	*absolut = check_cmd(ast->args[0], data);
 	update_underscore(data, ast->args);
 	ast->args = check_args(ast->args);
 	return (1);

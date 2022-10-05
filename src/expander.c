@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 21:52:49 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/05 17:55:04 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 20:03:48 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,20 +113,24 @@ char	*expander(char *line, t_data *data)
 
 char	*check_expender(char *args, t_data *data)
 {
+	char	*res;
 	size_t	i;
 
 	i = 0;
-	while (args[i] && !is_token(args[i]))
+	res = NULL;
+	while (args && args[i] && !is_token(args[i]))
 	{
 		while (args[i] == '$' && args[i + 1] == '$')
 			i++;
 		if ((args[i] == '$' && type_caracter(args[i + 1]))
 			|| args[i] == '\'' || args[i] == '\"')
 		{
-			args = expander(args, data);
+			res = expander(args, data);
 			break ;
 		}
 		i++;
 	}
+	if (res != NULL)
+		return (res);
 	return (args);
 }

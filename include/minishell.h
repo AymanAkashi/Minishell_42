@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/05 15:18:30 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 19:10:12 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ t_ast		*parc_red_out(t_scanner *scan, t_ast *root,
 
 void		__reset_sig(int def);
 void		ft_dup(int in, int out, int p);
-int			step_exec_cmd(t_ast *ast, t_data *data, char **str, int *absolut);
+int			step_exec_cmd(t_ast *ast, t_data *data, int *absolut);
 
 void		execut_red_out(t_ast *ast, t_ast *red);
 void		execut_red_out2(t_ast *ast, t_ast *red);

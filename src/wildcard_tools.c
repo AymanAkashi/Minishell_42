@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:02:16 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/04 21:36:08 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 18:46:59 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ char	**wild(char *str)
 	if (dir == NULL)
 		return (NULL);
 	args = ft_calloc(size_dir(dir) + 1, sizeof(char *));
+	closedir(dir);
 	dir = opendir(src[0]);
 	wild = readdir(dir);
 	while (wild)
@@ -155,5 +156,6 @@ char	**wild(char *str)
 	else
 		args = wildcard_str(args, src[1]);
 	free_table(src);
+	closedir(dir);
 	return (args);
 }
