@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:23:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/04 16:08:04 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/06 11:20:48 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_ast	*ft_create_ast(void)
 	new->left = NULL;
 	new->right = NULL;
 	new->here_doc = NULL;
+	new->args_exp = NULL;
 	new->args = NULL;
 	new->in = 0;
 	new->out = 1;

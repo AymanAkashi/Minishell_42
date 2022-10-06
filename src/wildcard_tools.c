@@ -6,12 +6,11 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 21:02:16 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/05 18:46:59 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/06 15:21:12 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 char	**remove_hidefile(char **args)
 {
@@ -83,22 +82,6 @@ char	*ft_join_sep(char *s1, char *s2, char sep)
 	return (str);
 }
 
-char	*ft_revsplit(char **str, char sep)
-{
-	char	*new;
-	int		len;
-	int		i;
-
-	i = -1;
-	len = 0;
-	new = NULL;
-	if (!str)
-		return (NULL);
-	while (str[++i])
-		new = ft_join_sep(str[i], new, sep);
-	return (new);
-}
-
 char	**check_args(char **args)
 {
 	char	**tmp;
@@ -111,8 +94,8 @@ char	**check_args(char **args)
 	while (args[i])
 		i++;
 	new_wild = ft_calloc(i + 1, sizeof(char *));
-	i = 0;
-	while (args[i])
+	i = -1;
+	while (args[++i])
 	{
 		if (check_wildcard(args[i]))
 		{
@@ -122,7 +105,6 @@ char	**check_args(char **args)
 		}
 		else
 			new_wild[i] = ft_strdup(args[i]);
-		i++;
 	}
 	new_wild[i] = NULL;
 	free_table(args);
@@ -131,31 +113,28 @@ char	**check_args(char **args)
 
 char	**wild(char *str)
 {
-	char			**args;
-	char			**src;
-	DIR				*dir;
-	struct dirent	*wild;
-	int				i;
+	t_wild	v;
+	int		i;
 
 	i = 0;
-	src = get_path_wildcard(str);
-	dir = opendir(src[0]);
-	if (dir == NULL)
+	v.src = get_path_wildcard(str);
+	v.dir = opendir(v.src[0]);
+	if (v.dir == NULL)
 		return (NULL);
-	args = ft_calloc(size_dir(dir) + 1, sizeof(char *));
-	closedir(dir);
-	dir = opendir(src[0]);
-	wild = readdir(dir);
-	while (wild)
+	v.args = ft_calloc(size_dir(v.dir) + 1, sizeof(char *));
+	closedir(v.dir);
+	v.dir = opendir(v.src[0]);
+	v.wild = readdir(v.dir);
+	while (v.wild)
 	{
-		args[i++] = ft_strdup(wild->d_name);
-		wild = readdir(dir);
+		v.args[i++] = ft_strdup(v.wild->d_name);
+		v.wild = readdir(v.dir);
 	}
-	if (ft_strcmp(src[1], "*") == 0)
-		args = remove_hidefile(args);
+	if (ft_strcmp(v.src[1], "*") == 0)
+		v.args = remove_hidefile(v.args);
 	else
-		args = wildcard_str(args, src[1]);
-	free_table(src);
-	closedir(dir);
-	return (args);
+		v.args = wildcard_str(v.args, v.src[1]);
+	free_table(v.src);
+	closedir(v.dir);
+	return (v.args);
 }

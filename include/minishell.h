@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/05 19:10:12 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/06 15:21:36 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,18 @@ typedef struct s_env
 	int		print;
 }				t_env;
 
+typedef struct s_wild
+{
+	char			**args;
+	char			**src;
+	DIR				*dir;
+	struct dirent	*wild;
+}		t_wild;
+
 int			check_wildcard(char *str);
 int			size_dir(DIR *dir);
 char		**wildcard_str(char **str, char *src);
-
+char		*ft_join_sep(char *s1, char *s2, char sep);
 void		free_signal(t_data *data);
 void		alloc_empty_envp(t_data *data);
 void		parcing_word_red(t_scanner *scan, t_data *data, t_ast *new);

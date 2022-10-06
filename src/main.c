@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 19:56:22 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/05 20:26:11 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/06 20:04:10 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ int	line_check(t_data *data, char *line)
 	if (!check_line(data->token, data, line))
 	{
 		free_all(data, 1);
+		free(line);
 		return (0);
 	}
 	return (1);
 }
+
 int	check_ascii(char *line)
 {
 	int	i;

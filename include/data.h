@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 16:11:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/05 17:57:55 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/06 17:26:29 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct t_data{
 	char				**path;
 	int					here_doc;
 	int					len;
+	int					check_path;
 	int					dou_quothe;
 	int					sin_quothe;
 	int					parenthes;

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 20:28:04 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/05 17:27:10 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/06 18:45:03 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*get_thecmd(char **path, char *cmd)
 	int		i;
 
 	i = 0;
+	if (!path || !path[0])
+		return (NULL);
 	while (path[i])
 	{
 		tmp = ft_strjoin(path[i], "/");

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 16:23:07 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/05 13:27:03 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 21:11:47 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,5 @@ void	add_redirection(t_ast *ast, t_scanner *scan, t_data *data)
 		new->args[2] = NULL;
 	}
 	scanner_token(data->token, &scan);
-	// if (ast && (ast->type == TOKEN_RED_IN || ast->type == TOKEN_HEREDOC))
-	// {
-	// 	printf("Hello\n");
-	// 	ast_add_right(&ast, new);
-	// }
-	// else
-	// 	ast_add_left(&ast, new);
 	add_ast(ast, new);
 }

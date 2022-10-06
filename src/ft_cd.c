@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:59:50 by yjarhbou          #+#    #+#             */
-/*   Updated: 2022/10/01 18:16:00 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/06 20:53:48 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,17 @@ static void	go_to_path(t_data *data, char **cmd)
 	else if (access(path, F_OK) == -1)
 	{
 		g_exitstatus = 1;
+		free(pwd);
 		return (print_err(NO_SUCH_DIR, path, 2));
 	}
 	if (chdir(path) == -1)
 	{
 		g_exitstatus = 1;
+		free(pwd);
 		return (print_err(NO_SUCH_DIR, path, 2));
 	}
 	update_pwd(data);
+	free(pwd);
 }
 
 int	ft_cd(t_data *data, char **cmd)

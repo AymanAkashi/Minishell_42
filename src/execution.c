@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/05 17:29:33 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/06 20:18:31 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_execve(char *str, t_ast *ast, t_data *data, int absolut)
 	if (absolut == 1)
 	{
 		execve(str, ast->args, envp);
-		print_err("Minishell: %s : No such file or directory\n", str, 2);
+		print_err("Minishell: %s: No such file or directory", ast->args[0], 2);
 		free_all(data, 2);
 		free_table(envp);
 		g_exitstatus = 127;
@@ -53,7 +53,7 @@ void	ft_execve(char *str, t_ast *ast, t_data *data, int absolut)
 	else
 	{
 		execve(str, ast->args, envp);
-		print_err("Minishell: %s : command not found\n", ast->cmd, 2);
+		print_err("Minishell: %s : command not found", ast->args[0], 2);
 		free_all(data, 2);
 		free_table(envp);
 		g_exitstatus = 127;

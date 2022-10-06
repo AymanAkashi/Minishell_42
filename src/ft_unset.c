@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 20:19:07 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/01 18:20:14 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/06 18:39:33 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ void	remove_content(t_list **lst, char *cmd)
 	}
 }
 
+void	remove_path(t_data *data)
+{
+	free_table(data->path);
+	data->path = NULL;
+}
+
 void	ft_unset(t_data *data, char **args)
 {
 	int	i;
@@ -65,6 +71,8 @@ void	ft_unset(t_data *data, char **args)
 	{
 		if (!ft_strcmp(args[i], "PWD") || !ft_strcmp(args[i], "OLDPWD"))
 			remove_content(&data->envp, args[i]);
+		else if (!ft_strcmp(args[i], "PATH"))
+			remove_path(data);
 		else
 			remove_var(&data->envp, args[i]);
 		i++;

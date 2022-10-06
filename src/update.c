@@ -6,11 +6,27 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 14:30:39 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/05 14:25:54 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/06 20:53:58 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*ft_revsplit(char **str, char sep)
+{
+	char	*new;
+	int		len;
+	int		i;
+
+	i = -1;
+	len = 0;
+	new = NULL;
+	if (!str)
+		return (NULL);
+	while (str[++i])
+		new = ft_join_sep(str[i], new, sep);
+	return (new);
+}
 
 t_env	*search_env2(char *name, t_list	*lst)
 {
@@ -44,11 +60,11 @@ void	update_pwd(t_data *data)
 		else
 			old->value = e->value;
 		if (pwd == NULL)
-			e->value = ft_strjoin(e->value, "/..");
+			e->value = ft_strjoin2(e->value, "/..");
 		else
-			e->value = pwd;
-		e->value = pwd;
+			e->value = ft_strdup(pwd);
 	}
+	free(pwd);
 }
 
 char	*last_args(char **args)

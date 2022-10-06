@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 07:39:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/05 15:27:46 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/06 18:35:52 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,11 @@ void	free_table(char **table)
 	while (table && table[i])
 	{
 		free(table[i]);
+		table[i] = NULL;
 		i++;
 	}
 	free(table);
+	table = NULL;
 }
 
 void	free_list(t_list *lst)
