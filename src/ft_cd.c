@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:59:50 by yjarhbou          #+#    #+#             */
-/*   Updated: 2022/10/06 20:53:48 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/07 09:17:44 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	go_to_home(t_data *data)
 		g_exitstatus = 1;
 		return (printf("%s %s\n", NO_SUCH_DIR, path), 0);
 	}
-	update_pwd(data);
+	update_pwd(data, path);
 	return (1);
 }
 
@@ -74,18 +74,15 @@ static void	go_to_path(t_data *data, char **cmd)
 	}
 	else if (access(path, F_OK) == -1)
 	{
-		g_exitstatus = 1;
-		free(pwd);
+		free_pwd(pwd);
 		return (print_err(NO_SUCH_DIR, path, 2));
 	}
 	if (chdir(path) == -1)
 	{
-		g_exitstatus = 1;
-		free(pwd);
+		free_pwd(pwd);
 		return (print_err(NO_SUCH_DIR, path, 2));
 	}
-	update_pwd(data);
-	free(pwd);
+	update_pwd(data, pwd);
 }
 
 int	ft_cd(t_data *data, char **cmd)

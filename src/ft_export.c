@@ -6,37 +6,11 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 22:49:59 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/06 20:54:25 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/07 09:49:56 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	export_path(t_data *data, char *value, int add)
-{
-	char	**tmp;
-	int		i;
-
-	tmp = NULL;
-	if (add == 0)
-	{
-		free_table(data->path);
-		data->path = ft_split(value, ':');
-	}
-	else
-	{
-		tmp = ft_split(value, ':');
-		if (!tmp)
-		{
-			free_table(data->path);
-			data->path = NULL;
-		}
-		i = -1;
-		while (tmp[++i])
-			data->path = d_alloc_tabs(data->path, tmp[i]);
-		free_table(tmp);
-	}
-}
 
 void	search_export(t_data *data, char *key, char *value, int add)
 {

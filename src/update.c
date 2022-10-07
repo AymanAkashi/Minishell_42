@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 14:30:39 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/06 20:53:58 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/07 09:13:57 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,16 @@ t_env	*search_env2(char *name, t_list	*lst)
 	return (NULL);
 }
 
-void	update_pwd(t_data *data)
+void	update_pwd(t_data *data, char *pwd)
 {
-	char	*pwd;
 	t_env	*e;
 	t_env	*old;
 
 	e = search_env2("PWD", data->envp);
-	pwd = getcwd(NULL, 0);
 	if (e && ft_strcmp(pwd, e->value) != 0)
 	{
 		old = search_env2("OLDPWD", data->envp);
+		free(old->value);
 		if (e->value == NULL)
 			old->value = NULL;
 		else

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 21:52:49 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/06 17:32:10 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/07 09:11:46 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ char	*search_env(char *key, t_data *data)
 	t_list	*lst;
 
 	lst = data->envp;
-	// if (!strcmp(key, "PATH"))
-	// 	return (ft_strdup(_PATH_STDPATH));
 	while (lst)
 	{
 		e = lst->content;

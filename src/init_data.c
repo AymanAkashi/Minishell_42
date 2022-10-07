@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 19:59:42 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/06 19:54:46 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/07 09:19:28 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void	init_data(t_data *data, char *envp[], char *line)
 	data->num_heredoc = 0;
 	data->state = DEFAULT;
 	init_print_env(data->envp);
-	// add_path(data);
 	tokenizetion(&data->token, line, data);
 	add_history(line);
 }

@@ -6,11 +6,17 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 18:47:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/04 21:02:58 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/07 09:19:35 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	free_pwd(char *pwd)
+{
+	g_exitstatus = 1;
+	free(pwd);
+}
 
 int	check_wildcard(char *str)
 {

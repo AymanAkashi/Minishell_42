@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/06 15:21:36 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/07 09:50:33 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,8 @@ char		**check_args(char **args);
 char		*ft_revsplit(char **str, char sep);
 int			check_str(char *str, char *src);
 int			check_wildcard(char *str);
-void		update_pwd(t_data *data);
+void		update_pwd(t_data *data, char *pwd);
+void		free_pwd(char *pwd);
 char		**wild(char *str);
 void		wait_all(pid_t pid);
 void		execution(t_data *data, t_ast *root);
@@ -140,7 +141,7 @@ t_env		*ft_env_new(char *name, char *value);
 void		ft_env_del(t_env *env);
 void		alloc_envp(t_data *data, char *envp[], t_list *head);
 void		sort_list(t_list *lst, t_list *head);
-
+void		export_path(t_data *data, char *value, int add);
 void		beg_minishell(t_data *data);
 void		free_list(t_list *lst);
 void		free_ast(t_ast *root);
