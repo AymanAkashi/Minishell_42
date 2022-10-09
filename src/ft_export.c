@@ -6,7 +6,11 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/19 22:49:59 by aaggoujj          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/09/20 18:22:49 by aaggoujj         ###   ########.fr       */
+=======
+/*   Updated: 2022/10/07 09:49:56 by aaggoujj         ###   ########.fr       */
+>>>>>>> origin/update
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +19,7 @@
 void	search_export(t_data *data, char *key, char *value, int add)
 {
 	t_env	*e;
+<<<<<<< HEAD
 	char	*tmp;
 
 	e = search_env2(key, data->envp);
@@ -38,26 +43,63 @@ void	search_export(t_data *data, char *key, char *value, int add)
 			e->value = ft_strjoin(e->value, value);
 			free(tmp);
 		}
+=======
+
+	if (!ft_strcmp("PATH", key) && value)
+		export_path(data, value, add);
+	e = search_env2(key, data->envp);
+	if (e == NULL)
+		ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new(key, value)));
+	else if (add == 0)
+	{
+		if (!value)
+			return ;
+		free(e->value);
+		e->value = ft_strdup(value);
+	}
+	else
+	{
+		if (e->value == NULL)
+			e->value = ft_strdup(value);
+		else
+			e->value = ft_strjoin2(e->value, value);
+>>>>>>> origin/update
 	}
 }
 
 void	add_export_var(t_data *data, char *cmd)
 {
+<<<<<<< HEAD
 	int	i;
 	char	*pwd;
 
 	i = 0;
 	while(cmd[i] && cmd[i] != '=' && cmd[i] != '+' && ft_isalpha(cmd[i]))
+=======
+	int		i;
+	char	*pwd;
+
+	i = 0;
+	while (cmd[i] && cmd[i] != '=' && cmd[i] != '+' && ft_isalpha(cmd[i]))
+>>>>>>> origin/update
 		i++;
 	if (!cmd[i])
 		search_export(data, cmd, NULL, 0);
 	else if (!ft_isalpha(cmd[i]) && cmd[i] != '=' && cmd[i] != '+')
 		print_err("minishell : export: `%s': not a valid identifier\n", cmd, 2);
+<<<<<<< HEAD
 	else if(cmd[i] == '=')
 		creat_export_var(data, cmd);
 	else if (cmd[i] == '+' && cmd[i + 1] == '=')
 	{
 		pwd	= ft_strchr(cmd, '+') + 2;
+=======
+	else if (cmd[i] == '=')
+		creat_export_var(data, cmd);
+	else if (cmd[i] == '+' && cmd[i + 1] == '=')
+	{
+		pwd = ft_strchr(cmd, '+') + 2;
+>>>>>>> origin/update
 		*ft_strchr(cmd, '+') = '\0';
 		search_export(data, cmd, pwd, 1);
 	}
@@ -67,6 +109,7 @@ void	add_export_var(t_data *data, char *cmd)
 
 void	creat_export_var(t_data *data, char *cmd)
 {
+<<<<<<< HEAD
 	int i;
 	char *pwd;
 
@@ -80,30 +123,84 @@ void	creat_export_var(t_data *data, char *cmd)
 	else if (cmd[i] == '=')
 	{
 		pwd	= ft_strchr(cmd, '=') + 1;
+=======
+	int		i;
+	char	*pwd;
+
+	i = 0;
+	while (cmd[i] && cmd[i] != '=' && cmd[i] != '+' && ft_isalpha(cmd[i]))
+		i++;
+	if (!cmd[i])
+		search_export(data, cmd, NULL, 0);
+	else if (cmd[i] != '=' && cmd[i] != '+' && !ft_isalpha(cmd[i]))
+		print_err("minishell : export: `%s': not a valid identifier\n", cmd, 2);
+	else if (cmd[i] == '=')
+	{
+		pwd = ft_strchr(cmd, '=') + 1;
+>>>>>>> origin/update
 		*ft_strchr(cmd, '=') = '\0';
 		search_export(data, cmd, pwd, 0);
 	}
 }
 
+<<<<<<< HEAD
+=======
+char	*check_expend_export(char *args, t_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	while (args[i] && !is_token(args[i]))
+	{
+		while (args[i] == '$' && args[i + 1] == '$')
+			i++;
+		if ((args[i] == '$' || args[i] == '\'' || args[i] == '\"'))
+		{
+			args = expander(args, data);
+			break ;
+		}
+		i++;
+	}
+	return (args);
+}
+
+>>>>>>> origin/update
 void	ft_export(t_data *data, char **cmd)
 {
 	int		i;
 
+<<<<<<< HEAD
 	i = 1;
 	if(cmd[1] == NULL)
 	{
 		ft_export_new(data);
 		return ;
 	}
+=======
+	i = -1;
+	while (cmd[++i])
+		cmd[i] = check_expend_export(cmd[i], data);
+	i = 1;
+	if (cmd[1] == NULL)
+		sort_list(data->envp, data->envp);
+>>>>>>> origin/update
 	else
 	{
 		while (cmd[i])
 		{
+<<<<<<< HEAD
 			if(ft_strchr(cmd[i], '+') == NULL)
+=======
+			if (ft_strchr(cmd[i], '+') == NULL)
+>>>>>>> origin/update
 				creat_export_var(data, cmd[i]);
 			else
 				add_export_var(data, cmd[i]);
 			i++;
 		}
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/update

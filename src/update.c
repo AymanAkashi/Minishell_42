@@ -6,11 +6,31 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 14:30:39 by aaggoujj          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/09/21 21:56:38 by aaggoujj         ###   ########.fr       */
+=======
+/*   Updated: 2022/10/07 09:13:57 by aaggoujj         ###   ########.fr       */
+>>>>>>> origin/update
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*ft_revsplit(char **str, char sep)
+{
+	char	*new;
+	int		len;
+	int		i;
+
+	i = -1;
+	len = 0;
+	new = NULL;
+	if (!str)
+		return (NULL);
+	while (str[++i])
+		new = ft_join_sep(str[i], new, sep);
+	return (new);
+}
 
 t_env	*search_env2(char *name, t_list	*lst)
 {
@@ -28,21 +48,31 @@ t_env	*search_env2(char *name, t_list	*lst)
 	return (NULL);
 }
 
+<<<<<<< HEAD
 
 void	update_pwd(t_data *data)
+=======
+void	update_pwd(t_data *data, char *pwd)
+>>>>>>> origin/update
 {
-	char	*pwd;
 	t_env	*e;
 	t_env	*old;
 
 	e = search_env2("PWD", data->envp);
-	pwd = getcwd(NULL, 0);
-	if (ft_strcmp(pwd, e->value) != 0)
+	if (e && ft_strcmp(pwd, e->value) != 0)
 	{
 		old = search_env2("OLDPWD", data->envp);
-		old->value = e->value;
-		e->value = pwd;
+		free(old->value);
+		if (e->value == NULL)
+			old->value = NULL;
+		else
+			old->value = e->value;
+		if (pwd == NULL)
+			e->value = ft_strjoin2(e->value, "/..");
+		else
+			e->value = ft_strdup(pwd);
 	}
+	free(pwd);
 }
 
 char	*last_args(char **args)
@@ -58,12 +88,22 @@ char	*last_args(char **args)
 void	update_underscore(t_data *data, char **args)
 {
 	t_env	*e;
+<<<<<<< HEAD
 	if(!ft_strcmp(last_args(args), "$_"))
+=======
+
+	e = NULL;
+	if (!ft_strcmp(last_args(args), "$_"))
+>>>>>>> origin/update
 		return ;
 	e = search_env2("_", data->envp);
 	if (e)
 	{
+<<<<<<< HEAD
 		if(e->value)
+=======
+		if (e->value && e->value[0] != '\0')
+>>>>>>> origin/update
 			free(e->value);
 		e->value = ft_strdup(last_args(args));
 	}

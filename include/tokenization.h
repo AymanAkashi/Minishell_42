@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 15:42:24 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/21 13:15:12 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/01 19:42:04 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ typedef enum e_state{
 	SIN_QUOTHE,
 	PARENT,
 }		t_state;
-
 
 typedef struct s_token
 {

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 20:12:24 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/03 16:28:21 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 20:53:16 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	sigint_handler(int sig)
 
 void	_restctrl(void)
 {
-	struct	termios _termios;
+	struct termios	_termios;
 
 	tcgetattr(STDIN_FILENO, &_termios);
 	_termios.c_lflag |= ECHOCTL;
@@ -32,10 +32,10 @@ void	_restctrl(void)
 
 void	_hidectrl(void)
 {
-	struct	termios _termios;
+	struct termios	_termios;
 
 	tcgetattr(STDIN_FILENO, &_termios);
-	_termios.c_lflag &= ~ECHOCTL; // diseble ctrl+c "^C"
+	_termios.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, 0, &_termios);
 }
 
@@ -45,16 +45,12 @@ void	_ctrl_handler(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	_reset_ctrl_handler(void)
-{
-	signal(SIGINT, SIG_DFL);
-}
-
 void	ctrl_d_handler(t_data *data)
 {
 	(void)data;
-	printf("\x1B[0;A\x1B[13;Cexit\n");
+	printf("exit\n");
 	rl_clear_history();
 	_restctrl();
+	free_signal(data);
 	exit(EXIT_SUCCESS);
 }

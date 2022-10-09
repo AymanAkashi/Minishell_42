@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 22:41:12 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/07/28 13:18:02 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/01 19:43:36 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ char	*ft_strdup(const char *s1)
 	char	*s2;
 
 	i = 0;
-	if(!s1)
-		return NULL;
+	if (!s1)
+		return (NULL);
 	while (s1[i])
 		i++;
 	s2 = (char *)malloc(i * sizeof(char) + 1);

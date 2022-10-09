@@ -6,66 +6,26 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:18:13 by aaggoujj          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/09/21 22:20:43 by aaggoujj         ###   ########.fr       */
+=======
+/*   Updated: 2022/10/06 20:18:31 by aaggoujj         ###   ########.fr       */
+>>>>>>> origin/update
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern int g_exitstatus;
+int	exec_red(t_ast *ast, t_data *data);
 
-char	*get_thecmd(char **path, char *cmd)
-{
-	char	*tmp;
-	char	*arg;
-
-	while (*path)
-	{
-		tmp = ft_strjoin(*path, "/");
-		arg = ft_strjoin(tmp, cmd);
-		if (access(arg, 0) == 0)
-			return (arg);
-		free(arg);
-		free(tmp);
-		path++;
-	}
-	return (NULL);
-}
-
-int	check_if_path(char *cmd)
-{
-	if (access(cmd, X_OK) == 0)
-		return (1);
-	return (0);
-}
-
-int	check_cmd(char *str, t_data *data)
-{
-	char	*cmd;
-
-	if (ft_strchr(str,'/'))
-	{
-		if (check_if_path(str))
-			return (2);
-		else
-			return (0);
-	}
-	else
-	{
-		cmd = get_thecmd(data->path, str);
-		if (cmd == NULL)
-			return (0);
-	}
-	return (1);
-}
-
-char **list_to_args(t_list *lst)
+char	**list_to_args(t_list *lst, int env)
 {
 	char	**args;
 	int		i;
 	t_env	*e;
 
 	i = 0;
+	(void)env;
 	args = ft_any_alloc(sizeof(char *), ft_lstsize(lst) + 1);
 	while (lst)
 	{
@@ -75,15 +35,16 @@ char **list_to_args(t_list *lst)
 		lst = lst->next;
 		i++;
 	}
+	args[i] = NULL;
 	return (args);
 }
+//************************************************************************
 
-void	child_cmd(t_ast *ast, t_data *data, int absolut, char *str)
+void	ft_execve(char *str, t_ast *ast, t_data *data, int absolut)
 {
-	char **envp;
-	char	*cmd;
-	int		i;
+	char	**envp;
 
+<<<<<<< HEAD
 	i = -1;
 	if (ast->in != STDIN_FILENO)
 		dup2(ast->in, 0);
@@ -93,13 +54,21 @@ void	child_cmd(t_ast *ast, t_data *data, int absolut, char *str)
 	while(ast->args[++i])
 		ast->args[i] = check_expender(ast->args[i], data);
 	if (absolut == 2)
+=======
+	envp = list_to_args(data->envp, data->found_env);
+	if (absolut == 1)
+>>>>>>> origin/update
 	{
 		execve(str, ast->args, envp);
-		ft_putstr_fd("command not found\n", 2);
-		exit(127);
+		print_err("Minishell: %s: No such file or directory", ast->args[0], 2);
+		free_all(data, 2);
+		free_table(envp);
+		g_exitstatus = 127;
+		exit(g_exitstatus);
 	}
 	else
 	{
+<<<<<<< HEAD
 		cmd = get_thecmd(data->path, str);
 		execve(cmd, ast->args, envp);
 		ft_putstr_fd("command not found\n", 2);
@@ -203,67 +172,46 @@ void	execut_cmd(t_ast *ast, t_data *data)
 		}
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
+=======
+		execve(str, ast->args, envp);
+		print_err("Minishell: %s : command not found", ast->args[0], 2);
+		free_all(data, 2);
+		free_table(envp);
+		g_exitstatus = 127;
+		exit(g_exitstatus);
+>>>>>>> origin/update
 	}
 }
 
-void	exec_or(t_ast *ast, t_data *data)
+void	child_cmd(t_ast *ast, t_data *data, int absolut, char *str)
 {
-	exec_block(ast->left, data);
-	if (g_exitstatus != 0)
-		exec_block(ast->right, data);
-}
+	char	*cmd;
+	int		i;
 
-void	exec_and(t_ast *ast, t_data *data)
-{
-	exec_block(ast->left, data);
-	if (g_exitstatus == 0)
-		exec_block(ast->right, data);
-}
-
-void	exec_block(t_ast *ast, t_data *data)
-{
-	if (is_redirection(ast->type))
-		execut_redirection(ast, ast, data);
-	else if (ast->type == TOKEN_WORD)
-		execut_cmd(ast, data);
-	else if (ast->type == TOKEN_PIPE)
-		execut_pipe(ast, data);
+	i = -1;
+	if (absolut == 2)
+		ft_execve(str, ast, data, 1);
 	else
 	{
-		if (ast->type == TOKEN_AND)
-			exec_and(ast, data);
-		else
-			exec_or(ast, data);
+		cmd = get_thecmd(data->path, str);
+		ft_execve(cmd, ast, data, 0);
 	}
 }
+//************************************************************************
 
-void	execut_pipe(t_ast *ast, t_data *data)
+int	exec_red(t_ast *ast, t_data *data)
 {
-	int pip[2];
-
-	if (ast->type == TOKEN_PIPE || ast->type == TOKEN_AND || ast->type == TOKEN_OR)
+	if (ast->left && is_redirection(ast->left->type))
 	{
-		ast->left->in = ast->in;
-		ast->right->in = ast->in;
+		if (!execut_redirection(ast, ast->left, data))
+			return (0);
 	}
-	if (is_redirection(ast->type))
-		execut_redirection(ast, ast, data);
-	else if (ast->type == TOKEN_WORD)
-		execut_cmd(ast, data);
-	else if (ast->type == TOKEN_OR || ast->type == TOKEN_AND)
-		exec_block(ast, data);
-	else
+	if (ast->right && is_redirection(ast->right->type))
 	{
-		(void)data;
-		if(pipe(pip) == -1)
-			perror("Pipe :");
-		ast->right->in = pip[0];
-		ast->left->out = pip[1];
-		execut_pipe(ast->left, data);
-		close(pip[1]);
-		execut_pipe(ast->right, data);
-		close(pip[0]);
+		if (!execut_redirection(ast, ast->right, data))
+			return (0);
 	}
+	return (1);
 }
 
 void	execution(t_data *data, t_ast *root)

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 15:19:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/03 13:59:29 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/05 13:22:56 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,61 +30,15 @@ t_ast	*parc_opera(t_scanner *scan, t_ast *ast, t_data *data)
 	return (new);
 }
 
-void	add_ast(t_ast *ast, t_ast *new)
-{
-	if (ast && ast->type == TOKEN_WORD && (ast->left == NULL || ast->right == NULL))
-	{
-		if (ast->left == NULL)
-			ast->left = copy_ast(new);
-		else if (ast->right == NULL)
-			ast->right = copy_ast(new);
-	}
-	else
-	{
-		if (ast->type == TOKEN_PIPE && (new->type == TOKEN_RED_OUT
-			|| new->type == TOKEN_RED2_OUT))
-				add_ast(ast->right, new);
-		else
-		{
-			if (ast && ast->left)
-				add_ast(ast->left, new);
-			if(ast && ast->right)
-				add_ast(ast->right, new);
-		}
-	}
-}
-
-void	add_redirection(t_ast *ast, t_scanner *scan, t_data *data)
-{
-	t_ast *new;
-
-	new = ft_create_ast();
-	if (scan->curr_token && scan->curr_token->type == TOKEN_HEREDOC)
-		new = ast_here_doc(new, scan, data);
-	else
-	{
-		new->cmd = ft_strdup(scan->curr_token->cmd);
-		new->args = ft_any_alloc(sizeof(char *), 4);
-		new->args[0] = ft_strdup(scan->curr_token->cmd);
-		new->type = scan->curr_token->type;
-		scanner_token(data->token, &scan);
-		new->args[1] = ft_strdup(scan->curr_token->cmd);
-		new->args[2] = NULL;
-	}
-	scanner_token(data->token, &scan);
-	add_ast(ast, new);
-}
-
 t_ast	*parc_paren(t_scanner *scan, t_ast *ast, t_data *data)
 {
 	t_ast	*new;
 
 	data->state = PARENT;
-	new = ft_create_ast();
-	new->in = 1;
+	new = NULL;
 	scanner_token(data->token, &scan);
-	new = parcing(data, ast, scan);
-	if(scan->curr_token && is_redirection(scan->curr_token->type))
+	new = parcing(data, NULL, scan);
+	if (scan->curr_token && is_redirection(scan->curr_token->type))
 		add_redirection(new, scan, data);
 	if (scan->curr_token && scan->curr_token->type == TOKEN_PAREN_OUT)
 	{
@@ -95,8 +49,8 @@ t_ast	*parc_paren(t_scanner *scan, t_ast *ast, t_data *data)
 		ast->left = new;
 	else
 	{
-		ast = parcing(data, ast, scan);
-		if(!ast)
+		ast = parcing(data, NULL, scan);
+		if (!ast)
 			ast = new;
 		else
 			ast_add_left(&ast, new);
@@ -118,7 +72,7 @@ t_ast	*parc_pipe(t_scanner *scan, t_data *data, t_ast *root, t_ast *ast)
 	else if (root && root->cmd
 		&& (root->type == TOKEN_OR || root->type == TOKEN_AND))
 		new->left = root->right;
-	else if (data->state == DEFAULT && root)
+	else if (root)
 		new->left = root;
 	scanner_token(scan->curr_token, &scan);
 	if (scan->curr_token && scan->curr_token->type == TOKEN_WORD)
@@ -136,23 +90,20 @@ t_ast	*parc_cmd(t_scanner *scan, t_data *data)
 	i = 0;
 	new = ft_create_ast();
 	new->cmd = ft_strdup(scan->curr_token->cmd);
-	new->args = alloc_tab(data, TOKEN_WORD, scan);
-	new->args[i++] = ft_strdup(scan->curr_token->cmd);
+	new->args = d_alloc_tabs(NULL, scan->curr_token->cmd);
 	new->type = TOKEN_WORD;
 	scanner_token(scan->curr_token, &scan);
 	while (scan->curr_token && (scan->curr_token->type == TOKEN_WORD
 			|| is_redirection(scan->curr_token->type)))
 	{
 		if (is_redirection(scan->curr_token->type))
-			new = parc_heredoc(scan, new, data);
+			parcing_word_red(scan, data, new);
 		else
 		{
-			new->args[i++] = ft_strdup(scan->curr_token->cmd);
+			new->args = d_alloc_tabs(new->args, scan->curr_token->cmd);
 			scanner_token(scan->curr_token, &scan);
 		}
 	}
-	new->args[i] = NULL;
-	// check_expender(new->args, data);
 	return (new);
 }
 
@@ -160,7 +111,7 @@ t_ast	*parc_word(t_scanner *scan, t_data *data, t_ast *root)
 {
 	t_ast	*ast;
 
-	// ast = ft_create_ast();
+	ast = NULL;
 	while (scan->curr_token)
 	{
 		if (scan->curr_token->type == TOKEN_WORD)

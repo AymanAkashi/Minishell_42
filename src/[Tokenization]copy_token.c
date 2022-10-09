@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:49:21 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/21 13:14:34 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/06 14:52:41 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	ft_dou_quote(char *line, t_token *token, int i, t_data *data)
 {
 	char	type;
 
-	(void)data;
 	type = line[i];
 	set_num(&data->dou_quothe);
 	append_char(&(token)->cmd, line[i++]);
@@ -34,9 +33,8 @@ int	ft_dou_quote(char *line, t_token *token, int i, t_data *data)
 				type = line[i];
 				set_num(&data->dou_quothe);
 			}
-			else if (line[i] == ' ' || line[i] == '\t' || is_token(line[i]) ||
-				line[i] == '\'')
-				break;
+			else if (line[i] == ' ' || is_token(line[i]) || line[i] == '\'')
+				break ;
 		}
 		append_char(&(token)->cmd, line[i++]);
 	}
@@ -47,7 +45,6 @@ int	ft_sin_quote(char *line, t_token *token, int i, t_data *data)
 {
 	char	type;
 
-	(void)data;
 	type = line[i];
 	set_num(&data->sin_quothe);
 	append_char(&(token)->cmd, line[i++]);
@@ -65,9 +62,8 @@ int	ft_sin_quote(char *line, t_token *token, int i, t_data *data)
 				type = line[i];
 				set_num(&data->sin_quothe);
 			}
-			else if (line[i] == ' ' || line[i] == '\t' || is_token(line[i])
-				|| line[i] == '\"')
-				break;
+			else if (line[i] == ' ' || is_token(line[i]) || line[i] == '\"')
+				break ;
 		}
 		append_char(&(token)->cmd, line[i++]);
 	}
@@ -100,17 +96,25 @@ void	append_char(char **line, char c)
 	int		i;
 
 	i = 0;
+	dest = NULL;
 	if (*line == NULL)
-		*line = ft_any_alloc(sizeof(char), 2);
-	dest = ft_any_alloc(sizeof(char), ft_strlen(*line) + 2);
-	while ((*line)[i])
 	{
-		dest[i] = (*line)[i];
-		i++;
+		dest = ft_any_alloc(sizeof(char), 2);
+		dest[0] = c;
+		dest[1] = '\0';
 	}
-	dest[i] = c;
-	dest[i + 1] = '\0';
-	free(*line);
+	else
+	{
+		dest = ft_any_alloc(sizeof(char), ft_strlen(*line) + 2);
+		while ((*line)[i])
+		{
+			dest[i] = (*line)[i];
+			i++;
+		}
+		dest[i] = c;
+		dest[i + 1] = '\0';
+		free(*line);
+	}
 	*line = dest;
 }
 

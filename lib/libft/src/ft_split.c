@@ -6,7 +6,11 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 18:54:54 by aaggoujj          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/09/18 08:34:29 by aaggoujj         ###   ########.fr       */
+=======
+/*   Updated: 2022/09/19 06:13:16 by aaggoujj         ###   ########.fr       */
+>>>>>>> origin/update
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +73,11 @@ int	ft_write_split(char **split, char *str, char c)
 			while (ft_is_sep(str[i + j], c) == 0)
 				j++;
 			split[w] = (char *)malloc(sizeof(char) * (j + 1));
+<<<<<<< HEAD
 			if (!split[w])
+=======
+			if (!(split[w]))
+>>>>>>> origin/update
 				return (0);
 			ft_write_word(split[w], str + i, c);
 			i += j;

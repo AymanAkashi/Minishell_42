@@ -6,12 +6,17 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/09/21 18:21:43 by aaggoujj         ###   ########.fr       */
+=======
+/*   Updated: 2022/10/05 21:12:00 by aaggoujj         ###   ########.fr       */
+>>>>>>> origin/update
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+<<<<<<< HEAD
 int g_exitstatus;
 
 //************____Test_Tokenization____*****************//
@@ -94,6 +99,8 @@ void	disp(t_ast *tree, int ident, char *str, t_data *data) {
 
 //********************************************************/
 
+=======
+>>>>>>> origin/update
 int	size_ast(t_ast *ast)
 {
 	t_ast	*tmp;
@@ -120,86 +127,33 @@ int	size_ast(t_ast *ast)
 		return (i);
 }
 
-void	init_print_env(t_list *env)
+int	add_here_doc(t_token **token, t_data *data)
 {
-	t_env	*e;
-
-	while (env)
-	{
-		e = env->content;
-		e->print = 0;
-		env = env->next;
-	}
-}
-
-void	init_data(t_data *data, char *envp[])
-{
-	data->token = (t_token *)malloc(sizeof(t_token));
-	data->scanner = NULL;
-	data->token->cmd = NULL;
-	data->token->here_doc = NULL;
-	data->token->next = NULL;
-	data->root = NULL;
-	data->env = envp;
-	data->dou_quothe = 0;
-	data->sin_quothe = 0;
-	data->here_doc = 0;
-	init_print_env(data->envp);
-	//********PAth test*********************//
-	// for (int i = 0; data->path[i]; i++)
-	// 	printf("[%d]==%s\n",i,data->path[i]);
-	// //***********************envp**************************//
-	// t_env *e;
-	// t_list *lst;
-	// lst = data->envp;
-	// for (int i = 0;data->envp; i++)
-	// {
-	// 	e = data->envp->content;
-	// 	printf("[name]%s === [value]%s\n", e->name, e->value);
-	// 	data->envp = data->envp->next;
-	// }
-	// data->envp = lst  ;
-	// //************************ *****************************//
-}
-
-void	add_here_doc(t_token **token, t_data *data)
-{
-	t_token *tmp;
+	t_token	*tmp;
 
 	tmp = *token;
-	while(tmp && tmp->type != TOKEN_HEREDOC)
+	while (tmp)
+	{
+		if (tmp->type == TOKEN_HEREDOC)
+			if (!type_heredoc(&tmp, data, data->token->next->cmd))
+				return (0);
 		tmp = tmp->next;
-	type_heredoc(&tmp, data);
+	}
+	return (1);
 }
 
-char **copy_table(char **envp)
+void	beg_minishell(t_data *data)
 {
-	char **dest;
-	int i;
-
-	i = 0;
-	while (envp[i])
-		i++;
-	dest = ft_calloc(i + 1, sizeof(char *));
-	i = -1;
-	while (envp[++i])
-		dest[i] = ft_strdup(envp[i]);
-	dest[i] = NULL;
-	return (dest);
-}
-
-
-int	main(int ac, char **av, char **envp)
-{
-	char	*line;
-	t_data	data;
-
-	(void)ac, (void)av;
-	data.env = copy_table(envp);
-	alloc_envp(&data, data.env,data.envp);
-	add_path(&data);
-	g_exitstatus = 0;
+	if (data->here_doc == 1)
+		if (!add_here_doc(&data->token, data))
+			return ;
+	scanner_token(data->token, &data->scanner);
+	data->root = parcing(data, data->root, data->scanner);
+	execution(data, data->root);
+	close_all(data->root);
+	wait_all(0);
 	_hidectrl();
+<<<<<<< HEAD
 	while (1)
 	{
 		_ctrl_handler();
@@ -238,4 +192,6 @@ int	main(int ac, char **av, char **envp)
 	free(data.scanner);
 	free(line);
 	return (0);
+=======
+>>>>>>> origin/update
 }
