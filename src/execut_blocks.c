@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 13:27:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/09 13:12:25 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/09 20:12:16 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,12 @@ void	exec_and(t_ast *ast, t_data *data)
 		exec_block(ast->right, data);
 }
 
+/**
+ * It executes a block of code
+ *
+ * @param ast the ast node to execute
+ * @param data the data structure that contains all the information about the shell
+ */
 void	exec_block(t_ast *ast, t_data *data)
 {
 	if (is_redirection(ast->type))

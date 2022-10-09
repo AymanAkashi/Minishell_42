@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:59:50 by yjarhbou          #+#    #+#             */
-/*   Updated: 2022/10/07 09:17:44 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/09 20:38:59 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	go_to_home(t_data *data)
 	char	*path;
 
 	path = search_env("HOME", data);
-	if (path[0] == '\0')
+	if (!path || path[0] == '\0')
 	{
 		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 		return (0);

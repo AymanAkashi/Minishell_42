@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:55:04 by yjarhbou          #+#    #+#             */
-/*   Updated: 2022/10/09 12:52:01 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/09 20:16:34 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	ft_echo(char **cmd, int fd)
 	i = -1;
 	nextl = 0;
 	i = 1;
-	printf("cmd -> %d\n", fd);
 	while (!ft_strncmp(&cmd[i][0], "-", 1))
 	{
 		if (check_n(&cmd[i][1]) == 1)

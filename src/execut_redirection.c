@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 13:35:39 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/09 12:51:25 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/09 20:55:01 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	execut_red_out(t_ast *ast, t_ast *red)
 	ast->out = open(red->args[1], O_CREAT | O_RDWR | O_TRUNC, 0000644);
 	if (red->out != STDOUT_FILENO)
 		ast->out = red->out;
-	printf("red -> %d\n", ast->out);
 }
 
 void	execut_red_out2(t_ast *ast, t_ast *red)
@@ -56,6 +55,7 @@ int	execut_redirection(t_ast *ast, t_ast *red, t_data *data)
 	int	i;
 
 	i = -1;
+	red->args = check_args(red->args);
 	while (red->args[++i])
 		red->args[i] = check_expender(red->args[i], data);
 	if (!exec_red(red, data))

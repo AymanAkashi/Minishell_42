@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:07:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/09 13:07:06 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/09 20:14:34 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ void	beg_minishell(t_data *data)
 			return ;
 	scanner_token(data->token, &data->scanner);
 	data->root = parcing(data, data->root, data->scanner);
-	disp(data->root, 0, "ROOT", data);
-	// execution(data, data->root);
-	// close_all(data->root);
-	// wait_all(0);
+	// disp(data->root, 0, "ROOT", data);
+	execution(data, data->root);
+	close_all(data->root);
+	wait_all(0);
 	_hidectrl();
 }
