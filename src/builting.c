@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 20:26:53 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/09 12:55:56 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/10 09:38:12 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	is_builting(char *str)
 {
+
 	if (!ft_strcmp(str, "echo") || !ft_strcmp(str, "cd")
 		|| !ft_strcmp(str, "export") || !ft_strcmp(str, "env")
 		|| !ft_strcmp(str, "unset") || !ft_strcmp(str, "pwd")

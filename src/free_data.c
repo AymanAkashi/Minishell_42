@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 15:21:11 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/07 15:21:36 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/10 13:24:16 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ void	free_all(t_data *data, int pos)
 			free_token(&data->token);
 		else
 			free(data->token);
+		data->token = NULL;
 		free(data->scanner);
+		data->scanner = NULL;
 	}
 	if (pos == 2)
 	{

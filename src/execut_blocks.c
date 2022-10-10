@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 13:27:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/09 20:12:16 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/10 10:00:04 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	execut_cmd(t_ast *ast, t_data *data, int p)
 		{
 			ft_dup(ast->in, ast->out, p);
 			if (is_builting(ast->args[0]))
-				exec_builting(ast->args[0], data, ast->args, ast->out);
+				exec_builting(ast->args[0], data, ast->args, 1);
 			else
 				child_cmd(ast, data, absolut, ast->args[0]);
 			exit(g_exitstatus);
@@ -86,8 +86,10 @@ void	execut_pipe(t_ast *ast, t_data *data, int p)
 	if (ast->type == TOKEN_PIPE
 		|| ast->type == TOKEN_AND || ast->type == TOKEN_OR)
 	{
-		ast->left->in = ast->in;
-		ast->right->in = ast->in;
+		if (ast->left)
+			ast->left->in = ast->in;
+		if (ast->right)
+			ast->right->in = ast->in;
 	}
 	if (!exec_red(ast, data))
 		return ;

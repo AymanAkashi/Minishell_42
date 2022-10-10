@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 18:55:04 by yjarhbou          #+#    #+#             */
-/*   Updated: 2022/10/09 20:16:34 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/10 14:01:32 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ int	ft_echo(char **cmd, int fd)
 	i = -1;
 	nextl = 0;
 	i = 1;
+	// ft_putstr_fd("fd cmd == ", 1);
+	// ft_putchar_fd(fd + '0', 1);
+	// ft_putchar_fd('\n', 1);
 	while (!ft_strncmp(&cmd[i][0], "-", 1))
 	{
 		if (check_n(&cmd[i][1]) == 1)
@@ -53,5 +56,6 @@ int	ft_echo(char **cmd, int fd)
 	}
 	if (nextl == 0)
 		ft_putchar_fd('\n', fd);
+	g_exitstatus = 0;
 	return (0);
 }

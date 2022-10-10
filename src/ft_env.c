@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 19:53:27 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/09 11:02:51 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/10 14:02:06 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,5 @@ void	ft_env(t_data *data, int fd)
 			lst = lst->next;
 		}
 	}
+	g_exitstatus = 0;
 }

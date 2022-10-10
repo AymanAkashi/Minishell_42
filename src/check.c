@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 23:45:28 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/08 09:39:17 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/10 21:41:28 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,9 @@ int	check_double(t_token *token)
 			return (ft_exit_ps(ECHECK, tmp->next->cmd));
 		if ((tmp->type == TOKEN_PAREN_OUT) && tmp->next
 			&& tmp->next->type == TOKEN_WORD)
+			return (ft_exit_ps(ECHECK, tmp->next->cmd));
+		if ((tmp->type != TOKEN_WORD && tmp->type != TOKEN_PAREN_OUT
+			&& tmp->next && tmp->next->type == TOKEN_PAREN_OUT))
 			return (ft_exit_ps(ECHECK, tmp->next->cmd));
 		if (tmp->type == TOKEN_WORD && tmp->next
 			&& tmp->next->type == TOKEN_PAREN_IN)
@@ -112,6 +115,12 @@ int	checking_parenteses(char *line)
 	parenteses = 0;
 	while (line[i])
 	{
+		if (line[i] == '\'')
+			while(line[++i] && line[i] != '\'')
+				;
+		if (line[i] == '\"')
+			while(line[++i] && line[i] != '\"')
+				;
 		if (parenteses < 0)
 			return (0);
 		if (line[i] == '(')
@@ -120,6 +129,8 @@ int	checking_parenteses(char *line)
 			parenteses--;
 		i++;
 	}
+	if (parenteses != 0)
+		return (0);
 	return (1);
 }
 

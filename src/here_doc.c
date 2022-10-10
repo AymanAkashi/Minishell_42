@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 16:10:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/08 09:58:46 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/10 11:51:11 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,21 @@ void	child_here_doc(int p[2], t_token **token)
 	while (1)
 	{
 		line = readline("heredoc> ");
-		if (ft_strncmp((*token)->next->cmd, line,
-				ft_strlen((*token)->next->cmd) + 1) == 0)
+		if ((ft_strcmp((*token)->next->cmd, line) == 0 ) || !line)
 		{
-			free (line);
+			if (!line)
+				printf("\n");
+			else
+				free (line);
 			free_token(token);
 			close(p[1]);
 			exit(1);
 		}
 		if (line[0] == '\0' && check_empty_line((*token)->next->cmd))
-			break ;
+		{
+			free_token(token);
+			exit(2);
+		}
 		if (!line || line[0] == '\0')
 			continue ;
 		else if (line)

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 07:39:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/06 18:35:52 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/10 13:24:42 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,18 @@ void	free_token(t_token **token)
 	{
 		tmp = *token;
 		if ((*token)->type == TOKEN_HEREDOC)
+		{
 			free((*token)->here_doc);
+			(*token)->here_doc = NULL;
+		}
 		if ((*token)->cmd)
+		{
 			free((*token)->cmd);
+			(*token)->cmd = NULL;
+		}
 		*token = (*token)->next;
 		free(tmp);
+		tmp = NULL;
 	}
 	free(*token);
 	*token = NULL;
@@ -60,9 +67,13 @@ void	free_list(t_list *lst)
 		tmp = lst;
 		lst = lst->next;
 		free(((t_env *)tmp->content)->name);
+		((t_env *)tmp->content)->name = NULL;
 		free(((t_env *)tmp->content)->value);
+		((t_env *)tmp->content)->value = NULL;
 		free(tmp->content);
+		tmp->content = NULL;
 		free(tmp);
+		tmp = NULL;
 	}
 }
 

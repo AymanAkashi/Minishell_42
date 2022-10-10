@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 21:00:11 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/08 10:45:44 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/10 14:02:44 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_pwd(t_data *data, int fd)
 	{
 		e = search_env2("PWD", data->envp);
 		if (e->value == NULL)
-			ft_putstr_fd("minishell: pwd: PWD not set\n", 2);
+			print_err("minishell: pwd: PWD not set\n", NULL, 2);
 		else
 		{
 			ft_putstr_fd(e->value, fd);
@@ -34,5 +34,6 @@ void	ft_pwd(t_data *data, int fd)
 		ft_putstr_fd(pwd, fd);
 		ft_putchar_fd('\n', fd);
 	}
+	g_exitstatus = 0;
 	free(pwd);
 }

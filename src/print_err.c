@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 11:53:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/06 20:16:01 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/10 14:00:49 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ void	print_err(char *str, char *s, int fd)
 	i++;
 	while (str[++i])
 		write(fd, &str[i], 1);
-	write(1, "\n", 1);
+	g_exitstatus = 1;
+	// write(1, "\n", 1);
 }

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/08 10:45:08 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/10 13:41:47 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # include "data.h"
 # include "parsing.h"
 # include "mini_signal.h"
-# define NO_SUCH_DIR "minishell: cd: no such file or directory:"
+# define NO_SUCH_DIR "minishell: cd: %s: No such file or directory\n"
 # define ERROR_CD "cd: error retrieving current directory: getcwd: "
 # define ERROR_CD2 "cannot access parent directories: No such file or director"
 # define ECHECK "minishell: syntax error near unexpected token `"
