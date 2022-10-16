@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 17:25:12 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/05/16 16:44:00 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/16 01:27:55 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,10 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return (result * n);
+}
+
+void	ft_exit3(char *msg, int exit_status)
+{
+	ft_putstr_fd(msg, 2);
+	exit(exit_status);
 }

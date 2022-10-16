@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 16:23:07 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/05 21:11:47 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/12 18:08:54 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,16 @@ void	add_redirection(t_ast *ast, t_scanner *scan, t_data *data)
 	}
 	scanner_token(data->token, &scan);
 	add_ast(ast, new);
+}
+
+int	check_envp(char *envp[])
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+		i++;
+	if (i > 3)
+		return (1);
+	return (0);
 }

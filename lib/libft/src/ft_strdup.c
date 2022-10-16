@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 22:41:12 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/07 15:32:04 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/16 01:31:18 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_strdup(const char *s1)
 		i++;
 	s2 = (char *)malloc(i * sizeof(char) + 1);
 	if (!s2)
-		return (NULL);
+		return (ft_exit3(ALLOCATION_FAILED, 1), NULL);
 	i = 0;
 	while (s1[i])
 	{

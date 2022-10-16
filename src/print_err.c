@@ -6,11 +6,20 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 11:53:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/10 14:00:49 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/12 18:00:56 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	child_eof(char *line, t_token **token, int pip)
+{
+	if (line)
+		free (line);
+	free_token(token);
+	close(pip);
+	exit(1);
+}
 
 int	ft_exit_ps(char *str, char *str2)
 {
@@ -36,5 +45,4 @@ void	print_err(char *str, char *s, int fd)
 	while (str[++i])
 		write(fd, &str[i], 1);
 	g_exitstatus = 1;
-	// write(1, "\n", 1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scanner.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 20:26:53 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/03 11:31:49 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/16 01:39:38 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ t_token	*get_next_token(t_token *token)
 	return (NULL);
 }
 
+static	void	free_scanner(t_scanner **scanner)
+{
+	(*scanner)->curr_token = NULL;
+	(*scanner)->next_token = NULL;
+}
+
 void	scanner_token(t_token *token, t_scanner **curr_scan)
 {
 	t_token	*tmp;
@@ -38,6 +44,8 @@ void	scanner_token(t_token *token, t_scanner **curr_scan)
 	if ((*curr_scan) == NULL)
 	{
 		*curr_scan = (t_scanner *)malloc(sizeof(t_scanner));
+		if (!(*curr_scan))
+			ft_exit2(ALLOCATION_FAILED, 1);
 		(*curr_scan)->curr_token = token;
 		(*curr_scan)->next_token = get_next_token(token);
 	}
@@ -52,8 +60,7 @@ void	scanner_token(t_token *token, t_scanner **curr_scan)
 		}
 		else
 		{
-			(*curr_scan)->curr_token = NULL;
-			(*curr_scan)->next_token = NULL;
+			free_scanner(curr_scan);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 21:59:50 by yjarhbou          #+#    #+#             */
-/*   Updated: 2022/10/09 20:38:59 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/11 18:50:48 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,10 @@ void	no_dir(t_data *data)
 	{
 		pwd = ft_strjoin(e->value, "/..");
 		old = search_env2("OLDPWD", data->envp);
-		old->value = e->value;
-		e->value = pwd;
+		old->value = ft_strdup(e->value);
+		free(e->value);
+		e->value = ft_strdup(pwd);
+		free(pwd);
 	}
 }
 

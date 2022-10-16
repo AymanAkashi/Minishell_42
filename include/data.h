@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/18 16:11:34 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/06 17:26:29 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/12 15:56:47 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_ast		*parc_opera(t_scanner *scan, t_ast *ast, t_data *data);
 t_ast		*parc_paren(t_scanner *scan, t_ast *ast, t_data *data);
 t_ast		*parc_pipe(t_scanner *scan, t_data *data, t_ast *root, t_ast *ast);
 t_ast		*parc_word(t_scanner *scan, t_data *data, t_ast *root);
-t_ast		*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data);
+t_ast		*parc_redirection(t_scanner *scan, t_ast *root, t_data *data);
 t_ast		*parc_word2(t_scanner *scan, t_data *data, t_ast *root);
 
 #endif

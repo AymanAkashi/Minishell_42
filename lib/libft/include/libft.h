@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 17:24:23 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/08/10 18:53:03 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/16 13:37:59 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+
+# define ALLOCATION_FAILED "minishell: syntax error near unexpected token `"
 
 typedef struct s_list
 {
@@ -110,5 +112,6 @@ int				ft_strlcpy(char *dst, const char *src, size_t dstsize);
 int				ft_strncmp(char const *s1, char const *s2, unsigned int n);
 
 int				ft_strcmp(char const *s1, char const *s2);
+void			ft_exit3(char *msg, int exit_status);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/30 15:19:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/09 10:55:49 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/12 15:57:04 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_ast	*parc_opera(t_scanner *scan, t_ast *ast, t_data *data)
 	else if (scan->curr_token && scan->curr_token->type == TOKEN_PAREN_IN)
 		new->right = parc_paren(scan, NULL, data);
 	else if (scan->curr_token && is_redirection(scan->curr_token->type))
-		new->right = parc_heredoc(scan, NULL, data);
+		new->right = parc_redirection(scan, NULL, data);
 	return (new);
 }
 
@@ -82,7 +82,7 @@ t_ast	*parc_pipe(t_scanner *scan, t_data *data, t_ast *root, t_ast *ast)
 	if (scan->curr_token && scan->curr_token->type == TOKEN_PAREN_IN)
 		new->right = parc_paren(scan, NULL, data);
 	if (scan->curr_token && is_redirection(scan->curr_token->type))
-		new->right = parc_heredoc(scan, new, data);
+		new->right = parc_redirection(scan, new, data);
 	return (new);
 }
 

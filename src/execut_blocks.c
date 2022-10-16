@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 13:27:03 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/10 10:00:04 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/12 17:45:30 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,6 @@ void	exec_and(t_ast *ast, t_data *data)
 		exec_block(ast->right, data);
 }
 
-/**
- * It executes a block of code
- *
- * @param ast the ast node to execute
- * @param data the data structure that contains all the information about the shell
- */
 void	exec_block(t_ast *ast, t_data *data)
 {
 	if (is_redirection(ast->type))
@@ -85,12 +79,7 @@ void	execut_pipe(t_ast *ast, t_data *data, int p)
 		return ;
 	if (ast->type == TOKEN_PIPE
 		|| ast->type == TOKEN_AND || ast->type == TOKEN_OR)
-	{
-		if (ast->left)
-			ast->left->in = ast->in;
-		if (ast->right)
-			ast->right->in = ast->in;
-	}
+		add_pipe(ast);
 	if (!exec_red(ast, data))
 		return ;
 	else if (ast->type == TOKEN_WORD)
@@ -101,10 +90,7 @@ void	execut_pipe(t_ast *ast, t_data *data, int p)
 	{
 		if (pipe(pip) == -1)
 			perror("Pipe :");
-		if (ast->right)
-			ast->right->in = pip[0];
-		if (ast->left)
-			ast->left->out = pip[1];
+		add_pipe2(ast, pip);
 		execut_pipe(ast->left, data, pip[0]);
 		close(pip[1]);
 		execut_pipe(ast->right, data, pip[1]);

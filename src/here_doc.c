@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/07 16:10:14 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/10 11:51:11 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/12 18:02:12 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +46,18 @@ void	child_here_doc(int p[2], t_token **token)
 	while (1)
 	{
 		line = readline("heredoc> ");
-		if ((ft_strcmp((*token)->next->cmd, line) == 0 ) || !line)
-		{
-			if (!line)
-				printf("\n");
-			else
-				free (line);
-			free_token(token);
-			close(p[1]);
-			exit(1);
-		}
+		if ((ft_strcmp((*token)->next->cmd, line) == 0) || !line)
+			child_eof(line, token, p[1]);
 		if (line[0] == '\0' && check_empty_line((*token)->next->cmd))
 		{
 			free_token(token);
 			exit(2);
 		}
 		if (!line || line[0] == '\0')
-			continue ;
+		{
+			line = ft_strdup("\n");
+			write_heredoc(p[1], line);
+		}
 		else if (line)
 			write_heredoc(p[1], line);
 		free(line);
@@ -73,18 +68,19 @@ void	child_here_doc(int p[2], t_token **token)
 
 int	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
 {
-	char	*tmp;
-	int		byte;
-	int		len;
+	char			*tmp;
+	int				byte;
+	static int		len;
 
-	tmp = NULL;
-	len = 0;
-	close(p[1]);
-	signal(SIGINT, sighere_handler);
-	signal(SIGQUIT, SIG_IGN);
+	parent_rest_signal(p[1]);
 	tmp = read_heredoc(p[0], len, &byte);
 	while (byte > 0)
 	{
+		if (!strcmp(tmp, "\n"))
+		{
+			free(tmp);
+			tmp = ft_strdup("");
+		}
 		(*token)->here_doc = ft_strjoin_nl((*token)->here_doc, tmp);
 		free(tmp);
 		tmp = read_heredoc(p[0], len, &byte);
@@ -96,8 +92,7 @@ int	parent_here_doc(int p[2], t_token **token, int pid, t_data *data)
 		return (0);
 	if ((*token)->exp == 1 && (*token)->here_doc)
 		(*token)->here_doc = expand_heredoc((*token)->here_doc, data);
-	close(p[0]);
-	return (1);
+	return (close(p[0]), 1);
 }
 
 int	type_heredoc(t_token **token, t_data *data, char *eof)

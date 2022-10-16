@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/20 21:52:49 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/07 11:20:17 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/16 01:34:07 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,12 @@ char	*ft_strjoin2(char *str, char *buff)
 	i = -1;
 	j = -1;
 	if (!str)
-	{
-		str = (char *) malloc(sizeof(char) * 1);
-		str[0] = '\0';
-	}
+		str = ft_strdup("");
 	if (!str)
-		return (NULL);
+		return (exit(1), NULL);
 	dest = (char *)malloc((ft_strlen(str) + ft_strlen(buff) + 1));
 	if (!dest)
-		return (NULL);
+		return (ft_exit2(ALLOCATION_FAILED, 1), NULL);
 	while (str && str[++i] != '\0')
 		dest[i] = str[i];
 	while (buff && buff[++j] != '\0')

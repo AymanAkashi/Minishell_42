@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 10:45:49 by aaggoujj          #+#    #+#             */
-/*   Updated: 2021/11/27 11:53:59 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/16 01:32:11 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*ft_submalloc(char *str, size_t i)
 {
 	str = (char *)malloc(sizeof(char) * i);
 	if (!str)
-		return (NULL);
+		return (ft_exit3(ALLOCATION_FAILED, 1), NULL);
 	ft_bzero(str, i);
 	return (str);
 }
@@ -41,7 +41,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	else
 		str = ft_submalloc(str, len + 1);
 	if (!str)
-		return (NULL);
+		return (exit(1), NULL);
 	j = 0;
 	if (start <= ft_strlen(s))
 		while (start < end && s[start] != '\0')

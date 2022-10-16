@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/25 15:43:52 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/09/24 20:46:46 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/12 17:45:43 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,20 @@ t_ast	*copy_ast(t_ast *ast)
 	new->type = ast->type;
 	new->args = copy_args(ast->args);
 	return (new);
+}
+
+void	add_pipe(t_ast *ast)
+{
+	if (ast->left)
+		ast->left->in = ast->in;
+	if (ast->right)
+		ast->right->in = ast->in;
+}
+
+void	add_pipe2(t_ast *ast, int *pip)
+{
+	if (ast->right)
+		ast->right->in = pip[0];
+	if (ast->left)
+		ast->left->out = pip[1];
 }

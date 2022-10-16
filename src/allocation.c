@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   allocation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 18:39:29 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/04 20:56:35 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/16 01:33:12 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,12 @@ void	alloc_empty_envp(t_data *data)
 {
 	char	*pwd;
 
-	data->path = ft_split(_PATH_STDPATH, ':');
 	data->found_env = 0;
 	pwd = getcwd(NULL, 0);
 	data->envp = ft_lstnew(ft_env_new("PWD", pwd));
 	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("OLDPWD", NULL)));
-	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("SHLVL", "1")));
 	ft_lstadd_back(&data->envp, ft_lstnew(ft_env_new("_", "/usr/bin/env")));
+	free(pwd);
 }
 
 char	**d_alloc_tabs(char **args, char *str)
@@ -57,7 +56,7 @@ void	*ft_any_alloc(size_t size, size_t len)
 
 	ptr = malloc(size * len);
 	if (!ptr)
-		return (NULL);
+		return (ft_exit2(ALLOCATION_FAILED, 1), NULL);
 	ft_memset(ptr, 0, size * len);
 	return (ptr);
 }

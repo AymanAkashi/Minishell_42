@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 14:03:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2021/11/23 18:25:05 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/16 01:31:34 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 		len--;
 	str = (char *)malloc(sizeof(char) * (len - i) + 1);
 	if (!str)
-		return (NULL);
+		return (ft_exit3(ALLOCATION_FAILED, 1), NULL);
 	while (len > i)
 	{
 		str[j] = s1[i];

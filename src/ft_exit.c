@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 22:17:28 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/03 12:59:55 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/16 13:37:46 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	check_digit(char *str)
 	return (1);
 }
 
-void	ft_exit(char **args, t_data *data)
+void	ft_exit(char **args, t_data *data, int exit_status)
 {
 	if (args[1] == NULL)
 	{
@@ -49,6 +49,12 @@ void	ft_exit(char **args, t_data *data)
 	{
 		ft_putstr_fd("exit\n", 2);
 		free_all(data, 2);
-		exit(ft_atoi(args[1]));
+		exit(exit_status);
 	}
+}
+
+void	ft_exit2(char *msg, int exit_status)
+{
+	ft_putstr_fd(msg, 2);
+	exit(exit_status);
 }

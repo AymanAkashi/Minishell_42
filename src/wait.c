@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/31 18:47:17 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/07 09:19:35 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/11 20:19:50 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	set_signal(int sig)
 	if (sig == SIGINT)
 		printf("\n");
 	else if (sig == SIGQUIT)
-		printf("QUIT: 3");
+		printf("QUIT: 3\n");
 }
 
 void	wait_all(pid_t pid)

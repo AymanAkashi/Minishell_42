@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 14:30:39 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/10 14:01:53 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/16 01:35:50 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,16 @@ void	update_pwd(t_data *data, char *pwd)
 		old = search_env2("OLDPWD", data->envp);
 		free(old->value);
 		if (e->value == NULL)
-			old->value = NULL;
+			old->value = ft_strdup("");
 		else
-			old->value = e->value;
+			old->value = ft_strdup(e->value);
 		if (pwd == NULL)
 			e->value = ft_strjoin2(e->value, "/..");
 		else
+		{
+			free(e->value);
 			e->value = ft_strdup(pwd);
+		}
 	}
 	g_exitstatus = 0;
 	free(pwd);
@@ -92,5 +95,14 @@ void	update_underscore(t_data *data, char **args)
 		if (e->value && e->value[0] != '\0')
 			free(e->value);
 		e->value = ft_strdup(last_args(args));
+	}
+	else
+	{
+		e = malloc(sizeof(t_env));
+		if (!e)
+			ft_exit2(ALLOCATION_FAILED, 1);
+		e->name = ft_strdup("_");
+		e->value = ft_strdup(last_args(args));
+		ft_lstadd_back(&data->envp, ft_lstnew(e));
 	}
 }

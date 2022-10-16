@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 20:04:46 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/09 10:59:50 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/12 16:02:53 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_ast	*ast_red(t_data *data, t_scanner *scan, t_ast *new)
 	return (new);
 }
 
-t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
+t_ast	*parc_redirection(t_scanner *scan, t_ast *root, t_data *data)
 {
 	t_ast	*ast;
 	t_ast	*new;
@@ -75,9 +75,5 @@ t_ast	*parc_heredoc(t_scanner *scan, t_ast *root, t_data *data)
 	}
 	else
 		return (new);
-	// if (new->type == TOKEN_RED_IN || new->type == TOKEN_HEREDOC)
-	// 	root = parc_red_in(scan, root, new, data);
-	// else if (new->type == TOKEN_RED2_OUT || new->type == TOKEN_RED_OUT)
-	// 	root = parc_red_out(scan, root, new, data);
 	return (root);
 }

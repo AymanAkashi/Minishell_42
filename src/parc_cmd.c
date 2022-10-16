@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   [parsing]parc_cmd.c                                :+:      :+:    :+:   */
+/*   parc_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/26 14:23:56 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/06 11:20:48 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/12 15:54:08 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_ast	*parcing(t_data *data, t_ast *ast, t_scanner *scan)
 			|| scan->curr_token->type == TOKEN_OR)
 			ast = parc_opera(scan, ast, data);
 		else if (is_redirection(scan->curr_token->type))
-			ast = parc_heredoc(scan, ast, data);
+			ast = parc_redirection(scan, ast, data);
 		else if (scan->curr_token->type == TOKEN_PAREN_IN)
 		{
 			if (!ast)

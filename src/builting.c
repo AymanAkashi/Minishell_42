@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 20:26:53 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/10 09:38:12 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/12 16:25:40 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	is_builting(char *str)
 {
-
 	if (!ft_strcmp(str, "echo") || !ft_strcmp(str, "cd")
 		|| !ft_strcmp(str, "export") || !ft_strcmp(str, "env")
 		|| !ft_strcmp(str, "unset") || !ft_strcmp(str, "pwd")
@@ -25,9 +24,6 @@ int	is_builting(char *str)
 
 void	exec_builting(char *str, t_data *data, char **args, int fd)
 {
-	int	i;
-
-	i = -1;
 	if (!ft_strcmp(str, "echo"))
 		ft_echo(args, fd);
 	else if (!ft_strcmp(str, "cd"))
@@ -41,5 +37,10 @@ void	exec_builting(char *str, t_data *data, char **args, int fd)
 	else if (!ft_strcmp(str, "pwd"))
 		ft_pwd(data, fd);
 	else if (!ft_strcmp(str, "exit"))
-		ft_exit(args, data);
+	{
+		if (args && args[1])
+			ft_exit(args, data, ft_atoi(args[1]));
+		else
+			ft_exit(args, data, 0);
+	}
 }

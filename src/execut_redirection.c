@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/02 13:35:39 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/09 20:55:01 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/12 17:47:35 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,7 @@ int	execut_redirection(t_ast *ast, t_ast *red, t_data *data)
 		execut_heredoc(ast, red, data, pip);
 	if (ast->in == -1 || ast->out == -1)
 	{
-		if (ast->in == -1)
-			perror(red->args[1]);
-		if (ast->out == -1)
-			perror(red->args[1]);
+		perror(red->args[1]);
 		return (0);
 	}
 	return (1);

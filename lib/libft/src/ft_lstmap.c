@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 13:56:02 by aaggoujj          #+#    #+#             */
-/*   Updated: 2021/11/25 14:25:30 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/16 01:30:29 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 		{
 			ft_lstclear(&res, del);
 			new_lst = NULL;
+			ft_exit3(ALLOCATION_FAILED, 1);
 		}
 		new_lst->content = f(lst->content);
 		new_lst->next = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 19:59:42 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/07 09:19:28 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/16 01:34:17 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	add_path(t_data *data)
 	else
 	{
 		value = search_env("PATH", data);
-		data->path = ft_split(value, ':');
+		if (!value || !value[0])
+			data->path = ft_split(_PATH_STDPATH, ':');
+		else
+			data->path = ft_split(value, ':');
 		free(value);
 	}
 	if (!data->path)
@@ -76,6 +79,8 @@ void	init_data(t_data *data, char *envp[], char *line)
 {
 	(void)envp;
 	data->token = (t_token *)malloc(sizeof(t_token));
+	if (!data->token)
+		ft_exit2(ALLOCATION_FAILED, 1);
 	data->scanner = NULL;
 	data->token->cmd = NULL;
 	data->token->here_doc = NULL;

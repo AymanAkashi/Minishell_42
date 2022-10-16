@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 08:12:45 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/10 13:41:47 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/16 01:29:06 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # define ERROR_CD "cd: error retrieving current directory: getcwd: "
 # define ERROR_CD2 "cannot access parent directories: No such file or director"
 # define ECHECK "minishell: syntax error near unexpected token `"
+# define ALLOCATION_FAILED "minishell: syntax error near unexpected token `"
 //****************************************************************
 
 int	g_exitstatus;
@@ -69,7 +70,7 @@ char		**d_alloc_tabs(char **args, char *str);
 void		close_all(t_ast *ast);
 void		write_heredoc(int p, char *line);
 char		*read_heredoc(int p, int len, int *byte);
-
+int			check_envp(char *envp[]);
 char		*get_thecmd(char **path, char *cmd);
 int			check_cmd(char *str, t_data *data);
 int			is_builting(char *str);
@@ -84,7 +85,8 @@ int			size_tab(char **args);
 void		__reset_sig(int def);
 void		ft_dup(int in, int out, int p);
 int			step_exec_cmd(t_ast *ast, t_data *data, int *absolut);
-
+void		child_eof(char *line, t_token **token, int pip);
+void		parent_rest_signal(int pip);
 void		execut_red_out(t_ast *ast, t_ast *red);
 void		execut_red_out2(t_ast *ast, t_ast *red);
 void		execut_red_in(t_ast *ast, t_ast *red);
@@ -95,7 +97,9 @@ int			execut_redirection(t_ast *ast, t_ast *red, t_data *data);
 int			is_builting(char *str);
 void		exec_builting(char *str, t_data *data, char **args, int fd);
 int			exec_red(t_ast *ast, t_data *data);
-
+int			check_quote_2(t_token *tmp);
+int			check_quote(t_token *token);
+int			got_close_quote(char *str, char c, int i);
 int			search_quote(char *str);
 void		add_redirection(t_ast *ast, t_scanner *scan, t_data *data);
 int			expand_dou_quote(char *line, int i, char **result, t_data *data);
@@ -108,7 +112,7 @@ void		set_here_doc(t_token **token, t_data *data);
 char		*expander(char *line, t_data *data);
 void		free_null(void	**ptr);
 void		update_underscore(t_data *data, char **args);
-void		ft_exit(char **args, t_data *data);
+void		ft_exit(char **args, t_data *data, int exit_status);
 void		ft_pwd(t_data *data, int fd);
 void		ft_unset(t_data *data, char **args);
 void		ft_env(t_data *data, int fd);
@@ -126,6 +130,8 @@ int			check_wildcard(char *str);
 void		update_pwd(t_data *data, char *pwd);
 void		free_pwd(char *pwd);
 char		**wild(char *str);
+void		add_pipe(t_ast *ast);
+void		add_pipe2(t_ast *ast, int *pip);
 void		wait_all(pid_t pid);
 void		execution(t_data *data, t_ast *root);
 void		exec_block(t_ast *ast, t_data *data);
@@ -160,5 +166,6 @@ char		**alloc_tab(t_data *data, t_type_token type, t_scanner *scan);
 int			ft_cd(t_data *data, char **cmd);
 t_env		*ft_get_env(void *env);
 int			ft_update_oldpwd(t_list *env);
+void		ft_exit2(char *msg, int exit_status);
 
 #endif /* MINISHELL_H */

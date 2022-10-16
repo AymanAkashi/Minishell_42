@@ -6,11 +6,18 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 20:40:54 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/03 11:32:45 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/12 18:00:11 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	parent_rest_signal(int pip)
+{
+	close(pip);
+	signal(SIGINT, sighere_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
 
 void	sighere_handler(int sig)
 {
@@ -44,21 +51,21 @@ char	*remove_quotes(char *str)
 	return (dest);
 }
 
-void	write_heredoc(int p, char *line)
+void	write_heredoc(int pipe, char *line)
 {
 	int	byte;
 
 	byte = ft_strlen(line);
-	write(p, &byte, sizeof(int));
-	write (p, line, ft_strlen(line));
+	write(pipe, &byte, sizeof(int));
+	write (pipe, line, ft_strlen(line));
 }
 
-char	*read_heredoc(int p, int len, int *byte)
+char	*read_heredoc(int pipe, int len, int *byte)
 {
 	char	*tmp;
 
-	*byte = read (p, &len, sizeof(int));
+	*byte = read (pipe, &len, sizeof(int));
 	tmp = ft_any_alloc(sizeof(char), len + 1);
-	*byte = read (p, tmp, len);
+	*byte = read (pipe, tmp, len);
 	return (tmp);
 }

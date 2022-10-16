@@ -18,7 +18,7 @@ LIBFT_DIR		:= $(LIB_DIR)/libft
 
 # *********************************** Files ************************************
 NAME			:= minishell
-SRC				:= allocation.c  ast_add.c ast_tools.c builting.c check.c close_all.c copy_token.c ctrl_handler.c env_fonction.c env_tools.c execut_blocks.c execut_redirection.c execut_tools.c execution.c expand_heredoc.c expander.c expander_tools.c free_data.c free_env.c ft_cd.c ft_echo.c ft_env.c ft_exit.c ft_export.c ft_free.c ft_pwd.c ft_unset.c get_cmd.c here_doc.c here_doc_fon.c init_data.c is_check.c main.c minishell.c parc_cmd.c parc_heredoc.c parc_redirection.c parc_type.c print_err.c scanner.c token.c token_set.c update.c wait.c wildcard.c wildcard_tools.c
+SRC				:= allocation.c  ast_add.c ast_tools.c builting.c check.c close_all.c copy_token.c ctrl_handler.c env_fonction.c env_tools.c execut_blocks.c execut_redirection.c execut_tools.c execution.c expand_heredoc.c expander.c expander_tools.c free_data.c free_env.c ft_cd.c ft_echo.c ft_env.c ft_exit.c ft_export.c ft_free.c ft_pwd.c ft_unset.c get_cmd.c here_doc.c here_doc_fon.c init_data.c is_check.c main.c minishell.c parc_cmd.c parc_heredoc.c parc_redirection.c parc_type.c print_err.c scanner.c token.c token_set.c update.c wait.c wildcard.c wildcard_tools.c check_helper.c
 
 OBJ				:= $(SRC:.c=.o)
 INC				:= data.h mini_signal.h minishell.h parsing.h tokenization.h
@@ -30,7 +30,7 @@ LIBFT_INC		:= libft.h
 
 # ****************************** Compiler Options ******************************
 CC				:= cc
-CFLAGS			:= -Wall -Wextra -Werror -g
+CFLAGS			:= -Wall -Wextra -Werror
 INCFLAGS		:= -I $(INC_DIR) -I $(LIBFT_DIR)/$(INC_DIR)
 LIBFLAGS		:= -L $(LIBFT_DIR) -lft
 

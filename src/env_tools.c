@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_tools.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yjarhbou <yjarhbou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 12:33:30 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/09 11:11:48 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/16 01:34:00 by yjarhbou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ t_env	*ft_env_new(char *name, char *value)
 
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
-		return (NULL);
+		return (ft_exit2(ALLOCATION_FAILED, 1), NULL);
 	new->name = ft_strdup(name);
 	new->value = ft_strdup(value);
 	return (new);

@@ -6,7 +6,7 @@
 /*   By: aaggoujj <aaggoujj@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 19:56:22 by aaggoujj          #+#    #+#             */
-/*   Updated: 2022/10/10 16:08:06 by aaggoujj         ###   ########.fr       */
+/*   Updated: 2022/10/12 18:42:20 by aaggoujj         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	check_ascii(char *line)
 	return (1);
 }
 
+//start program
+//note: "survive or die begin"
 int	main(int ac, char **av, char **envp)
 {
 	char	*line;
